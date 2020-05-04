@@ -28,11 +28,10 @@ class Parser {
       closeRegexp.lastIndex = index;
       const closeMatch = closeRegexp.exec(str);
       if (!closeMatch) {
-        throw new Error('Missing closing tag. index: ' + index);
+        throw new Error('Missing closing }. index: ' + index);
       }
       index = closeMatch.index + closeMatch[0].length;
       openRegexp.lastIndex = index;
-
       const b = this.ctx.buffer; // parseTag can change the buffer
       const block = this.parseTag(closeMatch[1]);
       if (!block.skip) {
@@ -61,16 +60,18 @@ class Parser {
       block.tag   = block.tag.substring(1);
       if (tag.in) {
         // get in
+        // console.log('get in');
         this.ctx.stack.push(block);
         block.buffer    = [];
         this.ctx.buffer = block.buffer;
       } else if (tag.out) {
         // get out
+        // console.log('get out');
         const prev = this.ctx.stack.pop();
         if (prev && prev.tag !== block.tag) {
           console.error('Open/close tag mismatch!');
         }
-        const parent    = this.ctx.stack[this.ctx.stack-1];
+        const parent    = this.ctx.stack[this.ctx.stack.length-1];
         this.ctx.buffer = parent ? parent.buffer : this.buffer;
         block.skip = true;
       }

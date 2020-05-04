@@ -35,7 +35,7 @@ describe('Parser', () => {
     try {
       const buffer = new Parser().parse(TEMPLATE);
     } catch(err) {
-      assert.equal(err.message, 'Missing closing tag. index: 7');
+      assert.equal(err.message, 'Missing closing }. index: 7');
     }
   });
 
@@ -55,6 +55,35 @@ describe('Parser', () => {
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].tag, 'name');
     assert.equal(buffer[1].f, 'reverse|uppercase|urlencode');
+  });
+
+  it('should parse nested tags', () => {
+    const TEMPLATE = '{?tag}Hello {?tag}World{/tag}{/tag}, ok.';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    const nested = buffer[0];
+    assert.equal(nested.type, '?');
+    assert.equal(nested.buffer.length, 2);
+    assert.equal(nested.buffer[0], 'Hello ');
+    assert.equal(nested.buffer[1].type, '?');
+  });
+
+
+  it('should parse loop tags', () => {
+    const TEMPLATE = 'Hello {#worlds}{.name}{/worlds}, ok.';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    assert.equal(buffer[1].type, '#');
+    assert.equal(buffer[1].buffer.length, 1);
+  });
+
+  it('should parse nested loop tags', () => {
+    const TEMPLATE = 'Hello {#COL1}a{#COL2}b{/COL2} {/COL1}';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    assert.equal(buffer[1].type, '#');
+    assert.equal(buffer[1].buffer.length, 3);
+    assert.equal(buffer[1].buffer[1].type, '#');
   });
 
 });
