@@ -59,10 +59,19 @@ const s = (l, p, f) => {
   if (r === undefined || r === null) {
     return '';
   }
-  return _f(r, f);
+  return _f(String(r), f);
+};
+
+// return array
+const a = (l, p) => {
+  const r = _v(l, p);
+  if (r === undefined || r === null || !r.forEach) {
+    return [];
+  }
+  return r;
 };
 
 
 
 
-module.exports = { b, s };
+module.exports = { a, b, s };

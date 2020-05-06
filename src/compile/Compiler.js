@@ -16,6 +16,12 @@ class Compiler {
         this.fStr += 'if(u.b(l,\'' + block.tag + '\')){';
         this.compileBuffer(block.buffer);
         this.fStr += '}';
+      } else if (block.type === '#') {
+        // loop block
+        this.fStr += 'u.a(l,\'' + block.tag + '\').forEach(function(it){';
+        this.fStr += 'l.it=it;';
+        this.compileBuffer(block.buffer);
+        this.fStr += '});';
       } else if (!block.type){
         // default: raw text
         this.fStr += 'r+=\'' + block + '\';';
