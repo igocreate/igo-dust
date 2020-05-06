@@ -9,19 +9,25 @@ class Parser {
     this.ctx    = { stack: [], buffer: this.buffer };
   }
 
+  push(str) {
+    str = str.replace(/[\r\n]/gm, '');
+    str = str.replace(/'/g, '\\\'');
+    this.ctx.buffer.push(str);
+  }
+
   parse(str) {
 
-    const openRegexp   = new RegExp('(.*?)' + '\\{', 'g');
-    const closeRegexp  = new RegExp('(.*?)' + '\\}', 'g');
+    const openRegexp   = new RegExp('(.*?)\\{', 'msg');
+    const closeRegexp  = new RegExp('(.*?)\\}', 'msg');
 
     let index = 0;
 
     let openMatch, closeMatch;
     while ((openMatch = openRegexp.exec(str)) !== null) {
-      // console.dir({openMatch});
       if (openMatch[1]) {
         // preceding string
-        this.ctx.buffer.push(openMatch[1]);
+        // console.dir({openMatch});
+        this.push(openMatch[1]);
       }
       index = openMatch.index + openMatch[0].length;
 
@@ -41,7 +47,7 @@ class Parser {
     }
 
     if (index < str.length) {
-      this.ctx.buffer.push(str.slice(index))
+      this.push(str.slice(index))
     }
 
     // console.log('--- done parsing');
@@ -92,8 +98,17 @@ class Parser {
     const filtersMatch  = filtersRegexp.exec(str);
     if (filtersMatch) {
       block.tag = str.substring(0, filtersMatch.index);
-      block.f   = filtersMatch[0].replace(/ /g, '').substring(1);
-    };
+      const f   = filtersMatch[0].replace(/ /g, '').substring(1).split('|');
+      const s   = f.indexOf('s');
+      if (s > -1) {
+        f.splice(s, 1);
+      } else {
+        f.push('e');
+      }
+      block.f = f.join('|');
+    } else {
+      block.f = 'e';
+    }
   }
 
 }

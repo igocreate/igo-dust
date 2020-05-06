@@ -26,7 +26,7 @@ describe('Parser', () => {
     assert.equal(buffer[0], 'Hello ');
     assert.equal(buffer[1].type, 'r');
     assert.equal(buffer[1].str, 'world');
-    assert.equal(buffer[1].f, undefined);
+    assert.equal(buffer[1].f, 'e');
     assert.equal(buffer[2], ', ok. ');
   });
 
@@ -54,7 +54,7 @@ describe('Parser', () => {
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].tag, 'name');
-    assert.equal(buffer[1].f, 'reverse|uppercase|urlencode');
+    assert.equal(buffer[1].f, 'reverse|uppercase|urlencode|e');
   });
 
   it('should parse nested tags', () => {
@@ -84,6 +84,14 @@ describe('Parser', () => {
     assert.equal(buffer[1].type, '#');
     assert.equal(buffer[1].buffer.length, 3);
     assert.equal(buffer[1].buffer[1].type, '#');
+  });
+
+  it('should parse multiple lines', () => {
+    const TEMPLATE = 'Hello \n\n oo {#COL1}a{/COL1} World';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    assert.equal(buffer[1].type, '#');
+    assert.equal(buffer[1].buffer.length, 1);
   });
 
 });

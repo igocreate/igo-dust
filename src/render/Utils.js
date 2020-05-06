@@ -1,4 +1,13 @@
 
+const SPLIT_CACHE = {};
+
+const _split = (p) => {
+  if (!SPLIT_CACHE[p]) {
+    SPLIT_CACHE[p] = p.split('.');
+  }
+  return SPLIT_CACHE[p];
+}
+
 const ESCAPE_CHAR = c => {
   switch (c) {
     case '<': return '&lt;';
@@ -21,14 +30,8 @@ const FILTERS = {
 
 
 const _f = (s, f) => {
-  f = f ? f.split('|') : [];
-  // add default escapexml filter
-  if (f.indexOf('s') < 0 && f.indexOf('e') < 0) {
-    f.push('e');
-  }
-
   // apply filters
-  f.forEach(fi => {
+  f.split('|').forEach(fi => {
     if (!FILTERS[fi]) {
       return;
     }
@@ -39,13 +42,14 @@ const _f = (s, f) => {
 
 const _v = (l, p) => {
   let r = l;
-  p.split('.').forEach(a => {
-    if (!r) {
-      return;
-    }
-    r = r[a];
-  });
-  return r;
+  const els = _split(p);
+  if (els.length === 1) {
+    return l[p] || '';
+  }
+  for (let i = 0; i < els.length; i++) {
+    r = r && r[els[i]];
+  };
+  return r || '';
 };
 
 // return boolean
@@ -56,16 +60,17 @@ const b = (l, p) => {
 // return string, with filter applied
 const s = (l, p, f) => {
   const r = _v(l, p);
-  if (r === undefined || r === null) {
-    return '';
+  if (!f || typeof r !== 'string') {
+    return r;
   }
-  return _f(String(r), f);
+  return _f(r, f);
 };
 
 // return array
 const a = (l, p) => {
+  // return [];
   const r = _v(l, p);
-  if (r === undefined || r === null || !r.forEach) {
+  if (!r || !Array.isArray(r)) {
     return [];
   }
   return r;
