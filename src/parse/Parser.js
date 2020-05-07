@@ -84,6 +84,10 @@ class Parser {
     } else {
       // reference
       block.type  = 'r';
+      if (block.tag === '.') {
+        block.tag = 'it';
+      }
+      //block.tag = block.tag.replace(/^\./, 'it');
       this.parseFilters(str, block);
 
     }
