@@ -87,7 +87,7 @@ describe('Parser', () => {
   });
 
   it('should parse multiple lines', () => {
-    const TEMPLATE = 'Hello \n\n oo {#COL1}a{/COL1} World';
+    const TEMPLATE = 'Hello \r\n oo {#COL1}a{/COL1} World';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].type, '#');
