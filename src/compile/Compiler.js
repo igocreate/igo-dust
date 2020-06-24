@@ -3,12 +3,13 @@
 class Compiler {
 
   constructor() {
-    this.r = `var r='';`;
+    this.i  = 0;
+    this.r  = `var r='';`;
   }
 
   compileBuffer(buffer) {
-    this.compileBufferFastest(buffer);
-    // this.compileBufferSlow(buffer);
+    // this.compileBufferFastest(buffer);
+    this.compileBufferSlow(buffer);
   }
 
   compileBufferFastest(buffer) {
@@ -38,12 +39,11 @@ class Compiler {
     buffer.forEach(block => {
       if (block.type === 'r') {
         // reference
-        this.r += `r+=u.s(l,'${block.tag}');`;
-        // this.r += `r+=u.s(l,'${block.tag}'`;
-        // if (block.f) {
-        //   this.r += `,'${block.f}'`;
-        // }
-        // this.r += ');'
+        this.r += `r+=u.s(l,'${block.tag}'`;
+        if (block.f) {
+          this.r += `,'${block.f}'`;
+        }
+        this.r += ');'
       } else if (block.type === '?') {
         // conditional block
         this.r += `if(u.b(l,'${block.tag}')){`;
@@ -51,11 +51,15 @@ class Compiler {
         this.r += '}';
       } else if (block.type === '#') {
         // loop block
-        this.r += `var a=u.a(l, '${block.tag}');`
-        this.r += `for(var i=0;i<a.length;i++){`;
-        this.r += `l.it=a[i];`;
+        this.i++;
+        const { i } = this;
+        this.r += `var p_it${i}=l.it;`;
+        this.r += `var a${i}=u.a(l, '${block.tag}');`
+        this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
+        this.r += `l.it=a${i}[i${i}];`;
         this.compileBuffer(block.buffer);
         this.r += '}';
+        this.r += `l.it=p_it${i};`;
       } else if (!block.type){
         // default: raw text
         this.r += `r+='${block}';`;

@@ -2,8 +2,8 @@ const assert    = require('assert');
 
 const Renderer  = require('../../src/render/Renderer');
 
-const COL1 = [ 1,2,3 ];
-const COL2 = [ 1 ];
+const COL1 = [ 1, 2, 3 ];
+const COL2 = [ 'a', 'b' ];
 
 describe('Render Basic', () => {
 
@@ -16,7 +16,7 @@ describe('Render Basic', () => {
   it('should render nested loops', () => {
     const template  = 'Hello {#COL1}{it}{#COL2}{it}{/COL2} {/COL1}';
     const r         = new Renderer().render(template, { COL1, COL2 });
-    assert.equal(r, 'Hello 11 21 31 ');
+    assert.equal(r, 'Hello 1ab 2ab 3ab ');
   });
 
 });
