@@ -49,6 +49,12 @@ class Compiler {
         this.r += `if(u.b(l,'${block.tag}')){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
+        // else
+        if (block.bodies && block.bodies.else) {
+          this.r += 'else {';
+          this.compileBuffer(block.bodies.else);
+          this.r += '}';
+        }
       } else if (block.type === '#') {
         // loop block
         this.i++;

@@ -31,4 +31,13 @@ describe('Render Logic', () => {
     const t         = new Renderer().render(template, { world: true, ok: true });
     assert.equal(t, 'World OK');
   });
+
+  it('should render condition with else', () => {
+    const template  = 'Hello {?test}World{:else}Good bye{/test} OK.';
+    const r         = new Renderer().render(template, { test: true });
+    assert.equal(r, 'Hello World OK.');
+    const s         = new Renderer().render(template, { test: false });
+    assert.equal(s, 'Hello Good bye OK.');
+  });
+
 });
