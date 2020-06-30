@@ -68,7 +68,6 @@ describe('Parser', () => {
     assert.equal(nested.buffer[1].type, '?');
   });
 
-
   it('should parse loop tags', () => {
     const TEMPLATE = 'Hello {#worlds}{.name}{/worlds}, ok.';
     const buffer = new Parser().parse(TEMPLATE);
@@ -92,6 +91,41 @@ describe('Parser', () => {
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].type, '#');
     assert.equal(buffer[1].buffer.length, 1);
+  });
+
+
+  it('should parse else tags', () => {
+    const TEMPLATE = '{?tag}Hello{:else}World{/tag}, ok.';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    const nested = buffer[0];
+    assert(nested.bodies.else);
+    assert.equal(nested.buffer[0], 'Hello');
+    assert.equal(nested.bodies.else[0], 'World');
+  });
+
+  it('should parse nested tags in else tag', () => {
+    const TEMPLATE = '{?tag}Hello{:else}World {name}{/tag}, ok.';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    const nested = buffer[0];
+    assert(nested.bodies.else);
+    assert.equal(nested.buffer[0], 'Hello');
+    assert.equal(nested.bodies.else[0], 'World ');
+    assert.equal(nested.bodies.else[1].type, 'r');
+    assert.equal(nested.bodies.else[1].str, 'name');
+  });
+
+
+  it('should parse many bodies tags', () => {
+    const TEMPLATE = '{?tag}Hello{:else}World{:other}Good Bye{/tag}, ok.';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    const nested = buffer[0];
+    assert(nested.bodies.else);
+    assert.equal(nested.buffer[0], 'Hello');
+    assert.equal(nested.bodies.else[0], 'World');
+    assert.equal(nested.bodies.other[0], 'Good Bye');
   });
 
 });

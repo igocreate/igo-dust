@@ -33,6 +33,7 @@ class Parser {
 
       closeRegexp.lastIndex = index;
       const closeMatch = closeRegexp.exec(str);
+      
       if (!closeMatch) {
         throw new Error('Missing closing }. index: ' + index);
       }
@@ -79,6 +80,13 @@ class Parser {
         }
         const parent    = this.ctx.stack[this.ctx.stack.length-1];
         this.ctx.buffer = parent ? parent.buffer : this.buffer;
+        block.skip = true;
+      } else if (tag.bodies) {
+        // alternative buffer in current block bodies
+        const current   = this.ctx.stack[this.ctx.stack.length - 1];
+        current.bodies  = current.bodies || {};
+        current.bodies[block.tag] = [];
+        this.ctx.buffer = current.bodies[block.tag];
         block.skip = true;
       }
     } else {

@@ -3,7 +3,7 @@ const TAGS = {
   '?': { in:  true },
   '#': { in:  true },
   '^': { in:  true },
-  ':': { out: true},
+  ':': { bodies: true },
   '/': { out: true }
 }; // TODO: '^', ':', '@', '<', '+' ];
 
