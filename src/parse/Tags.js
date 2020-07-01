@@ -5,7 +5,7 @@ const TAGS = {
   '^': { in:  true },
   ':': { bodies: true },
   '/': { out: true }
-}; // TODO: '^', ':', '@', '<', '+' ];
+}; // TODO: '^', '@', '<', '+' ];
 
 
 module.exports = TAGS;

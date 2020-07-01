@@ -18,31 +18,20 @@ const ESCAPE_CHAR = c => {
   }
 };
 
-const FILTERS = {
-  e: s => {
-    // escape XML
-    return s.replace(/[<>&'"]/g, ESCAPE_CHAR);
-  },
-  uppercase: s => {
-    return s.toUpperCase();
-  }
-};
-
-
 const _f = (s, f) => {
-  // apply filters
-  f.split('|').forEach(fi => {
-    if (!FILTERS[fi]) {
-      return;
-    }
-    s = FILTERS[fi](s);
-  });
+  if (f.e) { // 'e'
+    s = s.replace(/[<>&'"]/g, ESCAPE_CHAR);
+  }
+  if (f.uppercase) { // 'uppercase'
+    s = s.toUpperCase();
+  }
   return s;
 }
 
 const _v = (l, p) => {
   let r = l;
   const els = _split(p);
+
   if (els.length === 1) {
     return l[p] || '';
   }
@@ -58,12 +47,12 @@ const b = (l, p) => {
 };
 
 // return string, with filter applied
-const s = (l, p, f) => {
-  const r = _v(l, p);
-  if (!f || typeof r !== 'string') {
-    return r;
+const s = (v, f) => {
+  v = v || '';
+  if (!f || typeof v !== 'string') {
+    return v;
   }
-  return _f(r, f);
+  return _f(v, f);
 };
 
 // return array
