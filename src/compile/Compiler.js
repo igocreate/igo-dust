@@ -16,9 +16,9 @@ class Compiler {
       if (block.type === 'r') {
         // reference
         this.r += `r+=l.${block.tag};`;
-      } else if (block.type === '?') {
+      } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
-        this.r += `if(l.${block.tag}){`;
+        this.r += `if(${block.type === '^' ? '!' : ''}(l.${block.tag})){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
         // else
@@ -51,9 +51,9 @@ class Compiler {
           this.r += `, ${this._getFilters(block.f)}`;
         }
         this.r += ');'
-      } else if (block.type === '?') {
+      } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
-        this.r += `if(${this._getValue(block.tag)}){`;
+        this.r += `if(${block.type === '^' ? '!' : ''}(${this._getValue(block.tag)})) {`;
         this.compileBuffer(block.buffer);
         this.r += '}';
         // else
@@ -86,8 +86,6 @@ class Compiler {
     console.log(this.r);
     return new Function('l', 'u', this.r);
   }
-
-
 
   //
   _getValue(tag) {

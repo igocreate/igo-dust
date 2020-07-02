@@ -19,11 +19,11 @@ const ESCAPE_CHAR = c => {
 };
 
 const _f = (s, f) => {
-  if (f.e) { // 'e'
-    s = s.replace(/[<>&'"]/g, ESCAPE_CHAR);
-  }
   if (f.uppercase) { // 'uppercase'
     s = s.toUpperCase();
+  }
+  if (f.e) { // 'e'
+    s = s.replace(/[<>&'"]/g, ESCAPE_CHAR);
   }
   return s;
 }

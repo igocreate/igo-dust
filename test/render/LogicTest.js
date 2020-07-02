@@ -40,4 +40,13 @@ describe('Render Logic', () => {
     assert.equal(s, 'Hello Good bye OK.');
   });
 
+  it('should render ^ condition on attribute', () => {
+    const template  = 'Hello {^test.a}World{/test.a} OK.';
+    const r         = new Renderer().render(template, { test: { a: true } });
+    assert.equal(r, 'Hello  OK.');
+    const s         = new Renderer().render(template, { test: false });
+    assert.equal(s, 'Hello World OK.');
+    const t         = new Renderer().render(template, {});
+    assert.equal(t, 'Hello World OK.');
+  });
 });
