@@ -5,14 +5,58 @@ const Tags = require('./Tags');
 class Parser {
 
   constructor() {
-    this.buffer = [];
-    this.ctx    = { stack: [], buffer: this.buffer };
+    this.global     = [];           // global buffer, to be returned by parse function
+    this.buffer     = this.global;  // current buffer, where content is added
+    this.stack      = [];           // stack of parents blocks
   }
 
-  push(str) {
+  // add string
+  pushString(str) {
+    // escape string
     str = str.replace(/[\r\n]/gm, '\\r\\n');  // escape linebreaks
     str = str.replace(/'/g, '\\\'');          // escape single quotes
-    this.ctx.buffer && this.ctx.buffer.push(str);
+    // push
+    this.buffer.push(str);
+  }
+
+  // push block
+  pushBlock(block) {
+    this.buffer.push(block);
+  }
+
+  // set root block
+  setRootBlock(block) {
+    console.log('set Root!');
+    this.global = [ block ];
+    this.stack  = [];
+  }
+
+  // stack the block, use its buffer as current
+  stackBlock(block)  {
+    block.buffer  = [];
+    this.buffer   = block.buffer;
+    this.stack.push(block);
+  }
+
+  getLastBlock() {
+    return this.stack[this.stack.length-1];
+  }
+
+  pop() {
+    const block = this.stack.pop();
+    const last  = this.getLastBlock();
+    this.buffer = last && last.buffer || this.global;
+    return block;
+  }
+
+  addBody(tag) {
+    const last        = this.getLastBlock();
+    if (!last) {
+      throw new Error('Cannot add body outside of a block');
+    }
+    last.bodies       = last.bodies || {};
+    last.bodies[tag]  = [];
+    this.buffer       = last.bodies[tag];
   }
 
   parse(str) {
@@ -26,7 +70,7 @@ class Parser {
     while ((openMatch = openRegexp.exec(str)) !== null) {
       if (openMatch[1]) {
         // preceding string
-        this.push(openMatch[1]);
+        this.pushString(openMatch[1]);
       }
       index = openMatch.index + openMatch[0].length;
 
@@ -34,89 +78,55 @@ class Parser {
       const closeMatch = closeRegexp.exec(str);
       
       if (!closeMatch) {
+        // parsing error
         throw new Error('Missing closing }. index: ' + index);
       }
+
       index = closeMatch.index + closeMatch[0].length;
       openRegexp.lastIndex = index;
-      const b = this.ctx.buffer; // parseTag can change the buffer
-      const block = this.parseTag(closeMatch[1]);
-      if (!block.skip) {
-        b && b.push(block);
-      }
 
+      this.parseTag(closeMatch[1]);
     }
 
     if (index < str.length) {
-      this.push(str.slice(index))
+      this.pushString(str.slice(index))
     }
 
-    // console.log('--- done parsing');
-    // console.dir(this.buffer);
-    return this.buffer;
+    // console.log('--- done ---');
+    // console.dir(this.global);
+    return this.global;
   }
 
   parseTag(str) {
-    const block = { tag: str, str };
 
     const tag = Tags[str[0]];
 
-    if (tag) {
-      // special block
-      block.type  = str[0];
-      block.tag   = block.tag.substring(1);
-      if (tag.in) {
-        // get in
-        // console.log('get in');
-        this.ctx.stack.push(block);
-        block.buffer    = [];
-        this.ctx.buffer = block.buffer;
-
-        if (block.type === '@') {
-          this.parseParams(str, block)
-        }
-      } else if (tag.out) {
-        // get out
-        // console.log('get out');
-        const prev = this.ctx.stack[this.ctx.stack.length-1];
-        if (Tags[prev.type].in) {
-          this.ctx.stack.pop();
-        }
-        if (prev && prev.type !== '>' && prev.tag !== block.tag)  {
-          console.error(`Open/close tag mismatch! ${prev.tag} !== ${block.tag} `);
-        }
-        const parent    = this.ctx.stack[this.ctx.stack.length-1];
-        this.ctx.buffer = parent ? parent.buffer : this.buffer;
-        block.skip = true;
-      } else if (tag.bodies) {
-        // alternative buffer in current block bodies
-        const current   = this.ctx.stack[this.ctx.stack.length - 1];
-        current.bodies  = current.bodies || {};
-        current.bodies[block.tag] = [];
-        this.ctx.buffer = current.bodies[block.tag];
-        block.skip = true;
-      } else if (tag.root) {
-        // use current block as root for stack
-        block.buffer = null;
-        this.ctx = {
-          root: true,
-          stack: [ block ],
-          buffer: block.buffer
-        }
-        this.buffer = [ block ];
-      }
-    } else {
+    if (!tag) {
       // reference
+      const block = {
+        type:   'r',
+        tag:    str
+      };
+      
       block.type  = 'r';
-      if (block.tag === '.') {
-        block.tag = 'it';
-      }
-      //block.tag = block.tag.replace(/^\./, 'it');
+      // if (block.tag === '.') {
+      //   block.tag = 'it';
+      // }
       this.parseFilters(str, block);
-
+      this.pushBlock(block);
+      return;
     }
 
-    // console.dir({block});
-    return block;
+    const block = {
+      type: str[0],
+      tag:  str.substring(1)
+    };
+    
+    // parse params
+    this.parseParams(str, block);
+
+    // apply tag
+    tag(this, block);
   }
 
   parseFilters(str, block) {

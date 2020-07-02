@@ -25,9 +25,11 @@ describe('Parser', () => {
     assert.equal(buffer.length, 5);
     assert.equal(buffer[0], 'Hello ');
     assert.equal(buffer[1].type, 'r');
-    assert.equal(buffer[1].str, 'world');
+    assert.equal(buffer[1].tag, 'world');
     assert.equal(buffer[1].f, 'e');
     assert.equal(buffer[2], ', ok. ');
+    assert.equal(buffer[3].tag, 'world');
+    assert.equal(buffer[4].tag, 'world');
   });
 
   it('should handle tag error', () => {
@@ -113,7 +115,7 @@ describe('Parser', () => {
     assert.equal(nested.buffer[0], 'Hello');
     assert.equal(nested.bodies.else[0], 'World ');
     assert.equal(nested.bodies.else[1].type, 'r');
-    assert.equal(nested.bodies.else[1].str, 'name');
+    assert.equal(nested.bodies.else[1].tag, 'name');
   });
 
   it('should parse many bodies tags', () => {
@@ -152,10 +154,10 @@ describe('Parser', () => {
   });
 
   it('should parse layout tag', () => {
-    const TEMPLATE = 'a{> "layout/main" }b{<content}Hello World{/content}c';
+    const TEMPLATE = ' {> "layout/main" } {<content}Hello World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 1);
-    const nested = buffer[0];
+    assert.equal(buffer.length, 3);
+    const nested = buffer[1];
     assert.equal(nested.bodies.content, 'Hello World');
   });
 });
