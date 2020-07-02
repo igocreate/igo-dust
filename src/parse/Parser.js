@@ -71,6 +71,10 @@ class Parser {
         this.ctx.stack.push(block);
         block.buffer    = [];
         this.ctx.buffer = block.buffer;
+
+        if (block.type === '@') {
+          this.parseParams(str, block)
+        }
       } else if (tag.out) {
         // get out
         // console.log('get out');
@@ -123,6 +127,31 @@ class Parser {
     }
   }
 
+  parseParams(str, block) {
+    const arr = str.split(' ');
+    block.tag = arr.shift().substring(1);
+
+    arr.forEach(e => {
+      const s = e.split('=');
+      if (s.length !== 2 || !s[0] || !s[1]) {
+        return ;
+      } 
+      let value = s[1];
+      let type  = 'r';
+
+      // check if string
+      if (value[0] === '"') {
+        if (value.length < 2 || value[value.length - 1] !== '"') {
+          return;
+        }
+        type  = 's';
+        value = value.substring(1, value.length - 1);
+      }
+
+      block.params = block.params || {};
+      block.params[s[0]] = {type, value};
+    });
+  }
 }
 
 module.exports = Parser;

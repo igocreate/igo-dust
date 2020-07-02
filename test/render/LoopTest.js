@@ -5,7 +5,7 @@ const Renderer  = require('../../src/render/Renderer');
 const COL1 = [ 1, 2, 3 ];
 const COL2 = [ 'a', 'b' ];
 
-describe.only('Render Basic', () => {
+describe('Render Basic', () => {
 
   it('should render simple loop', () => {
     const template  = 'Hello {#COL1}a{/COL1}';
@@ -25,7 +25,7 @@ describe.only('Render Basic', () => {
     assert.equal(r, 'Hello a1');
   });
   
-  it.only('should render nested loops on "it"', () => {
+  it('should render nested loops on "it"', () => {
     const template  = 'Hello {#COL0}z{#it}x{it}{/it}{/COL0}';
     const r         = new Renderer().render(template, { COL0: [COL1, COL2] });
     assert.equal(r, 'Hello zx1x2x3zxaxb');

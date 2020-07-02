@@ -136,4 +136,18 @@ describe('Parser', () => {
     assert.equal(buffer[1].buffer.length, 1);
     assert.equal(buffer[2], ', ok.');
   });
+
+  it('should parse @eq tag with params', () => {
+    const TEMPLATE = 'Hello {@eq key="key" value=value}World{/eq}, ok.';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    assert.equal(buffer[0], 'Hello ');
+    assert.equal(buffer[1].type, '@');
+    assert.equal(buffer[1].tag, 'eq');
+    assert.equal(buffer[1].params.key.value, 'key');
+    assert.equal(buffer[1].params.key.type, 's');
+    assert.equal(buffer[1].params.value.value, 'value');
+    assert.equal(buffer[1].params.value.type, 'r');
+    assert.equal(buffer[1].buffer.length, 1);
+  });
 });
