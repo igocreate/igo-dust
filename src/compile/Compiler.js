@@ -67,7 +67,7 @@ class Compiler {
         this.i++;
         const { i } = this;
         this.r += `var p_it${i}=l.it;`;
-        this.r += `var a${i}=u.a(l, '${block.tag}');`
+        this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
         this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
         this.r += `l.it=a${i}[i${i}];`;
         this.compileBuffer(block.buffer);

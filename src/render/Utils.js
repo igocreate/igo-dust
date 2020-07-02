@@ -19,31 +19,18 @@ const ESCAPE_CHAR = c => {
 };
 
 const _f = (s, f) => {
-  if (f.uppercase) { // 'uppercase'
+  if (f.uppercase) {
     s = s.toUpperCase();
   }
-  if (f.e) { // 'e'
+  if (f.e) {
     s = s.replace(/[<>&'"]/g, ESCAPE_CHAR);
   }
   return s;
 }
 
-const _v = (l, p) => {
-  let r = l;
-  const els = _split(p);
-
-  if (els.length === 1) {
-    return l[p] || '';
-  }
-  for (let i = 0; i < els.length; i++) {
-    r = r && r[els[i]];
-  };
-  return r || '';
-};
-
 // return boolean
-const b = (l, p) => {
-  return !!_v(l, p);
+const b = (v) => {
+  return !!v;
 };
 
 // return string, with filter applied
@@ -56,16 +43,15 @@ const s = (v, f) => {
 };
 
 // return array
-const a = (l, p) => {
-  // return [];
-  const r = _v(l, p);
-  if (!r || !Array.isArray(r)) {
-    return [];
+const a = (v) => {
+  if (Array.isArray(v)) {
+    return v;
   }
-  return r;
+  if (v) {
+    return [v];
+  }
+  return [];
 };
-
-
 
 
 module.exports = { a, b, s };
