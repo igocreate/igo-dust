@@ -150,4 +150,12 @@ describe('Parser', () => {
     assert.equal(buffer[1].params.value.type, 'r');
     assert.equal(buffer[1].buffer.length, 1);
   });
+
+  it('should parse layout tag', () => {
+    const TEMPLATE = 'a{> "layout/main" }b{<content}Hello World{/content}c';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    const nested = buffer[0];
+    assert.equal(nested.bodies.content, 'Hello World');
+  });
 });

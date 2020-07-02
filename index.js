@@ -2,17 +2,35 @@
 const Parser    = require('./src/parse/Parser');
 const Compiler  = require('./src/compile/Compiler');
 const Renderer  = require('./src/render/Renderer');
-const Utils     = require('./src/render/Utils');
+const FileUtils = require('./src/fs/FileUtils');
 
 
-module.exports = {
-  //
-  compile: (src, template) => {
-    const buffer  = new Parser().parse(src);
-    return new Compiler().compile(buffer);
-  },
-  //
-  render: (template, data) => {
-    return new Renderer().render(template, data);
+const COMPILED_CACHE = {};
+
+//
+module.exports.compile = (src) => {
+  const buffer  = new Parser().parse(src);
+  return new Compiler().compile(buffer);
+};
+
+//
+module.exports.render = (compiled, data) => {
+  return new Renderer().render(compiled, data);
+};
+
+const getCompiled = (filePath, options) => {
+  // console.dir(options.settings.view.toString());
+  if (!options.cache || !COMPILED_CACHE[filePath]) {
+    const src = FileUtils.loadFile(filePath);
+    COMPILED_CACHE[filePath] = module.exports.compile(src);
   }
+  return COMPILED_CACHE[filePath];
 }
+
+// expressjs engine
+module.exports.engine = (filePath, options, callback) => {
+  // console.dir({filePath, options});
+  const compiled = getCompiled(filePath, options);
+  const rendered = module.exports.render(compiled, options._locals);
+  callback(null, rendered);
+};

@@ -12,7 +12,7 @@ class Parser {
   push(str) {
     str = str.replace(/[\r\n]/gm, '');
     str = str.replace(/'/g, '\\\'');
-    this.ctx.buffer.push(str);
+    this.ctx.buffer && this.ctx.buffer.push(str);
   }
 
   parse(str) {
@@ -26,7 +26,6 @@ class Parser {
     while ((openMatch = openRegexp.exec(str)) !== null) {
       if (openMatch[1]) {
         // preceding string
-        // console.dir({openMatch});
         this.push(openMatch[1]);
       }
       index = openMatch.index + openMatch[0].length;
@@ -42,7 +41,7 @@ class Parser {
       const b = this.ctx.buffer; // parseTag can change the buffer
       const block = this.parseTag(closeMatch[1]);
       if (!block.skip) {
-        b.push(block);
+        b && b.push(block);
       }
 
     }
@@ -78,9 +77,12 @@ class Parser {
       } else if (tag.out) {
         // get out
         // console.log('get out');
-        const prev = this.ctx.stack.pop();
-        if (prev && prev.tag !== block.tag) {
-          console.error('Open/close tag mismatch!');
+        const prev = this.ctx.stack[this.ctx.stack.length-1];
+        if (Tags[prev.type].in) {
+          this.ctx.stack.pop();
+        }
+        if (prev && prev.type !== '>' && prev.tag !== block.tag)  {
+          console.error(`Open/close tag mismatch! ${prev.tag} !== ${block.tag} `);
         }
         const parent    = this.ctx.stack[this.ctx.stack.length-1];
         this.ctx.buffer = parent ? parent.buffer : this.buffer;
@@ -92,6 +94,15 @@ class Parser {
         current.bodies[block.tag] = [];
         this.ctx.buffer = current.bodies[block.tag];
         block.skip = true;
+      } else if (tag.root) {
+        // use current block as root for stack
+        block.buffer = null;
+        this.ctx = {
+          root: true,
+          stack: [ block ],
+          buffer: block.buffer
+        }
+        this.buffer = [ block ];
       }
     } else {
       // reference
