@@ -103,9 +103,9 @@ class Compiler {
 
   _getFilters(filters) {
     filters = filters.split('|');
-    return `{${filters.join(`':true,'`)}:true}`; // f.e
-    // array`['${filters.join(`','`)}']`; // f.indexOf('e')
+    return `{'${filters.join(`':true,'`)}':true}`; // f.e
 
+    // array`['${filters.join(`','`)}']`; // f.indexOf('e')
     // order matter, f[0]
     // return `[${[
     //   filters.indexOf('e') >= 0,
