@@ -10,8 +10,8 @@ class Parser {
   }
 
   push(str) {
-    str = str.replace(/[\r\n]/gm, '');
-    str = str.replace(/'/g, '\\\'');
+    str = str.replace(/[\r\n]/gm, '\\r\\n');  // escape linebreaks
+    str = str.replace(/'/g, '\\\'');          // escape single quotes
     this.ctx.buffer && this.ctx.buffer.push(str);
   }
 
