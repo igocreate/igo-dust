@@ -18,7 +18,9 @@ const _not = (parser, block) => {
 
 const _helper = (parser, block) => {
   parser.pushBlock(block);
-  parser.stackBlock(block);
+  if (!block.selfClosedTag) {
+    parser.stackBlock(block);
+  }
 };
 
 const _body = (parser, block) => {

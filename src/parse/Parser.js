@@ -155,6 +155,11 @@ class Parser {
         return;
       }
 
+      if (e === '/' && i === arr.length -1) {
+        block.selfClosedTag = true;
+        return ;
+      }
+
       // unnamed param
       block.params[i] = ParseUtils.cleanStr(e);
       
@@ -162,15 +167,9 @@ class Parser {
       if (s.length !== 2) {
         return ;
       }
-      const key = s[0];
-      let value = s[1];
-      let type  = 'r';
-
-      // check if string
-      if (value[0] === '"') {
-        type  = 's';
-        value = ParseUtils.cleanStr(value);
-      }
+      const key   = ParseUtils.cleanStr(s[0]);
+      const type  = s[1][0] === '"' ? 's' : 'r';
+      const value = ParseUtils.cleanStr(s[1]);
 
       block.params[key] = {type, value};
     });

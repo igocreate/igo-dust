@@ -169,4 +169,16 @@ describe('Parser', () => {
     const content = buffer[3];
     assert.equal(content.buffer[0], 'Hello World');
   });
+
+  it('should helper tag without out', () => {
+    const TEMPLATE = 'Hello {@date date=date format="DD/MM/YYYY" /}{?tag}!{/tag}';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    let nested = buffer[1];
+    assert.equal(nested.selfClosedTag, true);
+    assert.equal(nested.params.date.value, 'date');
+    assert.equal(nested.params.format.value, 'DD/MM/YYYY');
+    nested = buffer[2];
+    assert.equal(nested.buffer[0], '!');
+  });
 });
