@@ -2,6 +2,9 @@
 const ParseUtils  = require('./ParseUtils');
 const Tags        = require('./Tags');
 
+const FileUtils = require('../fs/FileUtils');
+
+
 
 class Parser {
 
@@ -9,6 +12,7 @@ class Parser {
     this.global     = [];           // global buffer, to be returned by parse function
     this.buffer     = this.global;  // current buffer, where content is added
     this.stack      = [];           // stack of parents blocks
+    this.contents   = {};           // contents to be replaced in layouts
   }
 
   // add string
@@ -23,13 +27,6 @@ class Parser {
   // push block
   pushBlock(block) {
     this.buffer.push(block);
-  }
-
-  // set root block
-  setRootBlock(block) {
-    console.log('set Root!');
-    this.global = [ block ];
-    this.stack  = [];
   }
 
   // stack the block, use its buffer as current
@@ -51,13 +48,32 @@ class Parser {
   }
 
   addBody(tag) {
-    const last        = this.getLastBlock();
+    const last = this.getLastBlock();
     if (!last) {
       throw new Error('Cannot add body outside of a block');
     }
     last.bodies       = last.bodies || {};
     last.bodies[tag]  = [];
     this.buffer       = last.bodies[tag];
+  }
+
+  addContent(block) {
+    // this.contents[block.tag] = block;
+    // replace
+    for (let i = 0; i < this.buffer.length; i++) {
+      const b = this.buffer[i];
+      if (b.type === '+' && b.tag === block.tag) {
+        // replace
+        this.buffer.splice(i, 1, block);
+      }
+    }
+  }
+
+  include(file) {
+    const src     = FileUtils.loadFile(file + '.dust');
+    const buffer  = new Parser().parse(src);
+    // push all buffer items in this.buffer
+    Array.prototype.push.apply(this.buffer, buffer);
   }
 
   parse(str) {
@@ -94,7 +110,7 @@ class Parser {
     }
 
     // console.log('--- done ---');
-    // console.dir(this.global);
+    // console.dir(this);
     return this.global;
   }
 

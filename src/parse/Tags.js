@@ -1,5 +1,6 @@
 
 
+
 const _if = (parser, block) => {
   parser.pushBlock(block);
   parser.stackBlock(block)
@@ -35,13 +36,13 @@ const _end = (parser, block) => {
 };
 
 const _content = (parser, block) => {
-  parser.pushBlock(block);
+  parser.addContent(block);
   parser.stackBlock(block);
 };
 
 const _include = (parser, block) => {
-  block.file = block.params[0];
-  parser.pushBlock(block);
+  // block.file = block.params[0];
+  parser.include(block.params[0]);
 };
 
 const _insert = (parser, block) => {

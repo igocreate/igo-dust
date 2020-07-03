@@ -155,19 +155,20 @@ describe('Parser', () => {
   });
 
   it('should parse include tag', () => {
-    const TEMPLATE = ' Hello {> "template/_user" } !';
+    const TEMPLATE = ' Hello {> "./templates/_world" } !';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
-    const include = buffer[1];
-    assert.equal(include.file, 'template/_user');
+    assert.equal(buffer[1], 'World');
   });
 
   it('should parse layout tag', () => {
-    const TEMPLATE = ' {> "layout/main" } {<content}Hello World{/content} ';
+    const TEMPLATE = ' {> "./templates/layout" } {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 5);
-    const content = buffer[3];
-    assert.equal(content.buffer[0], 'Hello World');
+    assert.equal(buffer.length, 6);
+    const content = buffer[2];
+    assert.equal(content.tag, 'content');
+    assert.equal(content.buffer.length, 1);
+    assert.equal(content.buffer[0], 'World');
   });
 
   it('should helper tag without out', () => {
