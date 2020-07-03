@@ -73,6 +73,27 @@ class Compiler {
         this.compileBuffer(block.buffer);
         this.r += '}';
         this.r += `l.it=p_it${i};`;
+      }
+      else if (block.type === '@') {
+        // helper
+        this.i++;
+        const { i } = this;
+        this.r += `var p_it${i}=l.it;`;
+        this.r += `var a${i}=u.h('${block.tag}', ${this._getParams(block.params)}, l.it);`
+        this.r += `if(a${i}) {`;
+        if (block.buffer) {
+          this.r += `l.it=a${i};`;
+          this.compileBuffer(block.buffer);
+        } else {
+          `r+='a${i}';`
+        }
+        this.r += '}';
+        if (block.bodies && block.bodies.else) {
+          this.r += 'else {';
+          this.compileBuffer(block.bodies.else);
+          this.r += '}';
+        }
+        this.r += `l.it=p_it${i};`;
       } else if (!block.type){
         // default: raw text
         this.r += `r+='${block}';`;
@@ -98,16 +119,24 @@ class Compiler {
     return ret.join(' && ');
   }
 
+  _getParams(params) {
+    let ret = '{';
+    let value;
+    for (let key in params) {
+      if (params[key].type === 'r') {
+        value = this._getValue(params[key].value);
+      } else {
+        value = `'${params[key].value}'`;
+      }
+      ret += `${key}:${value},`
+    }
+    ret += '}';
+    return ret;
+  }
+
   _getFilters(filters) {
     filters = filters.split('|');
-    return `{'${filters.join(`':true,'`)}':true}`; // f.e
-
-    // array`['${filters.join(`','`)}']`; // f.indexOf('e')
-    // order matter, f[0]
-    // return `[${[
-    //   filters.indexOf('e') >= 0,
-    //   filters.indexOf('uppercase') >= 0,
-    // ].toString()}]`
+    return `{'${filters.join(`':true,'`)}':true}`;
   }
 }
 
