@@ -45,4 +45,16 @@ describe.only('Render Helper', () => {
     const r         = new Renderer().render(template, { w: 3 });
     assert.equal(r, 'Hello World');
   });
+
+  it('should render else', () => {
+    const template  = 'Hello {@eq key=w value="world"}{w}{:else}world !{/eq}';
+    const r         = new Renderer().render(template, { w: 'World' });
+    assert.equal(r, 'Hello world !');
+  });
+
+  it('should render select with eq', () => {
+    const template  = 'Hello {@select key=w}{@eq value="puppies"}Puppies{/eq}{@eq value="bunnies"}test-bunnies{/eq}{/select}';
+    const r         = new Renderer().render(template, { w: 'puppies' });
+    assert.equal(r, 'Hello Puppies');
+  });
 });

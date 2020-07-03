@@ -21,10 +21,14 @@ module.exports = {
     return parseInt(left, 10) >= parseInt( right, 10);
   }),
 
+  "select": function(tag, params, context) {
+    return params.key;
+  },
 };
 
 function truthTest(tag, test) {
   return function(tag, params, context) {
-    return test(params.key, params.value);
+    const left = params.key || context;
+    return test(left, params.value);
   };
 };
