@@ -44,8 +44,6 @@ class Compiler {
     buffer.forEach(block => {
       if (block.type === 'r') {
         // reference
-        // this.r += `r+= ${this._getValue(block.tag)};`;
-
         this.r += `r+=u.s(${this._getValue(block.tag)}`;
         if (block.f) {
           this.r += `, ${this._getFilters(block.f)}`;
@@ -53,12 +51,13 @@ class Compiler {
         this.r += ');'
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
-        this.r += `if(${block.type === '^' ? '!' : ''}(${this._getValue(block.tag)})) {`;
+        const not = block.type === '^' ? '!' : '';
+        this.r += `if(${not}(${this._getValue(block.tag)})){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
         // else
         if (block.bodies && block.bodies.else) {
-          this.r += 'else {';
+          this.r += 'else{';
           this.compileBuffer(block.bodies.else);
           this.r += '}';
         }
@@ -116,7 +115,7 @@ class Compiler {
       tag = tag.substring(0, i);
     }
     ret.unshift(`l.${tag}`);
-    return ret.join(' && ');
+    return ret.join('&&');
   }
 
   _getParams(params) {
