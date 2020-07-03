@@ -2,7 +2,7 @@ const assert    = require('assert');
 
 const Renderer  = require('../../src/render/Renderer');
 
-describe.only('Render Helper', () => {
+describe('Render Helper', () => {
 
   it('should render with eq helper', () => {
     const template  = 'Hello {@eq key=w value="World"}{w}{/eq}';

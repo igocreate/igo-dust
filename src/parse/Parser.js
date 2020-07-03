@@ -1,5 +1,6 @@
 
-const Tags = require('./Tags');
+const ParseUtils  = require('./ParseUtils');
+const Tags        = require('./Tags');
 
 
 class Parser {
@@ -101,14 +102,15 @@ class Parser {
 
     const tag = Tags[str[0]];
 
+    const block = {
+      type: str[0],
+      tag:  str
+    };
+
     if (!tag) {
       // reference
-      const block = {
-        type:   'r',
-        tag:    str
-      };
-      
       block.type  = 'r';
+
       // if (block.tag === '.') {
       //   block.tag = 'it';
       // }
@@ -116,11 +118,6 @@ class Parser {
       this.pushBlock(block);
       return;
     }
-
-    const block = {
-      type: str[0],
-      tag:  str.substring(1)
-    };
     
     // parse params
     this.parseParams(str, block);
@@ -151,26 +148,31 @@ class Parser {
   parseParams(str, block) {
     const arr = str.split(' ');
     block.tag = arr.shift().substring(1);
+    block.params = { };
 
-    arr.forEach(e => {
+    arr.forEach((e, i) => {
+      if (!e) {
+        return;
+      }
+
+      // unnamed param
+      block.params[i] = ParseUtils.cleanStr(e);
+      
       const s = e.split('=');
-      if (s.length !== 2 || !s[0] || !s[1]) {
+      if (s.length !== 2) {
         return ;
-      } 
+      }
+      const key = s[0];
       let value = s[1];
       let type  = 'r';
 
       // check if string
       if (value[0] === '"') {
-        if (value.length < 2 || value[value.length - 1] !== '"') {
-          return;
-        }
         type  = 's';
-        value = value.substring(1, value.length - 1);
+        value = ParseUtils.cleanStr(value);
       }
 
-      block.params = block.params || {};
-      block.params[s[0]] = {type, value};
+      block.params[key] = {type, value};
     });
   }
 }

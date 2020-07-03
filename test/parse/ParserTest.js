@@ -2,6 +2,7 @@
 const assert  = require('assert');
 
 const Parser  = require('../../src/parse/Parser');
+const { Console } = require('console');
 
 describe('Parser', () => {
   it('should parse simple text', () => {
@@ -153,11 +154,19 @@ describe('Parser', () => {
     assert.equal(buffer[1].buffer.length, 1);
   });
 
+  it('should parse include tag', () => {
+    const TEMPLATE = ' Hello {> "template/_user" } !';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    const include = buffer[1];
+    assert.equal(include.file, 'template/_user');
+  });
+
   it('should parse layout tag', () => {
     const TEMPLATE = ' {> "layout/main" } {<content}Hello World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 3);
-    const nested = buffer[1];
-    assert.equal(nested.bodies.content, 'Hello World');
+    assert.equal(buffer.length, 5);
+    const content = buffer[3];
+    assert.equal(content.buffer[0], 'Hello World');
   });
 });
