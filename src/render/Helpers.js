@@ -24,11 +24,12 @@ module.exports = {
   "select": function(tag, params, context) {
     return params.key;
   },
+
 };
 
 function truthTest(tag, test) {
   return function(tag, params, context) {
-    const left = params.key || context;
+    const left = params.key || context.stack[context.stack.length - 1];
     return test(left, params.value);
   };
 };

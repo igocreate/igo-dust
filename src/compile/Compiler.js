@@ -4,6 +4,8 @@ class Compiler {
   constructor() {
     this.i  = 0;
     this.r  = `var r='';`;
+    this.r  += `var ctx={stack: []};`;
+    this.r  += `l.it = l;`;
   }
 
   compileBuffer(buffer) {
@@ -42,6 +44,7 @@ class Compiler {
 
   compileBufferSlow(buffer) {
     buffer.forEach(block => {
+      this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
       if (block.type === 'r') {
         // reference
         this.r += `r+=u.s(${this._getValue(block.tag)}`;
@@ -65,26 +68,29 @@ class Compiler {
         // loop block
         this.i++;
         const { i } = this;
-        this.r += `var p_it${i}=l.it;`;
         this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
+        this.r += `ctx.stack.push(a${i});`;
         this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
-        this.r += `l.it=a${i}[i${i}];`;
+        this.r += `ctx.stack.push(a${i}[i${i}]);`;
+        this.r += `ctx.index = i${i};`;
         this.compileBuffer(block.buffer);
+        this.r += `ctx.stack.pop();`;
         this.r += '}';
-        this.r += `l.it=p_it${i};`;
+        this.r += `ctx.index = null;`;
+        this.r += `ctx.stack.pop();`;
       }
       else if (block.type === '@') {
         // helper
         this.i++;
         const { i } = this;
-        this.r += `var p_it${i}=l.it;`;
-        this.r += `var a${i}=u.h('${block.tag}', ${this._getParams(block.params)}, l.it);`
-        this.r += `if(a${i}) {`;
+        this.r += `var h${i}=u.h('${block.tag}', ${this._getParams(block.params)}, ctx);`
+        this.r += `if(h${i}) {`;
         if (block.buffer) {
-          this.r += `l.it=a${i};`;
+          this.r += `ctx.stack.push(h${i});`;
           this.compileBuffer(block.buffer);
+          this.r += `ctx.stack.pop();`;
         } else {
-          `r+='a${i}';`
+          `r+='h${i}';`
         }
         this.r += '}';
         if (block.bodies && block.bodies.else) {
@@ -92,7 +98,6 @@ class Compiler {
           this.compileBuffer(block.bodies.else);
           this.r += '}';
         }
-        this.r += `l.it=p_it${i};`;
       } else if (!block.type){
         // default: raw text
         this.r += `r+='${block}';`;
@@ -103,7 +108,8 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
-    return new Function('l', 'u', this.r);
+    console.log(this.r);
+    return new Function('l = {}', 'u', this.r);
   }
 
   //
