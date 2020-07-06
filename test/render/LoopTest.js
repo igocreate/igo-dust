@@ -31,4 +31,21 @@ describe('Render Basic', () => {
     assert.equal(r, 'Hello zx1x2x3zxaxb');
   });
 
+  it('should render loops with @first', () => {
+    const template  = 'Hello {#COL1}A{@first}{it}{/first}{/COL1}';
+    const r         = new Renderer().render(template, { COL1 });
+    assert.equal(r, 'Hello A1AA');
+  });
+
+  it('should render loops with @last', () => {
+    const template  = 'Hello {#COL1}A{@last}{it}{/last}{/COL1}';
+    const r         = new Renderer().render(template, { COL1 });
+    assert.equal(r, 'Hello AAA3');
+  });
+
+  it('should render loops with @sep', () => {
+    const template  = 'Hello {#COL1}A{@sep},{it}{/sep}{/COL1}';
+    const r         = new Renderer().render(template, { COL1 });
+    assert.equal(r, 'Hello AA,2A');
+  });
 });

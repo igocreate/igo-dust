@@ -24,7 +24,27 @@ module.exports = {
   "select": function(tag, params, context) {
     return params.key;
   },
-
+  "first": function(tag, params, context) {
+    const prev = context.stack[context.stack.length - 2];
+    if (prev && context.index === 0) {
+      return  context.stack[context.stack.length - 1];
+    }
+    return false;
+  },
+  "last": function(tag, params, context) {
+    const prev = context.stack[context.stack.length - 2];
+    if (prev && prev.length && context.index === prev.length - 1) {
+      return context.stack[context.stack.length - 1];
+    }
+    return false;
+  },
+  "sep": function(tag, params, context) {
+    const prev = context.stack[context.stack.length - 2];
+    if (prev && prev.length && context.index !== prev.length - 1 && context.index !== 0) {
+      return context.stack[context.stack.length - 1];
+    }
+    return false;
+  },
 };
 
 function truthTest(tag, test) {

@@ -108,7 +108,6 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
-    console.log(this.r);
     return new Function('l = {}', 'u', this.r);
   }
 
