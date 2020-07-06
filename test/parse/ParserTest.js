@@ -161,6 +161,16 @@ describe('Parser', () => {
     assert.equal(buffer[1], 'World');
   });
 
+  it('should parse include tag with params', () => {
+    const TEMPLATE = ' Hello {> "./templates/_world_ref" string="str" reference=ref} ...';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 4);
+    assert.equal(buffer[1].tag, 'world');
+    assert.equal(buffer[1].params.string.value, 'str');
+    assert.equal(buffer[1].params.reference.value, 'ref');
+    assert.equal(buffer[1].params.reference.type, 'r');
+  });
+
   it('should parse layout tag', () => {
     const TEMPLATE = ' {> "./templates/layout" } {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);

@@ -42,7 +42,7 @@ const _content = (parser, block) => {
 
 const _include = (parser, block) => {
   // block.file = block.params[0];
-  parser.include(block.params[0]);
+  parser.include(block.params[0], block.params);
 };
 
 const _insert = (parser, block) => {

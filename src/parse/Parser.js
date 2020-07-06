@@ -69,14 +69,14 @@ class Parser {
     }
   }
 
-  include(file) {
+  include(file, params) {
     const src     = FileUtils.loadFile(file + '.dust');
-    const buffer  = new Parser().parse(src);
+    const buffer  = new Parser().parse(src, params);
     // push all buffer items in this.buffer
     Array.prototype.push.apply(this.buffer, buffer);
   }
 
-  parse(str) {
+  parse(str, params) {
 
     const openRegexp   = new RegExp('(.*?)\\{', 'msg');
     const closeRegexp  = new RegExp('(.*?)\\}', 'msg');
@@ -102,7 +102,7 @@ class Parser {
       index = closeMatch.index + closeMatch[0].length;
       openRegexp.lastIndex = index;
 
-      this.parseTag(closeMatch[1]);
+      this.parseTag(closeMatch[1], params);
     }
 
     if (index < str.length) {
@@ -114,13 +114,14 @@ class Parser {
     return this.global;
   }
 
-  parseTag(str) {
+  parseTag(str, params = {}) {
 
     const tag = Tags[str[0]];
 
     const block = {
       type: str[0],
-      tag:  str
+      tag:  str,
+      params,
     };
 
     if (!tag) {
@@ -164,7 +165,6 @@ class Parser {
   parseParams(str, block) {
     const arr = str.split(' ');
     block.tag = arr.shift().substring(1);
-    block.params = { };
 
     arr.forEach((e, i) => {
       if (!e) {
