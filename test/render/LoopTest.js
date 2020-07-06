@@ -44,8 +44,14 @@ describe('Render Basic', () => {
   });
 
   it('should render loops with @sep', () => {
-    const template  = 'Hello {#COL1}A{@sep},{it}{/sep}{/COL1}';
+    const template  = 'Hello {#COL1}A{@sep}{it},{/sep}{/COL1}';
     const r         = new Renderer().render(template, { COL1 });
-    assert.equal(r, 'Hello AA,2A');
+    assert.equal(r, 'Hello A1,A2,A');
+  });
+
+  it('should render loops inside includes', () => {
+    const template  = 'Hello {> "./templates/_array" world=w}.';
+    const r         = new Renderer().render(template, { w: 'World', array: COL1});
+    assert.equal(r, 'Hello World 1, World 2, World 3.');
   });
 });

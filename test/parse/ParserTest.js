@@ -171,6 +171,17 @@ describe('Parser', () => {
     assert.equal(buffer[1].params.reference.type, 'r');
   });
 
+  it('should not loose params from block inside include', () => {
+    const TEMPLATE = ' Hello {> "./templates/_array" w=world}';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    const nested = buffer[1].buffer;
+    assert.equal(nested[0].params.w.value, 'world');
+    assert.equal(nested[2].params.w.value, 'world');
+    assert.equal(nested[2].params.w.type, 'r');
+  });
+
+
   it('should parse layout tag', () => {
     const TEMPLATE = ' {> "./templates/layout" } {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
