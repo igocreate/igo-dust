@@ -40,7 +40,7 @@ module.exports = {
   },
   "sep": function(tag, params, context) {
     const prev = context.stack[context.stack.length - 2];
-    if (prev && prev.length && context.index !== prev.length - 1 && context.index !== 0) {
+    if (prev && prev.length && context.index !== prev.length - 1) {
       return context.stack[context.stack.length - 1];
     }
     return false;
