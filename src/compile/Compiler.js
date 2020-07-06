@@ -44,8 +44,8 @@ class Compiler {
 
   compileBufferSlow(buffer) {
     buffer.forEach(block => {
-      this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
       if (block.type === 'r') {
+        this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // reference
         this.r += `r+=u.s(${this._getValue(block.tag)}`;
         if (block.f) {
@@ -53,6 +53,7 @@ class Compiler {
         }
         this.r += ');'
       } else if (block.type === '?' || block.type === '^' ) {
+        this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // conditional block
         const not = block.type === '^' ? '!' : '';
         this.r += `if(${not}(${this._getValue(block.tag)})){`;
@@ -65,6 +66,7 @@ class Compiler {
           this.r += '}';
         }
       } else if (block.type === '#') {
+        this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // loop block
         this.i++;
         const { i } = this;
@@ -81,6 +83,7 @@ class Compiler {
       }
       else if (block.type === '@') {
         // helper
+        this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         this.i++;
         const { i } = this;
         this.r += `var h${i}=u.h('${block.tag}', ${this._getParams(block.params)}, ctx);`
