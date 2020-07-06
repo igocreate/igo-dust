@@ -47,7 +47,7 @@ class Compiler {
       if (block.type === 'r') {
         this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // reference
-        this.r += `r+=u.s(${this._getValue(block.tag)}`;
+        this.r += `r+=u.s(${this._getValue(block.tag, block.params)}`;
         if (block.f) {
           this.r += `, ${this._getFilters(block.f)}`;
         }
@@ -56,7 +56,7 @@ class Compiler {
         this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // conditional block
         const not = block.type === '^' ? '!' : '';
-        this.r += `if(${not}(${this._getValue(block.tag)})){`;
+        this.r += `if(${not}(${this._getValue(block.tag, block.params)})){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
         // else
@@ -70,7 +70,7 @@ class Compiler {
         // loop block
         this.i++;
         const { i } = this;
-        this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
+        this.r += `var a${i}=u.a(${this._getValue(block.tag, block.params)});`
         this.r += `ctx.stack.push(a${i});`;
         this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
         this.r += `ctx.stack.push(a${i}[i${i}]);`;
@@ -115,7 +115,15 @@ class Compiler {
   }
 
   //
-  _getValue(tag) {
+  _getValue(tag, params) {
+    const param = params && params[tag];
+    if (param && param.type === 's') {
+      return `'${param.value}'`;
+    }
+    if (param && param.type === 'r') {
+      tag = param.value;
+    }
+
     let i;
     const ret = [];
     while((i = tag.lastIndexOf('.')) >= 0) {
