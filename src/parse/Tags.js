@@ -60,7 +60,8 @@ const TAGS = {
   '/': _end,
   '>': _include,
   '<': _content,
-  '+': _insert
+  '+': _insert,
+  '!': () => {},
 };
 
 

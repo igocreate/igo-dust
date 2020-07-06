@@ -22,4 +22,10 @@ describe('Render Basic', () => {
     assert.equal(r, 'Hello ');
   });
 
+  it('should ignore comment', () => {
+    const template  = 'Hello {! comment !}World';
+    const r         = new Renderer().render(template, { w: 'World' });
+    assert.equal(r, 'Hello World');
+  });
+
 });
