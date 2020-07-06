@@ -89,9 +89,13 @@ class Compiler {
         this.r += `var h${i}=u.h('${block.tag}', ${this._getParams(block.params)}, ctx);`
         this.r += `if(h${i}) {`;
         if (block.buffer) {
+          this.r += `if (typeof h${i} !== 'boolean') {`
           this.r += `ctx.stack.push(h${i});`;
+          this.r += '}';
           this.compileBuffer(block.buffer);
+          this.r += `if (typeof h${i} !== 'boolean') {`
           this.r += `ctx.stack.pop();`;
+          this.r += '}';
         } else {
           `r+='h${i}';`
         }
