@@ -123,14 +123,10 @@ class Parser {
       tag:  str,
       params,
     };
-
     if (!tag) {
       // reference
-      block.type  = 'r';
-
-      // if (block.tag === '.') {
-      //   block.tag = 'it';
-      // }
+      block.type = 'r';
+      block.tag = ParseUtils.replaceByIt(block.tag);
       this.parseFilters(str, block);
       this.pushBlock(block);
       return;
@@ -164,7 +160,7 @@ class Parser {
 
   parseParams(str, block) {
     const arr = str.split(' ');
-    block.tag = arr.shift().substring(1);
+    block.tag = ParseUtils.replaceByIt(arr.shift().substring(1));
 
     arr.forEach((e, i) => {
       if (!e) {
@@ -185,8 +181,11 @@ class Parser {
       }
       const key   = ParseUtils.cleanStr(s[0]);
       const type  = s[1][0] === '"' ? 's' : 'r';
-      const value = ParseUtils.cleanStr(s[1]);
+      let value = ParseUtils.cleanStr(s[1]);
 
+      if (type === 'r') {
+        value = ParseUtils.replaceByIt(value);
+      }
       block.params[key] = {type, value};
     });
   }
