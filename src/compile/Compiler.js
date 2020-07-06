@@ -97,7 +97,7 @@ class Compiler {
           this.r += `ctx.stack.pop();`;
           this.r += '}';
         } else {
-          `r+='h${i}';`
+          this.r += `r+=h${i};`
         }
         this.r += '}';
         if (block.bodies && block.bodies.else) {

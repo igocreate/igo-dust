@@ -1,6 +1,14 @@
-const assert    = require('assert');
+const assert        = require('assert');
+const moment        = require('moment');
+const Renderer      = require('../../src/render/Renderer');
 
-const Renderer  = require('../../src/render/Renderer');
+
+const HELPERS = {
+  "dateFormat": function(tag, params, context) {
+    return moment(params.date).format('DD/MM/YYYY');
+  },
+}
+
 
 describe('Render Helper', () => {
 
@@ -56,5 +64,18 @@ describe('Render Helper', () => {
     const template  = 'Hello {@select key=w}{@eq value="puppies"}Puppies{/eq}{@eq value="bunnies"}test-bunnies{/eq}{/select}';
     const r         = new Renderer().render(template, { w: 'puppies' });
     assert.equal(r, 'Hello Puppies');
+  });
+
+
+  it('should render select with eq', () => {
+    const template  = 'Hello {@select key=w}{@eq value="puppies"}Puppies{/eq}{@eq value="bunnies"}test-bunnies{/eq}{/select}';
+    const r         = new Renderer().render(template, { w: 'puppies' });
+    assert.equal(r, 'Hello Puppies');
+  });
+
+  it.only('should render custom helper', () => {
+    const template  = `Hello {@dateFormat date=${new Date()} /}`;
+    const r         = new Renderer(HELPERS).render(template);
+    assert.equal(r, `Hello ${moment().format('DD/MM/YYYY')}`);
   });
 });
