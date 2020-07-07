@@ -52,6 +52,9 @@ class Compiler {
           this.r += `, ${this._getFilters(block.f)}`;
         }
         this.r += ');'
+      } else if (block.type === '<') {
+        // insert content
+        this.compileBuffer(block.buffer);
       } else if (block.type === '?' || block.type === '^' ) {
         this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // conditional block

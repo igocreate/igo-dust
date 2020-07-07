@@ -162,7 +162,7 @@ describe('Parser', () => {
     assert.equal(buffer[1].buffer.length, 1);
   });
 
-  it('should parse include tag', () => {
+  it('should parse included file', () => {
     const TEMPLATE = ' Hello {> "./templates/_world" } !';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
