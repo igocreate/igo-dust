@@ -53,12 +53,11 @@ const a = (v) => {
   return [];
 };
 
-const Helpers = require('./Helpers');
 const h = (t, p, c) => {
   if (!h.helpers[t]) {
     return null;
   }
-  return h.helpers[t](t, p, c);
+  return h.helpers[t](p, c);
 };
 
 module.exports = { a, b, s, h };

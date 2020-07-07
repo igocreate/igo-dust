@@ -21,24 +21,24 @@ module.exports = {
     return parseInt(left, 10) >= parseInt( right, 10);
   }),
 
-  "select": function(tag, params, context) {
+  "select": function(params, context) {
     return params.key;
   },
-  "first": function(tag, params, context) {
+  "first": function(params, context) {
     const prev = context.stack[context.stack.length - 2];
     if (prev && context.index === 0) {
       return  context.stack[context.stack.length - 1];
     }
     return false;
   },
-  "last": function(tag, params, context) {
+  "last": function(params, context) {
     const prev = context.stack[context.stack.length - 2];
     if (prev && prev.length && context.index === prev.length - 1) {
       return context.stack[context.stack.length - 1];
     }
     return false;
   },
-  "sep": function(tag, params, context) {
+  "sep": function(params, context) {
     const prev = context.stack[context.stack.length - 2];
     if (prev && prev.length && context.index !== prev.length - 1) {
       return context.stack[context.stack.length - 1];
@@ -48,7 +48,7 @@ module.exports = {
 };
 
 function truthTest(tag, test) {
-  return function(tag, params, context) {
+  return function(params, context) {
     const left = params.key || context.stack[context.stack.length - 1];
     return test(left, params.value);
   };
