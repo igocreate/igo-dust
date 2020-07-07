@@ -78,4 +78,22 @@ describe('Render Basic', () => {
     const r         = new Renderer().render(template, { w: 'World', array: COL1});
     assert.equal(r, 'Hello World 1, World 2, World 3.');
   });
+
+  it.skip('should render complex', () => {
+    const template  = '{#friends}#{.id} {.name}: {#.friends}{.name}{@sep}, {/sep}{/.friends}{@sep}<br/>{/sep}{/friends}';
+    const r         = new Renderer().render(template, { friends: [{
+        id:   1,
+        name: "Gardner Alvarez",
+        friends: [{"name": "Gates Lewis"},{"name": "Britt Stokes"}]
+      },{
+        id:   2,
+        name: "Gates Lewis",
+        friends: [{"name": "Gardner Alvarez"}]
+      }
+    ]});
+    assert.equal(r, '#1 Gardner Alvarez: Gates Lewis, Britt Stokes<br/>#2 Gates Lewis: Gardner Alvarez');
+
+  });
+
+
 });

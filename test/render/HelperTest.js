@@ -1,12 +1,8 @@
 const assert        = require('assert');
-const moment        = require('moment');
 const Renderer      = require('../../src/render/Renderer');
 
 
 const HELPERS = {
-  "dateFormat": function(params, context) {
-    return moment(params.date).format('DD/MM/YYYY');
-  },
 
   nl2br: function(params, context) {
     if (params.value) {
@@ -71,25 +67,22 @@ describe('Render Helper', () => {
     assert.equal(r, 'Hello world !');
   });
 
-  it('should render select with eq', () => {
+  it.skip('should render select with eq', () => {
     const template  = 'Hello {@select key=w}{@eq value="puppies"}Puppies{/eq}{@eq value="bunnies"}test-bunnies{/eq}{/select}';
     const r         = new Renderer().render(template, { w: 'puppies' });
     assert.equal(r, 'Hello Puppies');
   });
 
 
-  it('should render select with eq', () => {
+  it.skip('should render select with eq', () => {
     const template  = 'Hello {@select key=w}{@eq value="puppies"}Puppies{/eq}{@eq value="bunnies"}test-bunnies{/eq}{/select}';
     const r         = new Renderer().render(template, { w: 'puppies' });
     assert.equal(r, 'Hello Puppies');
   });
 
   it('should render custom helper', () => {
-    let template  = `Hello {@dateFormat date=${new Date()} /}`;
-    let r         = new Renderer(HELPERS).render(template);
-    assert.equal(r, `Hello ${moment().format('DD/MM/YYYY')}`);
-    template = `Hello ? {@boolean value=b /}`;
-    r        = new Renderer(HELPERS).render(template, {b: false});
+    let template = `Hello ? {@boolean value=b /}`;
+    let r        = new Renderer(HELPERS).render(template, {b: false});
     assert.equal(r, `Hello ? <div class="bullet bullet-sm bullet-danger"></div>`);
     template = `{@nl2br value=text /}`;
     r        = new Renderer(HELPERS).render(template, {text: "Hello\nWorld"});

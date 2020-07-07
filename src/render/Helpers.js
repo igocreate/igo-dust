@@ -21,35 +21,23 @@ module.exports = {
     return parseInt(left, 10) >= parseInt( right, 10);
   }),
 
-  "select": function(params, context) {
-    return params.key;
+  "select": function() {
+    console.log('Error : @select not supported !')
   },
-  "first": function(params, context) {
-    const prev = context.stack[context.stack.length - 2];
-    if (prev && context.index === 0) {
-      return  context.stack[context.stack.length - 1];
-    }
-    return false;
+  "first": function(params, context, locals) {
+    return locals.$idx === 0;
   },
-  "last": function(params, context) {
-    const prev = context.stack[context.stack.length - 2];
-    if (prev && prev.length && context.index === prev.length - 1) {
-      return context.stack[context.stack.length - 1];
-    }
-    return false;
+  "last": function(params, context, locals) {
+    return locals.$length && locals.$length - 1 === locals.$idx;
   },
-  "sep": function(params, context) {
-    const prev = context.stack[context.stack.length - 2];
-    if (prev && prev.length && context.index !== prev.length - 1) {
-      return context.stack[context.stack.length - 1];
-    }
-    return false;
+  "sep": function(params, context, locals) {
+    return locals.$length && locals.$length - 1 !== locals.$idx;
   },
 };
 
 function truthTest(tag, test) {
-  return function(params, context) {
-    const left = params.key || context.stack[context.stack.length - 1];
+  return function(params, context, locals) {
+    const left = params.key;
     return test(left, params.value);
   };
 };

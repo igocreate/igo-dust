@@ -1,13 +1,4 @@
 
-const SPLIT_CACHE = {};
-
-const _split = (p) => {
-  if (!SPLIT_CACHE[p]) {
-    SPLIT_CACHE[p] = p.split('.');
-  }
-  return SPLIT_CACHE[p];
-}
-
 const ESCAPE_CHAR = c => {
   switch (c) {
     case '<': return '&lt;';
@@ -53,11 +44,11 @@ const a = (v) => {
   return [];
 };
 
-const h = (t, p, c) => {
+const h = (t, p, c, l) => {
   if (!h.helpers[t]) {
     return null;
   }
-  return h.helpers[t](p, c);
+  return h.helpers[t](p, c, l);
 };
 
 module.exports = { a, b, s, h };

@@ -2,17 +2,16 @@
 class Compiler {
 
   constructor() {
-    this.i  = 0;
-    this.r  = `var r='';`;
-    this.r  += `var ctx={stack: []};`;
-    this.r  += `l.it = l;`;
+    this.i  =   0;
+    this.r  =   `var r='';`;
   }
 
   compileBuffer(buffer) {
 
     buffer.forEach(block => {
+      // ToDo : if params, add to stack
+
       if (block.type === 'r') {
-        this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // reference
         this.r += `r+=u.s(${this._getValue(block.tag, block.params)}`;
         if (block.f) {
@@ -23,7 +22,6 @@ class Compiler {
         // insert content
         this.compileBuffer(block.buffer);
       } else if (block.type === '?' || block.type === '^' ) {
-        this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // conditional block
         const not = block.type === '^' ? '!' : '';
         this.r += `if(${not}(${this._getValue(block.tag, block.params)})){`;
@@ -36,36 +34,28 @@ class Compiler {
           this.r += '}';
         }
       } else if (block.type === '#') {
-        this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         // loop block
         this.i++;
         const { i } = this;
         this.r += `var a${i}=u.a(${this._getValue(block.tag, block.params)});`
-        this.r += `ctx.stack.push(a${i});`;
+        this.r += `l.$length = a${i}.length;`;
         this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
-        this.r += `ctx.stack.push(a${i}[i${i}]);`;
-        this.r += `ctx.index = i${i};`;
+        this.r += `l.it = a${i}[i${i}];`;
+        this.r += `l.$idx = i${i};`;
         this.compileBuffer(block.buffer);
-        this.r += `ctx.stack.pop();`;
         this.r += '}';
-        this.r += `ctx.index = null;`;
-        this.r += `ctx.stack.pop();`;
+        this.r += `l.$idx = null;`;
+        this.r += `l.$length = null;`;
+        // reset it
       }
       else if (block.type === '@') {
         // helper
-        this.r += `l.it=ctx.stack[ctx.stack.length - 1];`;
         this.i++;
         const { i } = this;
-        this.r += `var h${i}=u.h('${block.tag}', ${this._getParams(block.params)}, ctx);`
+        this.r += `var h${i}=u.h('${block.tag}', ${this._getParams(block.params)}, l.it, l);`
         this.r += `if(h${i}) {`;
         if (block.buffer) {
-          this.r += `if (typeof h${i} !== 'boolean') {`
-          this.r += `ctx.stack.push(h${i});`;
-          this.r += '}';
           this.compileBuffer(block.buffer);
-          this.r += `if (typeof h${i} !== 'boolean') {`
-          this.r += `ctx.stack.pop();`;
-          this.r += '}';
         } else {
           this.r += `r+=h${i};`
         }
@@ -85,7 +75,7 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
-    return new Function('l = {}', 'u', this.r);
+    return new Function('l', 'u', this.r);
   }
 
   //
