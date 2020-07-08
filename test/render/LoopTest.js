@@ -4,6 +4,15 @@ const Renderer  = require('../../src/render/Renderer');
 
 const COL1 = [ 1, 2, 3 ];
 const COL2 = [ 'a', 'b' ];
+const FRIENDS =  [{
+  id:   1,
+  name: "Gardner Alvarez",
+  friends: [{"name": "Gates Lewis"},{"name": "Britt Stokes"}]
+},{
+  id:   2,
+  name: "Gates Lewis",
+  friends: [{"name": "Gardner Alvarez"}]
+}];
 
 describe('Render Basic', () => {
 
@@ -81,16 +90,7 @@ describe('Render Basic', () => {
 
   it('should render complex loops', () => {
     const template  = '{#friends}#{.id} {.name}: {#.friends}{.name}{@sep}, {/sep}{/.friends}{@sep}<br/>{/sep}{/friends}';
-    const r         = new Renderer().render(template, { friends: [{
-        id:   1,
-        name: "Gardner Alvarez",
-        friends: [{"name": "Gates Lewis"},{"name": "Britt Stokes"}]
-      },{
-        id:   2,
-        name: "Gates Lewis",
-        friends: [{"name": "Gardner Alvarez"}]
-      }
-    ]});
+    const r         = new Renderer().render(template, { friends: FRIENDS});
     assert.equal(r, '#1 Gardner Alvarez: Gates Lewis, Britt Stokes<br/>#2 Gates Lewis: Gardner Alvarez');
   });
 
@@ -112,4 +112,15 @@ describe('Render Basic', () => {
     assert.equal(r, 'Hello 1, 2!');
   });
 
+  it('should rename nested it', () => {
+    const template  = 'Hello {#users it="user"}#{user.id}: {#user.friends it="friend"}{friend.name}{@sep}, {/sep}{/user.friends} #{user.id}{@sep}<br/>{/sep}{/users}';
+    const r         = new Renderer().render(template, { users: FRIENDS});
+    assert.equal(r, 'Hello #1: Gates Lewis, Britt Stokes #1<br/>#2: Gardner Alvarez #2');
+  });
+
+  it('should rename only first it', () => {
+    const template  = 'Hello {#users it="user"}#{user.id}: {#user.friends}{.name}{@sep}, {/sep}{/user.friends} #{user.id}{@sep}<br/>{/sep}{/users}';
+    const r         = new Renderer().render(template, { users: FRIENDS});
+    assert.equal(r, 'Hello #1: Gates Lewis, Britt Stokes #1<br/>#2: Gardner Alvarez #2');
+  });
 });
