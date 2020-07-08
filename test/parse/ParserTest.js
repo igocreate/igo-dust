@@ -166,38 +166,28 @@ describe('Parser', () => {
     const TEMPLATE = ' Hello {> "./templates/_world" } !';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
-    assert.equal(buffer[1], 'World');
+    assert.equal(buffer[1].type, '>');
+    assert.equal(buffer[1].file, './templates/_world');
   });
 
   it('should parse include tag with params', () => {
     const TEMPLATE = ' Hello {> "./templates/_world_ref" string="str" reference=ref} ...';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 4);
-    assert.equal(buffer[1].tag, 'world');
+    assert.equal(buffer.length, 3);
+    assert.equal(buffer[1].type, '>');
     assert.equal(buffer[1].params.string.value, 'str');
     assert.equal(buffer[1].params.reference.value, 'ref');
     assert.equal(buffer[1].params.reference.type, 'r');
   });
 
-  it('should not loose params from block inside include', () => {
-    const TEMPLATE = ' Hello {> "./templates/_array" w=world}';
-    const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 2);
-    const nested = buffer[1].buffer;
-    assert.equal(nested[0].params.w.value, 'world');
-    assert.equal(nested[2].params.w.value, 'world');
-    assert.equal(nested[2].params.w.type, 'r');
-  });
-
-
   it('should parse layout tag', () => {
     const TEMPLATE = ' {> "./templates/layout" } {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 5);
+    console.dir(buffer);
+    assert.equal(buffer.length, 4);
     const content = buffer[1];
-    assert.equal(content.tag, 'content');
-    assert.equal(content.buffer.length, 1);
-    assert.equal(content.buffer[0], 'World');
+    assert.equal(buffer[0].type, '>');
+    assert.equal(buffer[2].type, '<');
   });
 
   it('should helper tag without out', () => {

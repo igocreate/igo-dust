@@ -36,13 +36,13 @@ const _end = (parser, block) => {
 };
 
 const _content = (parser, block) => {
-  parser.addContent(block);
+  parser.pushBlock(block);
   parser.stackBlock(block);
 };
 
 const _include = (parser, block) => {
-  // block.file = block.params[0];
-  parser.include(block.params[0], block.params);
+  block.file = block.param;
+  parser.pushBlock(block);
 };
 
 const _insert = (parser, block) => {

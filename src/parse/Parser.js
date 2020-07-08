@@ -56,25 +56,6 @@ class Parser {
     this.buffer       = last.bodies[tag];
   }
 
-  addContent(block) {
-    // this.contents[block.tag] = block;
-    // replace
-    for (let i = 0; i < this.buffer.length; i++) {
-      const b = this.buffer[i];
-      if (b.type === '+' && b.tag === block.tag) {
-        // replace
-        this.buffer.splice(i, 1, block);
-      }
-    }
-  }
-
-  include(file, params) {
-    const src     = FileUtils.loadFile(file + '.dust');
-    const buffer  = new Parser().parse(src, params);
-    // push all buffer items in this.buffer
-    Array.prototype.push.apply(this.buffer, buffer);
-  }
-
   parse(str, params) {
     // remove spaces at the beginning of lines and line breaks
     str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '');
@@ -173,11 +154,10 @@ class Parser {
         return ;
       }
 
-      // unnamed param
-      block.params[i] = ParseUtils.cleanStr(e);
-      
       const s = e.split('=');
       if (s.length !== 2) {
+        // unnamed param
+        block.param = ParseUtils.cleanStr(e);
         return ;
       }
 

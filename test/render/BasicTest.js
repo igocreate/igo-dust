@@ -2,7 +2,7 @@ const assert    = require('assert');
 
 const Renderer  = require('../../src/render/Renderer');
 
-describe('Render Basic', () => {
+describe('Render Basics', () => {
 
   it('should render simple text', () => {
     const template  = 'Hello World';

@@ -1,9 +1,20 @@
 
+const FileUtils = require('../fs/FileUtils');
+const Parser    = require('../parse/Parser');
+
+
 class Compiler {
 
   constructor() {
     this.i  =   0;
-    this.r  =   `var r='';`;
+    this.r  =   `var r='';l=l||{};`;
+  }
+
+  //
+  loadFile(file) {
+    const src     = FileUtils.loadFile(file + '.dust');
+    const buffer  = new Parser().parse(src);
+    this.compileBuffer(buffer);
   }
 
   compileBuffer(buffer) {
@@ -15,8 +26,13 @@ class Compiler {
         // reference
         this.r += `r+=${this._getReference(block)};`;
       } else if (block.type === '<') {
-        // insert content
+        // declare content (declare function)
+        this.r += `function _${block.tag}(){`;
         this.compileBuffer(block.buffer);
+        this.r += `}`;
+      } else if (block.type === '+') {
+        // insert content (invoke function)
+        this.r += `_${block.tag}();`;
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
         const not = block.type === '^' ? '!' : '';
@@ -44,10 +60,9 @@ class Compiler {
         this.compileBuffer(block.buffer);
         this.r += '}';
         // Reset previous index and length (it is lost)
-        this.r += `l.$idx = p_idx${i};`;
+        this.r += `l.$idx=p_idx${i};`;
         this.r += `l.$length = p_length${i};`;
-      }
-      else if (block.type === '@') {
+      } else if (block.type === '@') {
         // helper
         this.i++;
         const { i } = this;
@@ -64,6 +79,11 @@ class Compiler {
           this.compileBuffer(block.bodies.else);
           this.r += '}';
         }
+      } else if (block.type === '>') {
+        // include
+        this._addParamstoLocals(block.params);
+        this.loadFile(block.file);
+        // TODO: clean params from locals
       } else if (!block.type){
         // default: raw text
         this.r += `r+='${block}';`;
@@ -74,7 +94,24 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
+    // console.dir(this.r);
     return new Function('l', 'u', this.r);
+  }
+
+  //
+  _addParamstoLocals(params) {
+    Object.keys(params).forEach(key => {
+      this.r += `l.${key}=${this._getParam(params[key])};`;
+    });
+  }
+
+  _getParam(param) {
+    if (param.type === 's') {
+      return `'${param.value}'`;
+    }
+    if (param.type === 'r') {
+      return `l.${param.value}`;
+    }
   }
 
   //
