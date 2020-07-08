@@ -193,8 +193,8 @@ describe('Parser', () => {
   it('should parse layout tag', () => {
     const TEMPLATE = ' {> "./templates/layout" } {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 6);
-    const content = buffer[2];
+    assert.equal(buffer.length, 5);
+    const content = buffer[1];
     assert.equal(content.tag, 'content');
     assert.equal(content.buffer.length, 1);
     assert.equal(content.buffer[0], 'World');
@@ -210,5 +210,12 @@ describe('Parser', () => {
     assert.equal(nested.params.format.value, 'DD/MM/YYYY');
     nested = buffer[2];
     assert.equal(nested.buffer[0], '!');
+  });
+
+  it('should remove spaces at the beginning of lines and eol', () => {
+    const TEMPLATE = '  <ul>\n\t<li>  Hello</li>  \n\n\t <li>World  </li>    \n    ';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], '<ul><li>  Hello</li>  <li>World  </li>    ');
   });
 });
