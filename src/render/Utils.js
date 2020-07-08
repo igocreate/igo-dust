@@ -1,12 +1,18 @@
 
-const ESCAPE_CHAR = c => {
-  switch (c) {
-    case '<': return '&lt;';
-    case '>': return '&gt;';
-    case '&': return '&amp;';
-    case '\'': return '&apos;';
-    case '"': return '&quot;';
+
+// filters
+const HCHARS = /[&<>"']/,
+  AMP    = /&/g,
+  LT     = /</g,
+  GT     = />/g,
+  QUOT   = /\"/g,
+  SQUOT  = /\'/g;
+
+const escapeHtml = (s) => {
+  if (!HCHARS.test(s)) {
+    return s;
   }
+  return s.replace(AMP,'&amp;').replace(LT,'&lt;').replace(GT,'&gt;').replace(QUOT,'&quot;').replace(SQUOT, '&#39;');
 };
 
 const _f = (s, f) => {
@@ -14,7 +20,7 @@ const _f = (s, f) => {
     s = s.toUpperCase();
   }
   if (f.e) {
-    s = s.replace(/[<>&'"]/g, ESCAPE_CHAR);
+    s = escapeHtml(s);
   }
   return s;
 }
