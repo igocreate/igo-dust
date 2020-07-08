@@ -18,7 +18,6 @@ class Parser {
   // add string
   pushString(str) {
     // escape string
-    // str = str.replace(/[\r\n]/gm, '\\r\\n');  // escape linebreaks
     str = str.replace(/'/g, '\\\'');          // escape single quotes
     // push
     this.buffer.push(str);

@@ -12,13 +12,13 @@ class Renderer {
   }
 
   render(str, data) {
+    Utils.h.helpers = _.merge(Helpers, this.customHelpers);
     if (typeof str === 'function') {
       return str(data, Utils);
     }
     const buffer  = new Parser().parse(str);
     const fn      = new Compiler().compile(buffer);
 
-    Utils.h.helpers = _.merge(Helpers, this.customHelpers);
     return fn(data, Utils);
   }
 }

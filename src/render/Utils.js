@@ -31,7 +31,7 @@ const a = (v) => {
 
 // helpers
 const h = (t, p, c, l) => {
-  if (!h.helpers[t]) {
+  if (!h.helpers || !h.helpers[t]) {
     return null;
   }
   return h.helpers[t](p, c, l);
