@@ -43,7 +43,7 @@ class Compiler {
         this.r += `var p_length${i} = l.$length;`;
         this.r += `l.$length = a${i}.length;`; // current array length
         this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
-        this.r += `l.it = a${i}[i${i}];`;
+        this.r += `l.${block.it || 'it'} = a${i}[i${i}];`;
         this.r += `l.$idx = i${i};`; // current id
         this.compileBuffer(block.buffer);
         this.r += '}';

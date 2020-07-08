@@ -100,10 +100,16 @@ describe('Render Basic', () => {
     assert.equal(r, 'Hello Aa! Ab!');
   });
 
-  it('should pass complex it', () => {
+  it('should pass it attribute as param', () => {
     const template  = 'Hello {#COL}A{> "./templates/_world_ref" world=it.a}{@sep} {/sep}{/COL}';
     const r         = new Renderer().render(template, {COL: [ {a: 1}, {a: 2}] });
     assert.equal(r, 'Hello A1! A2!');
+  });
+
+  it('should rename it', () => {
+    const template  = 'Hello {#users it="user"}{user.id}{@sep}, {/sep}{/users}!';
+    const r         = new Renderer().render(template, {users: [ {id: 1}, {id: 2}] });
+    assert.equal(r, 'Hello 1, 2!');
   });
 
 });

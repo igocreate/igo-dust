@@ -181,9 +181,15 @@ class Parser {
       if (s.length !== 2) {
         return ;
       }
+
       const key   = ParseUtils.cleanStr(s[0]);
       const type  = s[1][0] === '"' ? 's' : 'r';
       let value = ParseUtils.cleanStr(s[1]);
+
+      if (key === 'it' && block.type ==='#' && type === 's') {
+        block.it = value;
+        return ;
+      }
 
       if (type === 'r') {
         value = ParseUtils.replaceByIt(value);
