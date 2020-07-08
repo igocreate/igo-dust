@@ -13,11 +13,7 @@ class Compiler {
 
       if (block.type === 'r') {
         // reference
-        this.r += `r+=u.s(${this._getValue(block.tag, block.params)}`;
-        if (block.f) {
-          this.r += `, ${this._getFilters(block.f)}`;
-        }
-        this.r += ');'
+        this.r += `r+=${this._getReference(block)};`;
       } else if (block.type === '<') {
         // insert content
         this.compileBuffer(block.buffer);
@@ -113,6 +109,21 @@ class Compiler {
       ret += `${key}:${value},`
     }
     ret += '}';
+    return ret;
+  }
+
+  _getReference(block) {
+    let ret = `${this._getValue(block.tag, block.params)} || ''`;
+    if (!block.f) {
+      return ret;
+    }
+    const f = block.f.split('|');
+    if (f.indexOf('uppercase') >= 0) {
+      ret = `u.f.u(${ret})`;
+    }
+    if (f.indexOf('e') >= 0) {
+      ret = `u.f.e(${ret})`;
+    }
     return ret;
   }
 
