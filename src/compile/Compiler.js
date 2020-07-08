@@ -38,15 +38,18 @@ class Compiler {
         this.i++;
         const { i } = this;
         this.r += `var a${i}=u.a(${this._getValue(block.tag, block.params)});`
-        this.r += `l.$length = a${i}.length;`;
+        // Save previous index and length
+        this.r += `var p_idx${i} = l.$idx;`;
+        this.r += `var p_length${i} = l.$length;`;
+        this.r += `l.$length = a${i}.length;`; // current array length
         this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
         this.r += `l.it = a${i}[i${i}];`;
-        this.r += `l.$idx = i${i};`;
+        this.r += `l.$idx = i${i};`; // current id
         this.compileBuffer(block.buffer);
         this.r += '}';
-        this.r += `l.$idx = null;`;
-        this.r += `l.$length = null;`;
-        // reset it
+        // Reset previous index and length (it is lost)
+        this.r += `l.$idx = p_idx${i};`;
+        this.r += `l.$length = p_length${i};`;
       }
       else if (block.type === '@') {
         // helper

@@ -79,7 +79,7 @@ describe('Render Basic', () => {
     assert.equal(r, 'Hello World 1, World 2, World 3.');
   });
 
-  it.skip('should render complex', () => {
+  it('should render complex loops', () => {
     const template  = '{#friends}#{.id} {.name}: {#.friends}{.name}{@sep}, {/sep}{/.friends}{@sep}<br/>{/sep}{/friends}';
     const r         = new Renderer().render(template, { friends: [{
         id:   1,
@@ -92,8 +92,18 @@ describe('Render Basic', () => {
       }
     ]});
     assert.equal(r, '#1 Gardner Alvarez: Gates Lewis, Britt Stokes<br/>#2 Gates Lewis: Gardner Alvarez');
-
   });
 
+  it('should pass it at param', () => {
+    const template  = 'Hello {#COL2}A{> "./templates/_world_ref" world=it}{@sep} {/sep}{/COL2}';
+    const r         = new Renderer().render(template, { COL2 });
+    assert.equal(r, 'Hello Aa! Ab!');
+  });
+
+  it('should pass complex it', () => {
+    const template  = 'Hello {#COL}A{> "./templates/_world_ref" world=it.a}{@sep} {/sep}{/COL}';
+    const r         = new Renderer().render(template, {COL: [ {a: 1}, {a: 2}] });
+    assert.equal(r, 'Hello A1! A2!');
+  });
 
 });
