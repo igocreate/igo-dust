@@ -18,7 +18,7 @@ class Parser {
   // add string
   pushString(str) {
     // escape string
-    str = str.replace(/[\r\n]/gm, '\\r\\n');  // escape linebreaks
+    // str = str.replace(/[\r\n]/gm, '\\r\\n');  // escape linebreaks
     str = str.replace(/'/g, '\\\'');          // escape single quotes
     // push
     this.buffer.push(str);
@@ -77,7 +77,9 @@ class Parser {
   }
 
   parse(str, params) {
-
+    // remove spaces at the beginning of lines and line breaks
+    str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '');
+    
     const openRegexp   = new RegExp('(.*?)\\{', 'msg');
     const closeRegexp  = new RegExp('(.*?)\\}', 'msg');
 
