@@ -73,13 +73,6 @@ describe('Render Helpers', () => {
     assert.equal(r, 'Hello Puppies');
   });
 
-
-  it.skip('should render select with eq', () => {
-    const template  = 'Hello {@select key=w}{@eq value="puppies"}Puppies{/eq}{@eq value="bunnies"}test-bunnies{/eq}{/select}';
-    const r         = new Renderer().render(template, { w: 'puppies' });
-    assert.equal(r, 'Hello Puppies');
-  });
-
   it('should render custom helper', () => {
     const Helpers   = require('../../src/render/Helpers');
     Helpers.nl2br = HELPERS.nl2br;
