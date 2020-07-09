@@ -9,13 +9,13 @@ const HCHARS = /[&<>"']/,
   SQUOT  = /\'/g;
 
 const f = {
-  'e': (s) => {
-    if (!HCHARS.test(s)) {
+  e: (s) => {
+    if (!s.replace || !HCHARS.test(s)) {
       return s;
     }
     return s.replace(AMP,'&amp;').replace(LT,'&lt;').replace(GT,'&gt;').replace(QUOT,'&quot;').replace(SQUOT, '&#39;');
   },
-  'u': (s) => s.toUpperCase()
+  u: (s) => s.toUpperCase()
 };
 
 // return array

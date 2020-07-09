@@ -150,14 +150,8 @@ class Compiler {
 
   _getParams(params) {
     let ret = '{';
-    let value;
     for (let key in params) {
-      if (params[key].type === 'r') {
-        value = this._getValue(params[key].value);
-      } else {
-        value = `'${params[key].value}'`;
-      }
-      ret += `${key}:${value},`
+      ret += `${key}:${this._getParam(params[key])},`
     }
     ret += '}';
     return ret;
