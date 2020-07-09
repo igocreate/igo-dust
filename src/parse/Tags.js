@@ -1,4 +1,5 @@
 
+const ParseUtils = require('./ParseUtils');
 
 
 const _if = (parser, block) => {
@@ -41,7 +42,7 @@ const _content = (parser, block) => {
 };
 
 const _include = (parser, block) => {
-  block.file = block.param;
+  block.file = ParseUtils.stripDoubleQuotes(block.params.$);
   parser.pushBlock(block);
 };
 

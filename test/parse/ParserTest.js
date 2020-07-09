@@ -154,10 +154,8 @@ describe('Parser', () => {
     assert.equal(buffer[0], 'Hello ');
     assert.equal(buffer[1].type, '@');
     assert.equal(buffer[1].tag, 'eq');
-    assert.equal(buffer[1].params.key.value, 'key');
-    assert.equal(buffer[1].params.key.type, 's');
-    assert.equal(buffer[1].params.value.value, 'value');
-    assert.equal(buffer[1].params.value.type, 'r');
+    assert.equal(buffer[1].params.key, '"key"');
+    assert.equal(buffer[1].params.value, 'value');
     assert.equal(buffer[1].buffer.length, 1);
   });
 
@@ -169,14 +167,23 @@ describe('Parser', () => {
     assert.equal(buffer[1].file, './templates/_world');
   });
 
+  it('should parse tag with params with spaces', () => {
+    const TEMPLATE = 'Hello {> "./templates/_world" text="hello world" }';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    assert.equal(buffer[1].type, '>');
+    assert.equal(buffer[1].file, './templates/_world');
+    assert.equal(buffer[1].params.text, '"hello world"');
+  });
+
+
   it('should parse include tag with params', () => {
     const TEMPLATE = ' Hello {> "./templates/_world_ref" string="str" reference=ref} ...';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].type, '>');
-    assert.equal(buffer[1].params.string.value, 'str');
-    assert.equal(buffer[1].params.reference.value, 'ref');
-    assert.equal(buffer[1].params.reference.type, 'r');
+    assert.equal(buffer[1].params.string, '"str"');
+    assert.equal(buffer[1].params.reference, 'ref');
   });
 
   it('should parse layout tag', () => {
@@ -195,8 +202,8 @@ describe('Parser', () => {
     assert.equal(buffer.length, 3);
     let nested = buffer[1];
     assert.equal(nested.selfClosedTag, true);
-    assert.equal(nested.params.date.value, 'date');
-    assert.equal(nested.params.format.value, 'DD/MM/YYYY');
+    assert.equal(nested.params.date, 'date');
+    assert.equal(nested.params.format, '"DD/MM/YYYY"');
     nested = buffer[2];
     assert.equal(nested.buffer[0], '!');
   });
@@ -206,5 +213,14 @@ describe('Parser', () => {
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 1);
     assert.equal(buffer[0], '<ul><li>  Hello</li>  <li>World  </li>    ');
+  });
+
+  it('should parse params with curly braces', () => {
+    const TEMPLATE = ' {> "./includes/{file}" text="ok-{test}" } ';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    assert.equal(buffer[0].type, '>');
+    assert.equal(buffer[0].file, './includes/{file}');
+    assert.equal(buffer[0].params.text, '"ok-{test}"');
   });
 });

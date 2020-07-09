@@ -17,7 +17,7 @@ const HELPERS = {
 }
 
 
-describe('Render Helper', () => {
+describe('Render Helpers', () => {
 
   it('should render with eq helper', () => {
     const template  = 'Hello {@eq key=w value="World"}{w}{/eq}';

@@ -1,6 +1,7 @@
 
-const FileUtils = require('../fs/FileUtils');
-const Parser    = require('../parse/Parser');
+const FileUtils   = require('../fs/FileUtils');
+const Parser      = require('../parse/Parser');
+const ParseUtils  = require('../parse/ParseUtils');
 
 
 class Compiler {
@@ -44,6 +45,7 @@ class Compiler {
         // loop block
         this.i++;
         const { i } = this;
+        const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || 'it';
         this.r += `var a${i}=u.a(${this._getValue(block.tag, block.params)});`
         this.r += `if(a${i}) {`;
         // Save previous index and length
@@ -51,7 +53,7 @@ class Compiler {
         this.r += `var p_length${i} = l.$length;`;
         this.r += `l.$length = a${i}.length;`; // current array length
         this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
-        this.r += `l.${block.it || 'it'} = a${i}[i${i}];`;
+        this.r += `l.${it} = a${i}[i${i}];`;
         this.r += `l.$idx = i${i};`; // current id
         this.compileBuffer(block.buffer);
         this.r += '}';
@@ -85,10 +87,11 @@ class Compiler {
     });
   }
 
+  //
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
-    // console.dir(this.r);
+    console.dir(this.r);
     return new Function('l', 'u', this.r);
   }
 
@@ -108,22 +111,31 @@ class Compiler {
   }
 
   _getParam(param) {
-    if (param.type === 's') {
-      return `'${param.value}'`;
+    if (param[0] === '"') {
+      // string
+      return `'${ParseUtils.stripDoubleQuotes(param)}'`;
     }
-    if (param.type === 'r') {
-      return `l.${param.value}`;
-    }
+    // ref
+    return this._getValue(param);
   }
 
   //
   _getValue(tag, params) {
-    const param = params && params[tag];
-    if (param && param.type === 's') {
-      return `'${param.value}'`;
+    // const param = params && params[tag];
+    // if (param && param.type === 's') {
+    //   return `'${param.value}'`;
+    // }
+    // if (param && param.type === 'r') {
+    //   tag = param.value;
+    // }
+
+    // TEMP / TO REMOVE
+    if (tag === '.') {
+      return 'l.it';
     }
-    if (param && param.type === 'r') {
-      tag = param.value;
+
+    if (tag[0] === '.') {
+      tag = 'it' + tag;
     }
 
     let i;

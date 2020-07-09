@@ -14,7 +14,7 @@ const FRIENDS =  [{
   friends: [{"name": "Gardner Alvarez"}]
 }];
 
-describe('Render Basic', () => {
+describe('Render Loops', () => {
 
   it('should render simple loop', () => {
     const template  = 'Hello {#COL1}a{/COL1}';

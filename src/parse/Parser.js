@@ -65,6 +65,7 @@ class Parser {
 
     let index = 0;
 
+    // find opening '{'
     let openMatch, closeMatch;
     while ((openMatch = openRegexp.exec(str)) !== null) {
       if (openMatch[1]) {
@@ -73,9 +74,18 @@ class Parser {
       }
       index = openMatch.index + openMatch[0].length;
 
+      // find closing '}'
+      let tag = '';
       closeRegexp.lastIndex = index;
-      const closeMatch = closeRegexp.exec(str);
-      
+      while ((closeMatch = closeRegexp.exec(str)) !== null) {
+        tag += closeMatch[1];
+        // skip when closing an internal '{'
+        if (closeMatch[1].lastIndexOf('{') === -1) {
+          break;
+        }
+        tag += '}';
+      }
+
       if (!closeMatch) {
         // parsing error
         throw new Error('Missing closing }. index: ' + index);
@@ -84,7 +94,7 @@ class Parser {
       index = closeMatch.index + closeMatch[0].length;
       openRegexp.lastIndex = index;
 
-      this.parseTag(closeMatch[1], params);
+      this.parseTag(tag, params);
     }
 
     if (index < str.length) {
@@ -113,6 +123,12 @@ class Parser {
       this.pushBlock(block);
       return;
     }
+
+    // set self closing tag
+    block.selfClosedTag = str.endsWith('/');
+
+    // remove first char
+    block.tag = ParseUtils.parseTag(block.tag);
     
     // parse params
     this.parseParams(str, block);
@@ -140,41 +156,47 @@ class Parser {
     }
   }
 
+  // TODO: rewrite
   parseParams(str, block) {
-    const arr = str.split(' ');
-    block.tag = ParseUtils.replaceByIt(arr.shift().substring(1));
+    
+    const params = 
 
-    arr.forEach((e, i) => {
-      if (!e) {
-        return;
-      }
+    block.params = ParseUtils.parseParams(str);
 
-      if (e === '/' && i === arr.length -1) {
-        block.selfClosedTag = true;
-        return ;
-      }
+    // const arr = str.split(' ');
+    // block.tag = ParseUtils.replaceByIt(arr.shift().substring(1));
 
-      const s = e.split('=');
-      if (s.length !== 2) {
-        // unnamed param
-        block.param = ParseUtils.cleanStr(e);
-        return ;
-      }
+    // arr.forEach((e, i) => {
+    //   if (!e) {
+    //     return;
+    //   }
 
-      const key   = ParseUtils.cleanStr(s[0]);
-      const type  = s[1][0] === '"' ? 's' : 'r';
-      let value = ParseUtils.cleanStr(s[1]);
+    //   if (e === '/' && i === arr.length -1) {
+    //     block.selfClosedTag = true;
+    //     return ;
+    //   }
 
-      if (key === 'it' && block.type ==='#' && type === 's') {
-        block.it = value;
-        return ;
-      }
+    //   const s = e.split('=');
+    //   if (s.length !== 2) {
+    //     // unnamed param
+    //     block.param = ParseUtils.cleanStr(e);
+    //     return ;
+    //   }
 
-      if (type === 'r') {
-        value = ParseUtils.replaceByIt(value);
-      }
-      block.params[key] = {type, value};
-    });
+    //   const key   = ParseUtils.cleanStr(s[0]);
+    //   const type  = s[1][0] === '"' ? 's' : 'r';
+    //   let value = ParseUtils.cleanStr(s[1]);
+
+    //   if (key === 'it' && block.type ==='#' && type === 's') {
+    //     block.it = value;
+    //     return ;
+    //   }
+
+    //   if (type === 'r') {
+    //     value = ParseUtils.replaceByIt(value);
+    //   }
+    //   block.params[key] = {type, value};
+    // });
   }
 }
 

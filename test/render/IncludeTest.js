@@ -28,9 +28,16 @@ describe('Render Includes & Layouts', () => {
     assert.equal(r, 'Hello World! ');
   });
 
-  it.skip('should not crash if no content', () => {
+  it('should not crash if no content', () => {
     const template  = '{> "./templates/layout" /}';
     const r         = new Renderer().render(template, {test: {w: 'World'}});
     assert.equal(r, 'Hello ! ');
+  });
+
+  // TODO
+  it.skip('should render dynamic include', () => {
+    const template  = 'Hello {> "./templates/{file}" /}';
+    const r         = new Renderer().render(template, {file: '_world_ref'});
+    assert.equal(r, 'Hello World!');
   });
 });
