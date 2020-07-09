@@ -23,9 +23,8 @@ describe('Parser', () => {
   it('should ignore comment', () => {
     const TEMPLATE = 'Hello {! comment on hello world !}World!';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 2);
-    assert.equal(buffer[0], 'Hello ');
-    assert.equal(buffer[1], 'World!');
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], 'Hello World!');
   });
 
   it('should parse multiple references', () => {

@@ -80,7 +80,7 @@ describe('Render Helper', () => {
     assert.equal(r, 'Hello Puppies');
   });
 
-  it.only('should render custom helper', () => {
+  it('should render custom helper', () => {
     const Helpers   = require('../../src/render/Helpers');
     Helpers.nl2br = HELPERS.nl2br;
     Helpers.boolean = HELPERS.boolean;

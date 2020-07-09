@@ -57,8 +57,8 @@ class Parser {
   }
 
   parse(str, params) {
-    // remove spaces at the beginning of lines and line breaks
-    str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '');
+    // remove spaces at the beginning of lines, line breaks and comment
+    str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '').replace(/{!.*?!}/g, '');
     
     const openRegexp   = new RegExp('(.*?)\\{', 'msg');
     const closeRegexp  = new RegExp('(.*?)\\}', 'msg');

@@ -28,4 +28,11 @@ describe('Render Basics', () => {
     assert.equal(r, 'Hello World');
   });
 
+  it('should ignore tag inside comment', () => {
+    const template  = 'Hello {! comment {test} !}World';
+    const r         = new Renderer().render(template, { w: 'World' });
+    assert.equal(r, 'Hello World');
+  });
+
+
 });
