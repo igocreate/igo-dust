@@ -33,7 +33,7 @@ class Compiler {
         this.r += `}`;
       } else if (block.type === '+') {
         // insert content (invoke function)
-        this.r += `_${block.tag}();`;
+        this.r += `if(typeof _${block.tag}!=='undefined'){_${block.tag}()}`;
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
         const not = block.type === '^' ? '!' : '';
@@ -91,7 +91,7 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
-    console.dir(this.r);
+    // console.dir(this.r);
     return new Function('l', 'u', this.r);
   }
 
