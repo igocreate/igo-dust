@@ -18,6 +18,15 @@ const f = {
   u: (s) => s.toUpperCase()
 };
 
+// 
+const r = (v, p, c, l) => {
+  if (v && typeof v === 'function') {
+    return v(p, c, l);
+  }
+  return v;
+}
+
+
 // return array
 const a = (v) => {
   if (Array.isArray(v)) {
@@ -37,4 +46,4 @@ const h = (t, p, c, l) => {
   return h.helpers[t](p, c, l);
 };
 
-module.exports = { a, h, f };
+module.exports = { a, h, f, r };
