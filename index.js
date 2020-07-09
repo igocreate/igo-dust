@@ -2,6 +2,7 @@
 const Parser    = require('./src/parse/Parser');
 const Compiler  = require('./src/compile/Compiler');
 const Renderer  = require('./src/render/Renderer');
+const Helpers   = require('./src/render/Helpers');
 const FileUtils = require('./src/fs/FileUtils');
 
 
@@ -29,8 +30,9 @@ const getCompiled = (filePath, options) => {
 
 // expressjs engine
 module.exports.engine = (filePath, options, callback) => {
-  // console.dir({filePath, options});
   const compiled = getCompiled(filePath, options);
   const rendered = module.exports.render(compiled, options._locals);
   callback(null, rendered);
 };
+
+module.exports.helpers = Helpers;

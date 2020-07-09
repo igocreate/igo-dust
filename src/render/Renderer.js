@@ -7,12 +7,9 @@ const Parser    = require('../parse/Parser');
 const Compiler  = require('../compile/Compiler');
 
 class Renderer {
-  constructor(customHelpers = {}) {
-    this.customHelpers = customHelpers;
-  }
 
   render(str, data) {
-    Utils.h.helpers = _.merge(Helpers, this.customHelpers);
+    Utils.h.helpers = Helpers;
     if (typeof str === 'function') {
       return str(data, Utils);
     }

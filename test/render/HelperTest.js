@@ -80,7 +80,10 @@ describe('Render Helper', () => {
     assert.equal(r, 'Hello Puppies');
   });
 
-  it('should render custom helper', () => {
+  it.only('should render custom helper', () => {
+    const Helpers   = require('../../src/render/Helpers');
+    Helpers.nl2br = HELPERS.nl2br;
+    Helpers.boolean = HELPERS.boolean;
     let template = `Hello ? {@boolean value=b /}`;
     let r        = new Renderer(HELPERS).render(template, {b: false});
     assert.equal(r, `Hello ? <div class="bullet bullet-sm bullet-danger"></div>`);
