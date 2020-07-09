@@ -26,7 +26,7 @@ const a = (v) => {
   if (v) {
     return [v];
   }
-  return [];
+  return null;
 };
 
 // helpers

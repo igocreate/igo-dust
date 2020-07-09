@@ -40,6 +40,12 @@ describe('Render Basic', () => {
     assert.equal(r, 'Hello a1');
   });
 
+  it('should render else if null', () => {
+    const template  = 'Hello {#COL1}a{:else}b{/COL1}';
+    const r         = new Renderer().render(template, { COL1: null });
+    assert.equal(r, 'Hello b');
+  });
+
   it('should render nested loops on "it"', () => {
     const template  = 'Hello {#COL0}z{#it}x{it}{/it}{/COL0}';
     const r         = new Renderer().render(template, { COL0: [COL1, COL2] });

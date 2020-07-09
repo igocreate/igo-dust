@@ -39,17 +39,13 @@ class Compiler {
         this.r += `if(${not}(${this._getValue(block.tag, block.params)})){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
-        // else
-        if (block.bodies && block.bodies.else) {
-          this.r += 'else{';
-          this.compileBuffer(block.bodies.else);
-          this.r += '}';
-        }
+        this._else(block);
       } else if (block.type === '#') {
         // loop block
         this.i++;
         const { i } = this;
         this.r += `var a${i}=u.a(${this._getValue(block.tag, block.params)});`
+        this.r += `if(a${i}) {`;
         // Save previous index and length
         this.r += `var p_idx${i} = l.$idx;`;
         this.r += `var p_length${i} = l.$length;`;
@@ -62,6 +58,8 @@ class Compiler {
         // Reset previous index and length (it is lost)
         this.r += `l.$idx=p_idx${i};`;
         this.r += `l.$length = p_length${i};`;
+        this.r += `}`;
+        this._else(block);
       } else if (block.type === '@') {
         // helper
         this.i++;
@@ -74,11 +72,7 @@ class Compiler {
           this.r += `r+=h${i};`
         }
         this.r += '}';
-        if (block.bodies && block.bodies.else) {
-          this.r += 'else {';
-          this.compileBuffer(block.bodies.else);
-          this.r += '}';
-        }
+        this._else(block);
       } else if (block.type === '>') {
         // include
         this._addParamstoLocals(block.params);
@@ -96,6 +90,14 @@ class Compiler {
     this.r += 'return r;';
     // console.dir(this.r);
     return new Function('l', 'u', this.r);
+  }
+
+  _else(block) {
+    if (block.bodies && block.bodies.else) {
+      this.r += 'else {';
+      this.compileBuffer(block.bodies.else);
+      this.r += '}';
+    }
   }
 
   //
