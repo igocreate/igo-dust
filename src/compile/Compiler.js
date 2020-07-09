@@ -66,7 +66,7 @@ class Compiler {
         // helper
         this.i++;
         const { i } = this;
-        this.r += `var h${i}=u.h('${block.tag}', ${this._getParams(block.params)}, l.it, l);`
+        this.r += `var h${i}=u.h('${block.tag}', ${this._getParams(block.params)}, l);`
         this.r += `if(h${i}) {`;
         if (block.buffer) {
           this.compileBuffer(block.buffer);

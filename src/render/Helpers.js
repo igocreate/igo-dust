@@ -24,19 +24,19 @@ module.exports = {
   select: function() {
     console.log('Error : @select not supported !')
   },
-  first: function(params, context, locals) {
+  first: function(params, locals) {
     return locals.$idx === 0;
   },
-  last: function(params, context, locals) {
+  last: function(params, locals) {
     return locals.$length && locals.$length - 1 === locals.$idx;
   },
-  sep: function(params, context, locals) {
+  sep: function(params, locals) {
     return locals.$length && locals.$length - 1 !== locals.$idx;
   },
 };
 
 function truthTest(tag, test) {
-  return function(params, context, locals) {
+  return function(params, locals) {
     const left = params.key;
     return test(left, params.value);
   };

@@ -19,9 +19,9 @@ const f = {
 };
 
 // 
-const r = (v, p, c, l) => {
+const r = (v, p, l) => {
   if (v && typeof v === 'function') {
-    return v(p, c, l);
+    return v(p, l);
   }
   return v;
 }
@@ -39,11 +39,11 @@ const a = (v) => {
 };
 
 // helpers
-const h = (t, p, c, l) => {
+const h = (t, p, l) => {
   if (!h.helpers || !h.helpers[t]) {
     return null;
   }
-  return h.helpers[t](p, c, l);
+  return h.helpers[t](p, l);
 };
 
 module.exports = { a, h, f, r };

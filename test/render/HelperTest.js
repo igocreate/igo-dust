@@ -4,13 +4,13 @@ const Renderer      = require('../../src/render/Renderer');
 
 const HELPERS = {
 
-  nl2br: function(params, context) {
+  nl2br: function(params) {
     if (params.value) {
       return params.value.replace(/(\r\n|\n\r|\r|\n)/g, '<br/>');
     }
   },
 
-  boolean: function(params, context) {
+  boolean: function(params) {
     const color = params.value ? 'success' : 'danger';
     return `<div class="bullet bullet-sm bullet-${color}"></div>`;
   }
