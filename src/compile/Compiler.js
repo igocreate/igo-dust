@@ -145,7 +145,7 @@ class Compiler {
       tag = tag.substring(0, i);
     }
     ret.unshift(`l.${tag}`);
-    ret[ret.length -1] = `(typeof ${ret[ret.length -1]} === 'function' ? u.r(${ret[ret.length -1]}, ${this._getParams(params)}) : ${ret[ret.length -1]})`;
+    ret[ret.length -1] = `(typeof ${ret[ret.length -1]}==='function'?u.r(${ret[ret.length -1]},${this._getParams(params)},l) : ${ret[ret.length -1]})`;
     return ret.join('&&');
   }
 
