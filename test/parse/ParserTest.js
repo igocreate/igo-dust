@@ -2,7 +2,6 @@
 const assert  = require('assert');
 
 const Parser  = require('../../src/parse/Parser');
-const { Console } = require('console');
 
 describe('Parser', () => {
   it('should parse simple text', () => {
@@ -189,7 +188,6 @@ describe('Parser', () => {
   it('should parse layout tag', () => {
     const TEMPLATE = ' {> "./templates/layout" } {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
-    console.dir(buffer);
     assert.equal(buffer.length, 4);
     const content = buffer[1];
     assert.equal(buffer[0].type, '>');
@@ -222,5 +220,14 @@ describe('Parser', () => {
     assert.equal(buffer[0].type, '>');
     assert.equal(buffer[0].file, './includes/{file}');
     assert.equal(buffer[0].params.text, '"ok-{test}"');
+  });
+
+  it('should not add buffer to loop tag if self closed', () => {
+    const TEMPLATE = 'Hello {#world params="value" /}';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    assert.equal(buffer[1].type, '#');
+    assert(!buffer[1].buffer);
+    assert(buffer[1].selfClosedTag);
   });
 });

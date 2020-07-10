@@ -9,8 +9,9 @@ const _if = (parser, block) => {
 
 const _loop = (parser, block) => {
   parser.pushBlock(block);
-  parser.stackBlock(block)
-
+  if (!block.selfClosedTag) {
+    parser.stackBlock(block)
+  }
 };
 
 const _not = (parser, block) => {

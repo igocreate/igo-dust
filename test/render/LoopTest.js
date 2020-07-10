@@ -129,4 +129,10 @@ describe('Render Loops', () => {
     const r         = new Renderer().render(template, { users: FRIENDS});
     assert.equal(r, 'Hello #1: Gates Lewis, Britt Stokes #1<br/>#2: Gardner Alvarez #2');
   });
+
+  it('should not loop if no buffer', () => {
+    const template  = 'Hello {#COL1 /}';
+    const r         = new Renderer().render(template, { COL1: 1 });
+    assert.equal(r, 'Hello 1');
+  });
 });
