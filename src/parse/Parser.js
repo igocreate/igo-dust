@@ -117,7 +117,6 @@ class Parser {
     if (!tag) {
       // reference
       block.type = 'r';
-      block.tag = ParseUtils.replaceByIt(block.tag);
       this.parseFilters(str, block);
       this.pushBlock(block);
       return;
