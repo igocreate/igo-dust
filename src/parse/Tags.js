@@ -3,11 +3,13 @@ const ParseUtils = require('./ParseUtils');
 
 
 const _if = (parser, block) => {
+  block.tag = ParseUtils.replaceByIt(block.tag);
   parser.pushBlock(block);
   parser.stackBlock(block)
 };
 
 const _loop = (parser, block) => {
+  block.tag = ParseUtils.replaceByIt(block.tag);
   parser.pushBlock(block);
   if (!block.selfClosedTag) {
     parser.stackBlock(block)
@@ -15,6 +17,7 @@ const _loop = (parser, block) => {
 };
 
 const _not = (parser, block) => {
+  block.tag = ParseUtils.replaceByIt(block.tag);
   parser.pushBlock(block);
   parser.stackBlock(block)
 };

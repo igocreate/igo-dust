@@ -21,8 +21,6 @@ class Compiler {
   compileBuffer(buffer) {
 
     buffer.forEach(block => {
-      // ToDo : if params, add to stack
-
       if (block.type === 'r') {
         // reference
         this.r += `r+=${this._getReference(block)};`;
@@ -125,23 +123,6 @@ class Compiler {
 
   //
   _getValue(tag, params) {
-    // const param = params && params[tag];
-    // if (param && param.type === 's') {
-    //   return `'${param.value}'`;
-    // }
-    // if (param && param.type === 'r') {
-    //   tag = param.value;
-    // }
-
-    // TEMP / TO REMOVE
-    if (tag === '.') {
-      return 'l.it';
-    }
-
-    if (tag[0] === '.') {
-      tag = 'it' + tag;
-    }
-
     let i;
     const ret = [];
     while((i = tag.lastIndexOf('.')) >= 0) {

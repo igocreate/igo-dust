@@ -122,15 +122,15 @@ class Parser {
       this.pushBlock(block);
       return;
     }
-
+    
     // set self closing tag
     block.selfClosedTag = str.endsWith('/');
-
+    
     // remove first char
     block.tag = ParseUtils.parseTag(block.tag);
-    
+
     // parse params
-    this.parseParams(str, block);
+    block.params = ParseUtils.parseParams(str);
 
     // apply tag
     tag(this, block);
@@ -155,46 +155,6 @@ class Parser {
     }
   }
 
-  // TODO: rewrite
-  parseParams(str, block) {
-
-    block.params = ParseUtils.parseParams(str);
-
-    // const arr = str.split(' ');
-    // block.tag = ParseUtils.replaceByIt(arr.shift().substring(1));
-
-    // arr.forEach((e, i) => {
-    //   if (!e) {
-    //     return;
-    //   }
-
-    //   if (e === '/' && i === arr.length -1) {
-    //     block.selfClosedTag = true;
-    //     return ;
-    //   }
-
-    //   const s = e.split('=');
-    //   if (s.length !== 2) {
-    //     // unnamed param
-    //     block.param = ParseUtils.cleanStr(e);
-    //     return ;
-    //   }
-
-    //   const key   = ParseUtils.cleanStr(s[0]);
-    //   const type  = s[1][0] === '"' ? 's' : 'r';
-    //   let value = ParseUtils.cleanStr(s[1]);
-
-    //   if (key === 'it' && block.type ==='#' && type === 's') {
-    //     block.it = value;
-    //     return ;
-    //   }
-
-    //   if (type === 'r') {
-    //     value = ParseUtils.replaceByIt(value);
-    //   }
-    //   block.params[key] = {type, value};
-    // });
-  }
 }
 
 module.exports = Parser;

@@ -56,6 +56,5 @@ module.exports.parseParams = (s) => {
   if ((match = unnamedStringParam.exec(s)) !== null) {
     params.$ = match[1];
   }
-
   return params;
 };
