@@ -67,7 +67,7 @@ class Compiler {
         this.i++;
         const { i } = this;
         this.r += `var h${i}=u.h('${block.tag}',${this._getParams(block.params)},l);`
-        this.r += `if(h${i}) {`;
+        this.r += `if(h${i}){`;
         if (block.buffer) {
           this.compileBuffer(block.buffer);
         } else {
@@ -97,7 +97,7 @@ class Compiler {
 
   _else(block) {
     if (block.bodies && block.bodies.else) {
-      this.r += 'else {';
+      this.r += 'else{';
       this.compileBuffer(block.bodies.else);
       this.r += '}';
     }
