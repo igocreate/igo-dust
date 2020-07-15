@@ -163,7 +163,7 @@ describe('Parser', () => {
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].type, '>');
-    assert.equal(buffer[1].file, './templates/_world');
+    assert.equal(buffer[1].file, '"./templates/_world"');
   });
 
   it('should parse tag with params with spaces', () => {
@@ -171,7 +171,7 @@ describe('Parser', () => {
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 2);
     assert.equal(buffer[1].type, '>');
-    assert.equal(buffer[1].file, './templates/_world');
+    assert.equal(buffer[1].file, '"./templates/_world"');
     assert.equal(buffer[1].params.text, '"hello world"');
   });
 
@@ -218,7 +218,7 @@ describe('Parser', () => {
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 2);
     assert.equal(buffer[0].type, '>');
-    assert.equal(buffer[0].file, './includes/{file}');
+    assert.equal(buffer[0].file, '"./includes/{file}"');
     assert.equal(buffer[0].params.text, '"ok-{test}"');
   });
 

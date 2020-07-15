@@ -7,5 +7,5 @@ module.exports.loadFile = (filePath, options) => {
     // relative
     filePath = './views/' + filePath;
   }
-  return fs.readFileSync(filePath, 'utf8');
+  return fs.readFileSync(filePath + '.dust', 'utf8');
 }

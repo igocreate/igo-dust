@@ -34,10 +34,10 @@ describe('Render Includes & Layouts', () => {
     assert.equal(r, 'Hello !');
   });
 
-  // TODO
-  it.skip('should render dynamic include', () => {
+  // 
+  it('should render dynamic include', () => {
     const template  = 'Hello {> "./templates/{file}" /}';
-    const r         = new Renderer().render(template, {file: '_world_ref'});
+    const r         = new Renderer().render(template, {file: '_world_ref', world: 'World'});
     assert.equal(r, 'Hello World!');
   });
 });

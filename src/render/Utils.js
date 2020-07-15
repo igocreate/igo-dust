@@ -1,4 +1,7 @@
 
+const FileUtils = require('../fs/FileUtils');
+const Parser    = require('../parse/Parser');
+const Compiler  = require('../compile/Compiler');
 
 // filters
 const HCHARS = /[&<>"']/,
@@ -17,15 +20,6 @@ const f = {
   },
   u: (s) => s.toUpperCase()
 };
-
-// 
-const r = (v, p, l) => {
-  if (v && typeof v === 'function') {
-    return v(p, l);
-  }
-  return v;
-}
-
 
 // return array
 const a = (v) => {
@@ -46,4 +40,12 @@ const h = (t, p, l) => {
   return h.helpers[t](p, l);
 };
 
-module.exports = { a, h, f, r };
+// include file
+const i = (file) => {
+  const str     = FileUtils.loadFile(file);
+  const buffer  = new Parser().parse(str);
+  const fn      = new Compiler().compile(buffer);
+  return fn;
+};
+
+module.exports = { a, h, f, i };

@@ -34,7 +34,7 @@ describe('Render Basics', () => {
     assert.equal(r, 'Hello World');
   });
 
-  it('should excecute function if reference if a function', () => {
+  it('should excecute function if reference is a function', () => {
     const template  = 'Hello {w}';
     const r         = new Renderer().render(template, { w: () => 'World' });
     assert.equal(r, 'Hello World');

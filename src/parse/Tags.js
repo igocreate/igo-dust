@@ -46,7 +46,7 @@ const _content = (parser, block) => {
 };
 
 const _include = (parser, block) => {
-  block.file = ParseUtils.stripDoubleQuotes(block.params.$);
+  block.file = block.params.$;
   parser.pushBlock(block);
 };
 

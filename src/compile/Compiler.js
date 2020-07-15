@@ -1,61 +1,59 @@
 
-const FileUtils   = require('../fs/FileUtils');
-const Parser      = require('../parse/Parser');
-const ParseUtils  = require('../parse/ParseUtils');
 
+const ParseUtils  = require('../parse/ParseUtils');
 
 class Compiler {
 
-  constructor() {
+  constructor(options) {
     this.i  =   0;
-    this.r  =   `var r='';l=l||{};`;
-  }
-
-  //
-  loadFile(file) {
-    const src     = FileUtils.loadFile(file + '.dust');
-    const buffer  = new Parser().parse(src);
-    this.compileBuffer(buffer);
+    this.r  = `var r='',l=l||{},c=c||{};`;
   }
 
   compileBuffer(buffer) {
 
+    // precompile, for content functions
+    buffer.forEach(block => {
+      if (block.type === '<') {
+        this.r += `c._${block.tag}=function(){var r='';`;
+        this.compileBuffer(block.buffer);
+        this.r += `return r;};`;
+      }
+    });
+
+    //
     buffer.forEach(block => {
       if (block.type === 'r') {
         // reference
         this.r += `r+=${this._getReference(block)};`;
-      } else if (block.type === '<') {
-        // declare content (declare function)
-        this.r += `function _${block.tag}(){`;
-        this.compileBuffer(block.buffer);
-        this.r += `}`;
       } else if (block.type === '+') {
-        // insert content (invoke function)
-        this.r += `if(typeof _${block.tag}!=='undefined'){_${block.tag}()}`;
+        // insert content (invoke content function)
+        this.r += `if (c._${block.tag})r+=c._${block.tag}();`;
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
         const not = block.type === '^' ? '!' : '';
-        this.r += `if(${not}(${this._getValue(block.tag, block.params)})){`;
+        this._addParamstoLocals(block.params);
+        this.r += `if(${not}(${this._getValue(block.tag)})){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
         this._else(block);
+        // TODO: clean params from locals
       } else if (block.type === '#') {
         // loop block
         this.i++;
         const { i } = this;
         const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || 'it';
-        this.r += `var a${i}=u.a(${this._getValue(block.tag, block.params)});`
+        this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
         this.r += `if(a${i}) {`;
         if (!block.buffer) {
           this.r += `r+=a${i};`
         } else {
           // Save previous index and length
-          this.r += `var p_idx${i} = l.$idx;`;
-          this.r += `var p_length${i} = l.$length;`;
-          this.r += `l.$length = a${i}.length;`; // current array length
+          this.r += `var p_idx${i}=l.$idx;`;
+          this.r += `var p_length${i}=l.$length;`;
+          this.r += `l.$length=a${i}.length;`; // current array length
           this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
-          this.r += `l.${it} = a${i}[i${i}];`;
-          this.r += `l.$idx = i${i};`; // current id
+          this.r += `l.${it}=a${i}[i${i}];`;
+          this.r += `l.$idx=i${i};`; // current id
           this.compileBuffer(block.buffer);
           this.r += '}';
           // Reset previous index and length (it is lost)
@@ -68,7 +66,7 @@ class Compiler {
         // helper
         this.i++;
         const { i } = this;
-        this.r += `var h${i}=u.h('${block.tag}', ${this._getParams(block.params)}, l);`
+        this.r += `var h${i}=u.h('${block.tag}',${this._getParams(block.params)},l);`
         this.r += `if(h${i}) {`;
         if (block.buffer) {
           this.compileBuffer(block.buffer);
@@ -80,7 +78,8 @@ class Compiler {
       } else if (block.type === '>') {
         // include
         this._addParamstoLocals(block.params);
-        this.loadFile(block.file);
+        const file = this._getParam(block.file);
+        this.r += `r+=u.i(${file})(l,u,c);`;
         // TODO: clean params from locals
       } else if (!block.type){
         // default: raw text
@@ -93,8 +92,7 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
-    // console.dir(this.r);
-    return new Function('l', 'u', this.r);
+    return new Function('l', 'u', 'c', this.r);
   }
 
   _else(block) {
@@ -108,21 +106,48 @@ class Compiler {
   //
   _addParamstoLocals(params) {
     Object.keys(params).forEach(key => {
+      if (key === '$') {
+        return;
+      }
       this.r += `l.${key}=${this._getParam(params[key])};`;
     });
   }
 
   _getParam(param) {
     if (param[0] === '"') {
+      let ret = [], match, index = 0;
+
+      param = ParseUtils.stripDoubleQuotes(param);
+
       // string
-      return `'${ParseUtils.stripDoubleQuotes(param)}'`;
+      const ref = new RegExp('\\{([^\\}]*)\\}', 'msg');
+      while ((match = ref.exec(param)) !== null) {
+        // left part
+        ret.push(`'${param.substring(index, match.index)}'`);
+        index = match.index + match[0].length;
+        ret.push(this._getValue(match[1]));
+      }
+      // final right part
+      if (index < param.length) {
+        ret.push(`'${param.substring(index, param.length)}'`);
+      }
+      return ret.join('+');
     }
     // ref
     return this._getValue(param);
   }
 
   //
-  _getValue(tag, params) {
+  _getValue(tag) {
+    // TEMP / handle current iterator context
+    if (tag === '.') {
+      return 'l.it';
+    }
+
+    if (tag[0] === '.') {
+      tag = 'it' + tag;
+    }
+
     let i;
     const ret = [];
     while((i = tag.lastIndexOf('.')) >= 0) {
@@ -130,7 +155,8 @@ class Compiler {
       tag = tag.substring(0, i);
     }
     ret.unshift(`l.${tag}`);
-    ret[ret.length -1] = `(typeof ${ret[ret.length -1]}==='function'?u.r(${ret[ret.length -1]},${this._getParams(params)},l) : ${ret[ret.length -1]})`;
+    const last = ret[ret.length - 1];
+    ret[ret.length - 1] = `(typeof ${last}==='function'?${last}(l):${last})`;
     return ret.join('&&');
   }
 
@@ -144,7 +170,7 @@ class Compiler {
   }
 
   _getReference(block) {
-    let ret = `${this._getValue(block.tag, block.params)} || ''`;
+    let ret = `${this._getValue(block.tag)}||''`;
     if (!block.f) {
       return ret;
     }
@@ -158,10 +184,6 @@ class Compiler {
     return ret;
   }
 
-  _getFilters(filters) {
-    filters = filters.split('|');
-    return `{'${filters.join(`':true,'`)}':true}`;
-  }
 }
 
 module.exports = Compiler;
