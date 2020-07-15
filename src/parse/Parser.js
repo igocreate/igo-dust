@@ -56,7 +56,7 @@ class Parser {
     this.buffer       = last.bodies[tag];
   }
 
-  parse(str, params) {
+  parse(str) {
     // remove spaces at the beginning of lines, line breaks and comment
     str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '').replace(/{!.*?!}/g, '');
     
@@ -94,7 +94,7 @@ class Parser {
       index = closeMatch.index + closeMatch[0].length;
       openRegexp.lastIndex = index;
 
-      this.parseTag(tag, params);
+      this.parseTag(tag);
     }
 
     if (index < str.length) {
@@ -106,14 +106,13 @@ class Parser {
     return this.global;
   }
 
-  parseTag(str, params = {}) {
+  parseTag(str) {
 
     const tag = Tags[str[0]];
 
     const block = {
       type: str[0],
       tag:  str,
-      params,
     };
     if (!tag) {
       // reference
@@ -158,8 +157,6 @@ class Parser {
 
   // TODO: rewrite
   parseParams(str, block) {
-    
-    const params = 
 
     block.params = ParseUtils.parseParams(str);
 
