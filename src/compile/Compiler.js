@@ -32,7 +32,7 @@ class Compiler {
         // conditional block
         const not = block.type === '^' ? '!' : '';
         this._addParamstoLocals(block.params);
-        this.r += `if(${not}(${this._getValue(block.tag)})){`;
+        this.r += `if(${not}u.b(${this._getValue(block.tag)})){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
         this._else(block);

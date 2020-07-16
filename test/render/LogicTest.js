@@ -58,15 +58,10 @@ describe('Render Logic', () => {
     assert.equal(s, 'Hello.');
   });
 
-  // ToDo
-  it.skip('should considere an empty array as a false condition', () => {
-    const template  = '<input type="checkbox" {?isChecked}checked{/isChecked} /> {?users} {users.length} users{/users} {^friends}, no friends{/friens}!';
-    const r         = new Renderer().render(template, {
-      "isChecked": false,
-      "users": ["John", "Jane"],
-      "friends": []
-    });
-    assert.equal(r, '<input type="checkbox" /> 2 users, no friends!');
+  it('should consider an empty array as a false condition', () => {
+    const template  = 'OK {?users}{users.length} users{/users}.';
+    const r         = new Renderer().render(template, { users: [] });
+    assert.equal(r, 'OK .');
   });
 
 });

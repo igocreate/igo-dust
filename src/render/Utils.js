@@ -20,6 +20,17 @@ const f = {
   u: (s) => s.toUpperCase()
 };
 
+// return boolean
+const b = (v) => {
+  if (!v) {
+    return false;
+  }
+  if (v.length === 0) {
+    return false;
+  }
+  return true;
+};
+
 // return array
 const a = (v) => {
   if (Array.isArray(v)) {
@@ -44,4 +55,4 @@ const i = (file) => {
   return CACHE.getCompiled(file + '.dust');
 };
 
-module.exports = { a, h, f, i };
+module.exports = { a, b, h, f, i };
