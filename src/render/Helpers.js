@@ -1,43 +1,22 @@
 
 //
+const truthTest = (tag, test) => {
+  return (params, locals) => test(params.key, params.value);
+};
+
+//
 module.exports = {
+  eq:   truthTest('eq',   (left, right) => left === right ),
+  ne:   truthTest('ne',   (left, right) => left !== right ),
+  lt:   truthTest('lt',   (left, right) => Number(left) <   Number(right)),
+  lte:  truthTest('lte',  (left, right) => Number(left) <=  Number(right)),
+  gt:   truthTest('gt',   (left, right) => Number(left) >   Number(right)),
+  gte:  truthTest('gte',  (left, right) => Number(left) >=  Number(right)),
 
-  eq: truthTest('eq', function(left, right) {
-    return left === right;
-  }),
-  ne: truthTest('ne', function(left, right) {
-    return left !== right;
-  }),
-  lt: truthTest('lt', function(left, right) {
-    return parseInt(left, 10) < parseInt(right, 10);
-  }),
-  lte: truthTest('lte', function(left, right) {
-    return parseInt(left, 10) <= parseInt( right, 10);
-  }),
-  gt: truthTest('gt', function(left, right) {
-    return parseInt(left, 10) > parseInt(right, 10);
-  }),
-  gte: truthTest('gte', function(left, right) {
-    return parseInt(left, 10) >= parseInt( right, 10);
-  }),
-
-  select: function() {
-    console.log('Error : @select not supported !')
-  },
-  first: function(params, locals) {
-    return locals.$idx === 0;
-  },
-  last: function(params, locals) {
-    return locals.$length && locals.$length - 1 === locals.$idx;
-  },
-  sep: function(params, locals) {
-    return locals.$length && locals.$length - 1 !== locals.$idx;
-  },
+  first:  (params, locals) => locals.$idx === 0,
+  last:   (params, locals) => locals.$length && locals.$length - 1 === locals.$idx,
+  sep:    (params, locals) => locals.$length && locals.$length - 1 !== locals.$idx,
+  
+  select: () => console.log('Error : @select not supported !'),
 };
 
-function truthTest(tag, test) {
-  return function(params, locals) {
-    const left = params.key;
-    return test(left, params.value);
-  };
-};
