@@ -19,6 +19,15 @@ class Parser {
   pushString(str) {
     // escape string
     str = str.replace(/'/g, '\\\'');          // escape single quotes
+    
+    const i     = this.buffer.length - 1
+    const last  = this.buffer[i];
+
+    if (typeof last === 'string') {
+      this.buffer[i] = last + str;
+      return;
+    }
+    
     // push
     this.buffer.push(str);
   }
