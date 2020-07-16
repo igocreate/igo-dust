@@ -3,6 +3,9 @@ const FileUtils = require('../fs/FileUtils');
 const Parser    = require('../parse/Parser');
 const Compiler  = require('../compile/Compiler');
 
+const config    = require('../Config');
+
+//
 class Cache {
 
   constructor() {
@@ -17,12 +20,12 @@ class Cache {
     this._CACHE[key] = value;
   }
 
-  getCompiled(filePath, options) {
+  getCompiled(filePath) {
 
-    filePath = FileUtils.getFilePath(filePath, options);
+    filePath = FileUtils.getFilePath(filePath);
 
     let compiled = this.get(filePath);
-    if (compiled) {
+    if (config.cache && compiled) {
       // console.log('igo-dust cache hit: ' + filePath);
       return compiled;
     }

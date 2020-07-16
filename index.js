@@ -5,6 +5,7 @@ const Renderer  = require('./src/render/Renderer');
 const Helpers   = require('./src/render/Helpers');
 const FileUtils = require('./src/fs/FileUtils');
 const CACHE     = require('./src/cache/Cache');
+const config    = require('./src/Config');
 
 //
 module.exports.compile = (src) => {
@@ -19,9 +20,10 @@ module.exports.render = (compiled, data) => {
 
 // expressjs engine
 module.exports.engine = (filePath, options, callback) => {
-  // console.dir(options.settings.view.toString());
-  
-  const compiled = CACHE.getCompiled(filePath, options);
+  if (!config.loaded) {
+    config.load(options);
+  }
+  const compiled = CACHE.getCompiled(filePath);
   const rendered = module.exports.render(compiled, options);
   callback(null, rendered);
 };
