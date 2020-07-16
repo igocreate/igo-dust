@@ -1,5 +1,4 @@
 
-const _         = require('lodash');
 const Utils     = require('./Utils');
 const Helpers   = require('./Helpers');
 

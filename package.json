@@ -1,12 +1,9 @@
 {
   "name": "igo-dust",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "lodash": "^4.17.15",
-    "moment": "^2.27.0"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "mocha --recursive"
