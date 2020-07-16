@@ -19,6 +19,24 @@ describe('Parser', () => {
     assert.equal(buffer[2], ', ok.');
   });
 
+  it('should ignore incorrect tags ', () => {
+    const TEMPLATE = 'Hello {world one} { world two }, ok.';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 5);
+    assert.equal(buffer[0], 'Hello ');
+    assert.equal(buffer[1], '{world one}');
+    assert.equal(buffer[3], '{ world two }');
+  });
+
+  it('should ignore css styles ', () => {
+    const TEMPLATE = '<style> body {\r\n    background-color: #f6f6f6;\r\n  }</style>';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    assert.equal(buffer[0], '<style> body ');
+    assert.equal(buffer[1], '{background-color: #f6f6f6;}');
+    assert.equal(buffer[2], '</style>');
+  });
+
   it('should ignore comment', () => {
     const TEMPLATE = 'Hello {! comment on hello world !}World!';
     const buffer = new Parser().parse(TEMPLATE);
@@ -59,7 +77,7 @@ describe('Parser', () => {
   });
 
   it('should parse filters', () => {
-    const TEMPLATE = 'Hello {name|reverse|uppercase | urlencode}, ok.';
+    const TEMPLATE = 'Hello {name|reverse|uppercase|urlencode}, ok.';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].tag, 'name');

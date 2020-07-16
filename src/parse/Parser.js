@@ -94,7 +94,10 @@ class Parser {
       index = closeMatch.index + closeMatch[0].length;
       openRegexp.lastIndex = index;
 
-      this.parseTag(tag);
+      if (!this.parseTag(tag)) {
+        // tag is ignored: push content to buffer
+        this.pushString('{' + closeMatch[0]);
+      }
     }
 
     if (index < str.length) {
@@ -106,6 +109,7 @@ class Parser {
     return this.global;
   }
 
+  // parse tag. returns true if tag was found
   parseTag(str) {
 
     const tag = Tags[str[0]];
@@ -115,11 +119,17 @@ class Parser {
       tag:  str,
     };
     if (!tag) {
+
+      // skip this tag if it's not correct
+      if (str.indexOf(' ') >= 0) {
+        return false;
+      }
+
       // reference
       block.type = 'r';
       this.parseFilters(str, block);
       this.pushBlock(block);
-      return;
+      return true;
     }
     
     // set self closing tag
@@ -131,8 +141,10 @@ class Parser {
     // parse params
     block.params = ParseUtils.parseParams(str);
 
-    // apply tag
+    // invoke tag function
     tag(this, block);
+    
+    return true;
   }
 
   parseFilters(str, block) {
