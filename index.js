@@ -22,7 +22,7 @@ module.exports.engine = (filePath, options, callback) => {
   // console.dir(options.settings.view.toString());
   
   const compiled = CACHE.getCompiled(filePath, options);
-  const rendered = module.exports.render(compiled, options._locals);
+  const rendered = module.exports.render(compiled, options);
   callback(null, rendered);
 };
 
