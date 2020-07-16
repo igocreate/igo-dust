@@ -4,9 +4,7 @@ const Compiler  = require('./src/compile/Compiler');
 const Renderer  = require('./src/render/Renderer');
 const Helpers   = require('./src/render/Helpers');
 const FileUtils = require('./src/fs/FileUtils');
-
-
-const COMPILED_CACHE = {};
+const CACHE     = require('./src/cache/Cache');
 
 //
 module.exports.compile = (src) => {
@@ -19,18 +17,11 @@ module.exports.render = (compiled, data) => {
   return new Renderer().render(compiled, data);
 };
 
-const getCompiled = (filePath, options) => {
-  // console.dir(options.settings.view.toString());
-  if (!options.cache || !COMPILED_CACHE[filePath]) {
-    const src = FileUtils.loadFile(filePath);
-    COMPILED_CACHE[filePath] = module.exports.compile(src);
-  }
-  return COMPILED_CACHE[filePath];
-}
-
 // expressjs engine
 module.exports.engine = (filePath, options, callback) => {
-  const compiled = getCompiled(filePath, options);
+  // console.dir(options.settings.view.toString());
+  
+  const compiled = CACHE.getCompiled(filePath, options);
   const rendered = module.exports.render(compiled, options._locals);
   callback(null, rendered);
 };

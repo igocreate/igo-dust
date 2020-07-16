@@ -1,7 +1,6 @@
 
-const FileUtils = require('../fs/FileUtils');
-const Parser    = require('../parse/Parser');
-const Compiler  = require('../compile/Compiler');
+const CACHE = require('../cache/Cache');
+
 
 // filters
 const HCHARS = /[&<>"']/,
@@ -42,10 +41,7 @@ const h = (t, p, l) => {
 
 // include file
 const i = (file) => {
-  const str     = FileUtils.loadFile(file);
-  const buffer  = new Parser().parse(str);
-  const fn      = new Compiler().compile(buffer);
-  return fn;
+  return CACHE.getCompiled(file + '.dust');
 };
 
 module.exports = { a, h, f, i };

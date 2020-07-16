@@ -115,11 +115,12 @@ class Compiler {
 
   _getParam(param) {
     if (param[0] === '"') {
+      // string
       let ret = [], match, index = 0;
 
       param = ParseUtils.stripDoubleQuotes(param);
 
-      // string
+      // replace references in string
       const ref = new RegExp('\\{([^\\}]*)\\}', 'msg');
       while ((match = ref.exec(param)) !== null) {
         // left part
@@ -139,7 +140,7 @@ class Compiler {
 
   //
   _getValue(tag) {
-    // TEMP / handle current iterator context
+    // TEMP / use current iterator context
     if (tag === '.') {
       return 'l.it';
     }
