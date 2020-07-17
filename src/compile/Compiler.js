@@ -27,23 +27,24 @@ class Compiler {
         this.r += `r+=${this._getReference(block)};`;
       } else if (block.type === '+') {
         // insert content (invoke content function)
-        this.r += `if (c._${block.tag})r+=c._${block.tag}();`;
+        this.r += `if (c._${block.tag}){r+=c._${block.tag}();}`;
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
         const not = block.type === '^' ? '!' : '';
-        this._addParamstoLocals(block.params);
+        this._addParamsToLocals(block.params);
         this.r += `if(${not}u.b(${this._getValue(block.tag)})){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
         this._else(block);
-        // TODO: clean params from locals
+        this._cleanParamsFromLocals(block.params);
       } else if (block.type === '#') {
         // loop block
         this.i++;
         const { i } = this;
         const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || 'it';
+        this._addParamsToLocals(block.params);
         this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
-        this.r += `if(a${i}) {`;
+        this.r += `if(a${i}){`;
         if (!block.buffer) {
           this.r += `r+=a${i};`
         } else {
@@ -62,6 +63,7 @@ class Compiler {
         }
         this.r += `}`;
         this._else(block);
+        this._cleanParamsFromLocals(block.params);
       } else if (block.type === '@') {
         // helper
         this.i++;
@@ -77,7 +79,7 @@ class Compiler {
         this._else(block);
       } else if (block.type === '>') {
         // include
-        this._addParamstoLocals(block.params);
+        this._addParamsToLocals(block.params);
         const file = this._getParam(block.file);
         this.r += `r+=u.i(${file})(l,u,c);`;
         // TODO: clean params from locals
@@ -104,13 +106,18 @@ class Compiler {
   }
 
   //
-  _addParamstoLocals(params) {
+  _addParamsToLocals(params) {
     Object.keys(params).forEach(key => {
       if (key === '$') {
         return;
       }
       this.r += `l.${key}=${this._getParam(params[key])};`;
     });
+  }
+
+  //
+  _cleanParamsFromLocals(params) {
+
   }
 
   _getParam(param) {
