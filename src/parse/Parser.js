@@ -168,9 +168,9 @@ class Parser {
       } else {
         f.push('e');
       }
-      block.f = f.join('|');
+      block.f = f;
     } else {
-      block.f = 'e';
+      block.f = ['e'];
     }
   }
 

@@ -1,15 +1,16 @@
 
-const CACHE = require('../cache/Cache');
+const Cache = require('../Cache');
 
 
 // filters
 const HCHARS = /[&<>"']/,
-  AMP    = /&/g,
-  LT     = /</g,
-  GT     = />/g,
-  QUOT   = /\"/g,
-  SQUOT  = /\'/g;
+      AMP    = /&/g,
+      LT     = /</g,
+      GT     = />/g,
+      QUOT   = /\"/g,
+      SQUOT  = /\'/g;
 
+  //
 const f = {
   e: (s) => {
     if (!s.replace || !HCHARS.test(s)) {
@@ -17,7 +18,7 @@ const f = {
     }
     return s.replace(AMP,'&amp;').replace(LT,'&lt;').replace(GT,'&gt;').replace(QUOT,'&quot;').replace(SQUOT, '&#39;');
   },
-  u: (s) => s.toUpperCase()
+  uppercase: (s) => s.toUpperCase()
 };
 
 // return boolean
@@ -52,7 +53,7 @@ const h = (t, p, l) => {
 
 // include file
 const i = (file) => {
-  return CACHE.getCompiled(file + '.dust');
+  return Cache.getCompiled(file + '.dust');
 };
 
 module.exports = { a, b, h, f, i };

@@ -3,9 +3,10 @@ const Parser    = require('./src/parse/Parser');
 const Compiler  = require('./src/compile/Compiler');
 const Renderer  = require('./src/render/Renderer');
 const Helpers   = require('./src/render/Helpers');
-const FileUtils = require('./src/fs/FileUtils');
-const CACHE     = require('./src/cache/Cache');
-const config    = require('./src/Config');
+const Utils     = require('./src/render/Utils');
+
+const Cache     = require('./src/Cache');
+const Config    = require('./src/Config');
 
 //
 module.exports.compile = (src) => {
@@ -23,9 +24,12 @@ module.exports.engine = (filePath, options, callback) => {
   if (!config.loaded) {
     config.load(options);
   }
-  const compiled = CACHE.getCompiled(filePath);
+  const compiled = Cache.getCompiled(filePath);
   const rendered = module.exports.render(compiled, options);
   callback(null, rendered);
 };
 
-module.exports.helpers = Helpers;
+//
+module.exports.helpers  = Helpers;
+module.exports.filters  = Utils.f;
+module.exports.config   = Config;

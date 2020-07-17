@@ -145,7 +145,7 @@ class Compiler {
 
   //
   _getValue(tag) {
-    // TEMP / use current iterator context
+    // TEMP / this syntax will be deprecated
     if (tag === '.') {
       return 'l.it';
     }
@@ -180,13 +180,9 @@ class Compiler {
     if (!block.f) {
       return ret;
     }
-    const f = block.f.split('|');
-    if (f.indexOf('uppercase') >= 0) {
-      ret = `u.f.u(${ret})`;
-    }
-    if (f.indexOf('e') >= 0) {
-      ret = `u.f.e(${ret})`;
-    }
+    block.f.forEach(f => {
+      ret = `u.f.${f}(${ret})`;
+    });
     return ret;
   }
 

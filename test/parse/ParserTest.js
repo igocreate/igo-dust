@@ -77,7 +77,9 @@ describe('Parser', () => {
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].tag, 'name');
-    assert.equal(buffer[1].f, 'reverse|uppercase|urlencode|e');
+    assert.equal(buffer[1].f.length, 4);
+    assert.equal(buffer[1].f[2], 'urlencode');
+    assert.equal(buffer[1].f[3], 'e');
   });
 
   it('should parse nested tags', () => {

@@ -1,9 +1,9 @@
 
-const FileUtils = require('../fs/FileUtils');
-const Parser    = require('../parse/Parser');
-const Compiler  = require('../compile/Compiler');
+const FileUtils = require('./fs/FileUtils');
+const Parser    = require('./parse/Parser');
+const Compiler  = require('./compile/Compiler');
 
-const config    = require('../Config');
+const config    = require('./Config');
 
 //
 class Cache {
