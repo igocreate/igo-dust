@@ -16,12 +16,13 @@ class Parser {
 
   // add string
   pushString(str) {
-    // escape string
-    str = str.replace(/'/g, '\\\'');          // escape single quotes
+    // escape single quotes
+    str = str.replace(/'/g, '\\\'');
     
     const i     = this.buffer.length - 1
     const last  = this.buffer[i];
 
+    // concat with previous string buffer
     if (typeof last === 'string') {
       this.buffer[i] = last + str;
       return;
@@ -65,8 +66,15 @@ class Parser {
   }
 
   parse(str) {
-    // remove spaces at the beginning of lines, line breaks and comment
-    str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '').replace(/{!.*?!}/g, '');
+    // remove spaces at the beginning of lines and line breaks
+    if (Config.htmltrim) {
+      str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '');
+    } else {
+      str = str.replace(/\r/g , '\\r').replace(/\n/g , '\\n');
+    }
+
+    // remove comments
+    str = str.replace(/{!.*?!}/gm, '');
     
     const openRegexp   = new RegExp('(.*?)\\{', 'msg');
     const closeRegexp  = new RegExp('(.*?)\\}', 'msg');
