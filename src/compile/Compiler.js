@@ -94,6 +94,7 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
+    // console.log(this.r);
     return new Function('l', 'u', 'c', this.r);
   }
 
@@ -123,7 +124,7 @@ class Compiler {
   _getParam(param) {
     if (param[0] === '"') {
       // string
-      let ret = [], match, index = 0;
+      let ret = [], match, index = 0, s;
 
       param = ParseUtils.stripDoubleQuotes(param);
 
@@ -137,7 +138,10 @@ class Compiler {
       }
       // final right part
       if (index < param.length) {
-        ret.push(`'${param.substring(index, param.length)}'`);
+        s = param.substring(index, param.length);
+        // escape single quotes
+        s = s.replace(/'/g, '\\\'');
+        ret.push(`'${s}'`);
       }
       return ret.join('+');
     }

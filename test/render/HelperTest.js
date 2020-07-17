@@ -31,6 +31,12 @@ describe('Render Helpers', () => {
     assert.equal(r, 'Hello ');
   });
 
+  it('should allow quotes in params', () => {
+    const template  = 'Hello {@eq key=w value="world\'s one"}{w}{/eq}';
+    const r         = new Renderer().render(template, { w: 'World\'s one' });
+    assert.equal(r, 'Hello ');
+  });
+
   it('should render with ne helper', () => {
     const template  = 'Hello {@ne key=w value="world"}{w}{/ne}';
     const r         = new Renderer().render(template, { w: 'World' });

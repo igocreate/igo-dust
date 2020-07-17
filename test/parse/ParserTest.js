@@ -11,6 +11,13 @@ describe('Parser', () => {
     assert.equal(buffer[0], TEMPLATE);
   });
 
+  it('should escape quotes', () => {
+    const TEMPLATE = 'Hello World\'s One';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], 'Hello World\\\'s One');
+  });
+
   it('should parse reference', () => {
     const TEMPLATE = 'Hello {world}, ok.';
     const buffer = new Parser().parse(TEMPLATE);
