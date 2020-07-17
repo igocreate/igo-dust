@@ -33,6 +33,13 @@ describe('Parser', () => {
     assert.equal(buffer[0], TEMPLATE.replace(/^\s+/gm, '').replace(/[\r\n]/g , ''));
   });
 
+  it('should ignore js code ', () => {
+    const TEMPLATE = '<script>WebFont.load({google: {"families":["Poppins:300,400,500,600,700"]}});</script>';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], TEMPLATE);
+  });  
+
   it('should ignore comment', () => {
     const TEMPLATE = 'Hello {! comment on hello world !}World!';
     const buffer = new Parser().parse(TEMPLATE);

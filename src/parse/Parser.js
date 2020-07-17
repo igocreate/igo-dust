@@ -112,7 +112,7 @@ class Parser {
 
       if (!this.parseTag(tag)) {
         // tag is ignored: push content to buffer
-        this.pushString('{' + closeMatch[0]);
+        this.pushString(`{${tag}}`);
       }
     }
 
