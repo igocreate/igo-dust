@@ -127,13 +127,12 @@ class Parser {
       type: str[0],
       tag:  str,
     };
-    if (!tag) {
 
+    if (!tag) {
       // skip this tag if it's not correct
       if (str.indexOf(' ') >= 0) {
         return false;
       }
-
       // reference
       block.type = 'r';
       this.parseFilters(str, block);

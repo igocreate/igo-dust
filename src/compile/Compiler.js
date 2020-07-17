@@ -134,6 +134,11 @@ class Compiler {
       }
       return ret.join('+');
     }
+
+    if (!isNaN(param)) {
+      return param;
+    }
+
     // ref
     return this._getValue(param);
   }
