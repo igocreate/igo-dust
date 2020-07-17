@@ -57,15 +57,25 @@ const stringifyJson = (o) => {
           .replace(LT, '\\u003c');
 };
 
-//
+// Filters
 const f = {
-  h:  htmlencode,
-  j:  escapeJs,
-  u:  encodeURI,
-  uc: encodeURIComponent,
-  js: stringifyJson,
-  jp: JSON.parse,
-  uppercase: (s) => s.toUpperCase(),
+  h:          htmlencode,
+  j:          escapeJs,
+  u:          encodeURI,
+  uc:         encodeURIComponent,
+  js:         stringifyJson,
+  jp:         JSON.parse,
+  uppercase:  s => s.toUpperCase(),
+  lowercase:  s => s.toLowerCase(),
+};
+
+
+// return value (if it's a function, invoke it with locals)
+const v = (s, p, l) => {
+  if (typeof s === 'function') {
+    return s(p, l);
+  }
+  return s;
 };
 
 // return boolean
@@ -103,4 +113,4 @@ const i = (file) => {
   return Cache.getCompiled(file + '.dust');
 };
 
-module.exports = { a, b, h, f, i };
+module.exports = { a, b, v, h, f, i };

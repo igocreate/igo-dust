@@ -162,7 +162,7 @@ class Compiler {
     }
     ret.unshift(`l.${tag}`);
     const last = ret[ret.length - 1];
-    ret[ret.length - 1] = `(typeof ${last}==='function'?${last}(l):${last})`;
+    ret[ret.length - 1] = `u.v(${last},l)`;
     return ret.join('&&');
   }
 
