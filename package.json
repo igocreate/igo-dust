@@ -1,13 +1,13 @@
 {
   "name": "igo-dust",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "Javascript template engine",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "mocha --recursive"
   },
-  "author": "",
+  "author": "Igocreate.com",
   "license": "ISC"
 }
