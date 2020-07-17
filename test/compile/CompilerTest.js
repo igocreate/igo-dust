@@ -50,7 +50,7 @@ describe('Compiler', () => {
   });
 
   it('should escape xml characters in references', () => {
-    const buffer  = [ 'Hello ', {type: 'r', tag: 'name', f: ['e']} ];
+    const buffer  = [ 'Hello ', {type: 'r', tag: 'name', f: ['h']} ];
     const fn      = new Compiler().compile(buffer);
     const r       = fn({name: '<World>'}, Utils);
     assert.equal(r, 'Hello &lt;World&gt;');
@@ -64,7 +64,7 @@ describe('Compiler', () => {
   });
 
   it('should apply filters', () => {
-    const buffer  = [ 'Hello ', {type: 'r', tag: 'name', f: ['uppercase', 'e']} ];
+    const buffer  = [ 'Hello ', {type: 'r', tag: 'name', f: ['uppercase', 'h']} ];
     const fn      = new Compiler().compile(buffer);
     const r       = fn({name: '<World>'}, Utils);
     assert.equal(r, 'Hello &lt;WORLD&gt;');

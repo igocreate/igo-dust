@@ -2,8 +2,7 @@
 const ParseUtils  = require('./ParseUtils');
 const Tags        = require('./Tags');
 
-const FileUtils = require('../fs/FileUtils');
-
+const Config      = require('../Config');
 
 
 class Parser {
@@ -165,12 +164,12 @@ class Parser {
       const s   = f.indexOf('s');
       if (s > -1) {
         f.splice(s, 1);
-      } else {
-        f.push('e');
+      } else if (Config.htmlencode) {
+        f.push('h');
       }
       block.f = f;
-    } else {
-      block.f = ['e'];
+    } else if (Config.htmlencode) {
+      block.f = ['h'];
     }
   }
 

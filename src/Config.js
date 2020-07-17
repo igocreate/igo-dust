@@ -3,15 +3,16 @@
 class Config {
 
   constructor() {
-    this.loaded = false;
+    this.cache      = false;
+    this.views      = './views';
+    this.htmlencode = true;
   }
 
   load(options) {
-    this.cache  = !!options.cache;
-    this.views  = options.settings.views || './views';
+    this.once = true;
 
-    // done
-    this.loaded = true;
+    this.cache  = !!options.cache;
+    this.views  = options.settings.views || this.views;
   }
 
 };

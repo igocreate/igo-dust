@@ -47,7 +47,7 @@ describe('Parser', () => {
     assert.equal(buffer[0], 'Hello ');
     assert.equal(buffer[1].type, 'r');
     assert.equal(buffer[1].tag, 'world');
-    assert.equal(buffer[1].f, 'e');
+    assert.equal(buffer[1].f[0], 'h');
     assert.equal(buffer[2], ', ok. ');
     assert.equal(buffer[3].tag, 'world');
     assert.equal(buffer[4].tag, 'world');
@@ -79,7 +79,7 @@ describe('Parser', () => {
     assert.equal(buffer[1].tag, 'name');
     assert.equal(buffer[1].f.length, 4);
     assert.equal(buffer[1].f[2], 'urlencode');
-    assert.equal(buffer[1].f[3], 'e');
+    assert.equal(buffer[1].f[3], 'h');
   });
 
   it('should parse nested tags', () => {

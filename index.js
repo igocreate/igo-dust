@@ -21,7 +21,7 @@ module.exports.render = (compiled, data) => {
 
 // expressjs engine
 module.exports.engine = (filePath, options, callback) => {
-  if (!config.loaded) {
+  if (!config.once) {
     config.load(options);
   }
   const compiled = Cache.getCompiled(filePath);
