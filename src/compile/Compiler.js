@@ -172,8 +172,9 @@ class Compiler {
       tag = tag.substring(0, i);
     }
     ret.unshift(`l.${tag}`);
-    const last = ret[ret.length - 1];
-    ret[ret.length - 1] = `u.v(${last},l)`;
+    const last  = ret[ret.length - 1];
+    const _this = ret[ret.length - 2];
+    ret[ret.length - 1] = `u.v(${last},${_this},l)`;
     return `(${ret.join('&&')})`;
   }
 
