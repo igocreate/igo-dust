@@ -137,7 +137,7 @@ class Parser {
 
     if (!tag) {
       // skip this tag if it's not correct
-      if (str.indexOf(' ') >= 0) {
+      if (str.indexOf(' ') >= 0 || str.indexOf('(') >= 0 || str.indexOf(';') >= 0) {
         return false;
       }
       // reference

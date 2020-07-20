@@ -47,6 +47,19 @@ describe('Parser', () => {
     assert.equal(buffer[0], TEMPLATE);
   });  
 
+  it('should replace reference js code ', () => {
+    const TEMPLATE = `
+      <script async src="https://www.googletagmanager.com/gtag/js?id={site_config.analytics}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{site_config.analytics}');
+      </script>`;
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 5);
+  });  
+
   it('should ignore comment', () => {
     const TEMPLATE = 'Hello {! comment on hello world !}World!';
     const buffer = new Parser().parse(TEMPLATE);
