@@ -110,7 +110,10 @@ const h = (t, p, l) => {
 
 // include file
 const i = (file) => {
-  return Cache.getCompiled(file + '.dust');
+  if (!file.endsWith('.dust')) {
+    file = file + '.dust';
+  }
+  return Cache.getCompiled(file);
 };
 
 module.exports = { a, b, v, h, f, i };

@@ -161,20 +161,55 @@ class Compiler {
       return 'l.it';
     }
 
+    if (!isNaN(tag)) {
+      return tag;
+    }
+
     if (tag[0] === '.') {
       tag = 'it' + tag;
     }
 
-    let i;
-    const ret = [];
-    while((i = tag.lastIndexOf('.')) >= 0) {
-      ret.unshift(`l.${tag}`);
-      tag = tag.substring(0, i);
+    const elements = [];
+    let i, c, sub = false, idx = 0;
+    // parse ref
+    for (i = 0; i < tag.length; i++) {
+      c = tag[i];
+      if (!sub && (c === '.' || c === '[')) {
+        if (i > idx) {
+          elements.push(tag.substring(idx, i));
+        }
+        idx = i + 1;
+        sub = (c === '[');
+      } else if (c === ']') {
+        elements.push('[' + this._getValue(tag.substring(idx, i)) + ']');
+        sub = false;
+        idx = i + 1;
+      }
     }
-    ret.unshift(`l.${tag}`);
+
+    // last part
+    elements.push(tag.substring(idx, i));
+
+    // build string
+    let current = 'l', ret = [];
+    elements.forEach((element) => {
+      if (element[0] === '[') {
+        current += element;
+      } else {
+        current += '.' + element;
+      }
+      ret.push(current);
+    });
+
+    // use u.v to invoke function on last element
+
+    if (ret.length === 1) {
+      return `u.v(${ret[0]},null,l)`;
+    }
     const last  = ret[ret.length - 1];
     const _this = ret[ret.length - 2];
     ret[ret.length - 1] = `u.v(${last},${_this},l)`;
+
     return `(${ret.join('&&')})`;
   }
 
