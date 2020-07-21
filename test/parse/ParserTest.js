@@ -85,7 +85,7 @@ describe('Parser', () => {
     try {
       const buffer = new Parser().parse(TEMPLATE);
     } catch(err) {
-      assert.equal(err.message, 'Missing closing }. index: 7');
+      assert.equal(err.message, 'Missing closing "}" at index 7');
     }
   });
 
@@ -265,12 +265,27 @@ describe('Parser', () => {
     assert.equal(buffer[0].params.text, '"ok-{test}"');
   });
 
-  it('should not add buffer to loop tag if self closed', () => {
+  it('should detect self closed tag with string param', () => {
     const TEMPLATE = 'Hello {#world params="value" /}';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 2);
     assert.equal(buffer[1].type, '#');
     assert(!buffer[1].buffer);
     assert(buffer[1].selfClosedTag);
+    assert(buffer[1].params.params, '"value"');
   });
+
+  it('should detect self closed tag with reference param', () => {
+    const TEMPLATE = 'Hello {#t key="dashboard.workshops.workshop" context=site/}';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    assert.equal(buffer[1].type, '#');
+    console.dir(buffer[1]);
+    assert(!buffer[1].buffer);
+    assert(buffer[1].selfClosedTag);
+    assert(buffer[1].params.key, '"dashboard.workshops.workshop"');
+    assert(buffer[1].params.context, 'site');
+  });
+
+  
 });

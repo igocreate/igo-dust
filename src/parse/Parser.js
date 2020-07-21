@@ -104,7 +104,7 @@ class Parser {
 
       if (!closeMatch) {
         // parsing error
-        throw new Error('Missing closing }. index: ' + index);
+        throw new Error(`Missing closing "}" at index ${index}`);
       }
 
       index = closeMatch.index + closeMatch[0].length;
@@ -148,7 +148,10 @@ class Parser {
     }
     
     // set self closing tag
-    block.selfClosedTag = str.endsWith('/');
+    if (str.endsWith('/')) {
+      block.selfClosedTag = true;
+      str = str.substring(0, str.length - 1);
+    }
     
     // remove first char
     block.tag = ParseUtils.parseTag(block.tag);

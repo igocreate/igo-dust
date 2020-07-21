@@ -34,10 +34,15 @@ describe('Render Includes & Layouts', () => {
     assert.equal(r, 'Hello !');
   });
 
-  // 
   it('should render dynamic include', () => {
     const template  = 'Hello {> "./templates/{file}" /}';
     const r         = new Renderer().render(template, {file: '_world_ref', world: 'World'});
     assert.equal(r, 'Hello World!');
+  });
+
+  it('should render layout with content and loop', () => {
+    const template  = '{> "./templates/layout" /} {<content}{#company}{.name}{/company}{/content}';
+    const r         = new Renderer().render(template, {company: { name: 'World' }});
+    assert.equal(r, 'Hello World! ');
   });
 });
