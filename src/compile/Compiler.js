@@ -48,18 +48,20 @@ class Compiler {
         if (!block.buffer) {
           this.r += `r+=a${i};`
         } else {
-          // Save previous index and length
-          this.r += `var p_idx${i}=l.$idx;`;
-          this.r += `var p_length${i}=l.$length;`;
+          // Save previous it, index and length
+          this.r += `c.p_it${i}=l.it;`;
+          this.r += `c.p_idx${i}=l.$idx;`;
+          this.r += `c.p_length${i}=l.$length;`;
           this.r += `l.$length=a${i}.length;`; // current array length
           this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
           this.r += `l.${it}=a${i}[i${i}];`;
           this.r += `l.$idx=i${i};`; // current id
           this.compileBuffer(block.buffer);
           this.r += '}';
-          // Reset previous index and length (it is lost)
-          this.r += `l.$idx=p_idx${i};`;
-          this.r += `l.$length = p_length${i};`;
+          // Reset previous index and length
+          this.r += `l.it=c.p_it${i};`;
+          this.r += `l.$idx=c.p_idx${i};`;
+          this.r += `l.$length=c.p_length${i};`;
         }
         this.r += `}`;
         this._else(block);
@@ -82,7 +84,7 @@ class Compiler {
         this._addParamsToLocals(block.params);
         const file = this._getParam(block.file);
         this.r += `r+=u.i(${file})(l,u,c);`;
-        // TODO: clean params from locals
+        this._cleanParamsFromLocals(block.params);
       } else if (!block.type){
         // default: raw text
         this.r += `r+='${block}';`;
@@ -94,7 +96,6 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
-    // console.log(this.r);
     return new Function('l', 'u', 'c', this.r);
   }
 
@@ -108,17 +109,26 @@ class Compiler {
 
   //
   _addParamsToLocals(params) {
+    const { i } = this;
     Object.keys(params).forEach(key => {
       if (key === '$') {
         return;
       }
+      this.r += `c.p_${key}${i}=l.${key};`;
       this.r += `l.${key}=${this._getParam(params[key])};`;
     });
   }
 
   //
   _cleanParamsFromLocals(params) {
-
+    const { i } = this;
+    Object.keys(params).forEach(key => {
+      if (key === '$') {
+        return;
+      }
+      this.r += `l.${key}=c.p_${key}${i};`;
+      this.r += `delete c.p_${key}${i};`;
+    });
   }
 
   _getParam(param) {
@@ -204,7 +214,6 @@ class Compiler {
     });
 
     // use u.v to invoke function on last element
-
     if (ret.length === 1) {
       return `u.v(${ret[0]},null,l)`;
     }

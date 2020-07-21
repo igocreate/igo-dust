@@ -135,4 +135,11 @@ describe('Render Loops', () => {
     const r         = new Renderer().render(template, { COL1: 1 });
     assert.equal(r, 'Hello 1');
   });
+
+  it('should restore locals after loop', () => {
+    const template  = 'Hello {#COL1 world=2}{world}{/COL1} {world}';
+    const r         = new Renderer().render(template, { COL1, world: 'World' });
+    assert.equal(r, 'Hello 222 World');
+  });
+
 });
