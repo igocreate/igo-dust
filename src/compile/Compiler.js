@@ -188,7 +188,9 @@ class Compiler {
     }
 
     // last part
-    elements.push(tag.substring(idx, i));
+    if (i > idx) {
+      elements.push(tag.substring(idx, i));
+    }
 
     // build string
     let current = 'l', ret = [];

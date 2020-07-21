@@ -59,8 +59,8 @@ describe('Render Basics', () => {
   });
 
   it('should access array elements by index in references', () => {
-    const template  = 'Hello {users[1].lastname}';
-    const r         = new Renderer().render(template, { users: [ {}, { lastname: 'World' } ]});
+    const template  = 'Hello {users[1]}';
+    const r         = new Renderer().render(template, { users: [ 'john', 'World' ]});
     assert.equal(r, 'Hello World');
   });
 
