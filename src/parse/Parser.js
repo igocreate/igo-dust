@@ -40,6 +40,7 @@ class Parser {
   // stack the block, use its buffer as current
   stackBlock(block)  {
     block.buffer  = [];
+    block.current = block.buffer;
     this.buffer   = block.buffer;
     this.stack.push(block);
   }
@@ -51,7 +52,7 @@ class Parser {
   pop() {
     const block = this.stack.pop();
     const last  = this.getLastBlock();
-    this.buffer = last && last.buffer || this.global;
+    this.buffer = last && last.current || this.global;
     return block;
   }
 
@@ -62,6 +63,7 @@ class Parser {
     }
     last.bodies       = last.bodies || {};
     last.bodies[tag]  = [];
+    last.current      = last.bodies[tag];
     this.buffer       = last.bodies[tag];
   }
 

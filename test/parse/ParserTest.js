@@ -287,5 +287,23 @@ describe('Parser', () => {
     assert(buffer[1].params.context, 'site');
   });
 
+  it('should parse nested blocks in else block', () => {
+    const TEMPLATE = `
+      {?companies}
+        Aucune
+      {:else}
+        <select name="company_id" id="company_id" class="form-control" data-value="{?flash.form.company_id}{flash.form.company_id}{:else}{prefilled.company_id}{/flash.form.company_id}">
+          {#companies}
+            <option value="{.id}">{.name}</option>
+          {/companies}
+        </select>
+      {/companies}`;
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0].type, '?');
+    assert.equal(buffer[0].buffer.length, 1);
+    assert.equal(buffer[0].bodies.else.length, 5);
+  })
+
   
 });

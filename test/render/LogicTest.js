@@ -50,6 +50,16 @@ describe('Render Logic', () => {
     assert.equal(t, 'Hello World OK.');
   });
 
+  it('should render ^ condition with else', () => {
+    const template  = 'Hello {^test.a}World{:else}Planet{/test.a}.';
+    const r         = new Renderer().render(template, { test: { a: true } });
+    assert.equal(r, 'Hello Planet.');
+    const s         = new Renderer().render(template, { test: { a: [] } });
+    assert.equal(s, 'Hello World.');
+    const t         = new Renderer().render(template, {});
+    assert.equal(t, 'Hello World.');
+  });
+
   it('should execute condition function', () => {
     const template  = 'Hello{?test world=w} World{/test}.';
     const r         = new Renderer().render(template, { w: true, test: (l) => l.world});
