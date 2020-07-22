@@ -280,7 +280,6 @@ describe('Parser', () => {
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 2);
     assert.equal(buffer[1].type, '#');
-    console.dir(buffer[1]);
     assert(!buffer[1].buffer);
     assert(buffer[1].selfClosedTag);
     assert(buffer[1].params.key, '"dashboard.workshops.workshop"');

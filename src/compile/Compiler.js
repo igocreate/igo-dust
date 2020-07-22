@@ -96,6 +96,7 @@ class Compiler {
   compile(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
+    // console.log(this.r);
     return new Function('l', 'u', 'c', this.r);
   }
 
@@ -144,7 +145,7 @@ class Compiler {
         // left part
         ret.push(`'${param.substring(index, match.index)}'`);
         index = match.index + match[0].length;
-        ret.push(this._getValue(match[1]));
+        ret.push(`(${this._getValue(match[1])}||'')`);
       }
       // final right part
       if (index < param.length) {
@@ -221,7 +222,8 @@ class Compiler {
     const _this = ret[ret.length - 2];
     ret[ret.length - 1] = `u.v(${last},${_this},l)`;
 
-    return `(${ret.join('&&')})`;
+    return ret.join('&&');
+
   }
 
   _getParams(params) {
@@ -234,7 +236,7 @@ class Compiler {
   }
 
   _getReference(block) {
-    let ret = `${this._getValue(block.tag)}||''`;
+    let ret = `(${this._getValue(block.tag)}||'')`;
     if (!block.f) {
       return ret;
     }

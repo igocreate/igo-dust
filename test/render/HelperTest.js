@@ -1,6 +1,6 @@
 const assert        = require('assert');
 const Renderer      = require('../../src/render/Renderer');
-
+const Helpers       = require('../../src/render/Helpers');
 
 const HELPERS = {
 
@@ -96,9 +96,10 @@ describe('Render Helpers', () => {
   });
 
   it('should render custom helper', () => {
-    const Helpers   = require('../../src/render/Helpers');
+    
     Helpers.nl2br   = HELPERS.nl2br;
     Helpers.boolean = HELPERS.boolean;
+
     // boolean false
     let template = `Hello ? {@boolean value=b /}`;
     let r = new Renderer(HELPERS).render(template, {b: false});
@@ -111,4 +112,33 @@ describe('Render Helpers', () => {
     r = new Renderer(HELPERS).render(template, {text: "Hello\nWorld"});
     assert.equal(r, `Hello<br/>World`);
   });
+
+  Helpers.t = (params, locals) => {
+    return params.key;
+  }
+
+  it('should render custom helper with string param', () => {
+    const template  = 'Hello {@t key="World" /} !';
+    const r         = new Renderer().render(template);
+    assert.equal(r, 'Hello World !');
+  });
+
+  it('should render custom helper with ref param', () => {
+    const template  = 'Hello {@t key=txt.w /} !';
+    const r         = new Renderer().render(template, { txt: { w: 'World' }});
+    assert.equal(r, 'Hello World !');
+  });
+  
+  it('should render custom helper with string + ref param', () => {
+    const template  = 'Hello {#obj}{@t key="txt.{.attr}" /}{/obj} !';
+    const r         = new Renderer().render(template, { obj: {attr: 'w' } , txt: { w: 'World' }});
+    assert.equal(r, 'Hello txt.w !');
+  });
+
+  it('should render custom helper with string + missingref param', () => {
+    const template  = 'Hello {#obj}{@t key="txt.{.attr}" /}{/obj} !';
+    const r         = new Renderer().render(template, { obj: 1, txt: { w: 'World' }});
+    assert.equal(r, 'Hello txt. !');
+  });
+
 });
