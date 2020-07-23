@@ -28,6 +28,11 @@ class Compiler {
       } else if (block.type === '+') {
         // insert content (invoke content function)
         this.r += `if (c._${block.tag}){r+=c._${block.tag}();}`;
+        if (block.buffer) {
+          this.r += `else{`;
+          this.compileBuffer(block.buffer);
+          this.r += `}`;
+        }
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
         const not = block.type === '^' ? '!' : '';

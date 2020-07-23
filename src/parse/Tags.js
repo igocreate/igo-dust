@@ -49,6 +49,9 @@ const _include = (parser, block) => {
 
 const _insert = (parser, block) => {
   parser.pushBlock(block);
+  if (!block.selfClosedTag) {
+    parser.stackBlock(block);
+  }
 };
 
 

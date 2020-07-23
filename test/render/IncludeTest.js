@@ -45,4 +45,18 @@ describe('Render Includes & Layouts', () => {
     const r         = new Renderer().render(template, {company: { name: 'World' }});
     assert.equal(r, 'Hello World! ');
   });
+
+  it('should render layout with default content', () => {
+    const template  = '{> "./templates/layout_title" /} {<content}World{/content}';
+    const r         = new Renderer().render(template, {company: { name: 'World' }});
+    assert.equal(r, 'Hello World! ');
+  });
+
+  it('should render layout with default content', () => {
+    const template  = '{> "./templates/layout_title" /} {<title}Hi{/title} {<content}World{/content}';
+    const r         = new Renderer().render(template, {company: { name: 'World' }});
+    assert.equal(r, 'Hi World!  ');
+  });
+  
+
 });
