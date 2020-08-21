@@ -46,13 +46,13 @@ class Compiler {
         // loop block
         this.i++;
         const { i } = this;
-        const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || 'it';
-        this._addParamsToLocals(block.params);
         this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
         this.r += `if(a${i}){`;
         if (!block.buffer) {
           this.r += `r+=a${i};`
         } else {
+          const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || 'it';
+          this._addParamsToLocals(block.params);
           // Save previous it, index and length
           this.r += `c.p_it${i}=l.it;`;
           this.r += `c.p_idx${i}=l.$idx;`;
