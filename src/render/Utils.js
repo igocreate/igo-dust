@@ -71,9 +71,9 @@ const f = {
 
 
 // return value (if it's a function, invoke it with locals)
-const v = (s, t, p, l) => {
+const v = (s, t, l) => {
   if (typeof s === 'function') {
-    return s.call(t, p, l);
+    return s.call(t, l);
   }
   return s;
 };

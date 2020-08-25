@@ -46,15 +46,15 @@ class Compiler {
         // loop block
         this.i++;
         const { i } = this;
+        this._addParamsToLocals(block.params);
         this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
         this.r += `if(a${i}){`;
         if (!block.buffer) {
           this.r += `r+=a${i};`
         } else {
-          const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || 'it';
-          this._addParamsToLocals(block.params);
+          const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || '_it';
           // Save previous it, index and length
-          this.r += `c.p_it${i}=l.it;`;
+          this.r += `c.p_it${i}=l._it;`;
           this.r += `c.p_idx${i}=l.$idx;`;
           this.r += `c.p_length${i}=l.$length;`;
           this.r += `l.$length=a${i}.length;`; // current array length
@@ -64,7 +64,7 @@ class Compiler {
           this.compileBuffer(block.buffer);
           this.r += '}';
           // Reset previous index and length
-          this.r += `l.it=c.p_it${i};`;
+          this.r += `l._it=c.p_it${i};`;
           this.r += `l.$idx=c.p_idx${i};`;
           this.r += `l.$length=c.p_length${i};`;
         }
@@ -174,7 +174,7 @@ class Compiler {
   _getValue(tag) {
     // TEMP / this syntax will be deprecated
     if (tag === '.') {
-      return 'l.it';
+      return 'l._it';
     }
 
     if (!isNaN(tag)) {
@@ -182,7 +182,7 @@ class Compiler {
     }
 
     if (tag[0] === '.') {
-      tag = 'it' + tag;
+      tag = '_it' + tag;
     }
 
     const elements = [];
