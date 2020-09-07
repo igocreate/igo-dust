@@ -34,6 +34,12 @@ describe('Render Basics', () => {
     assert.equal(r, 'Hello World');
   });
 
+  it('should allow escaped special characters', () => {
+    const template  = 'Hello \' \\ \" " World';
+    const r         = new Renderer().render(template);
+    assert.equal(r, 'Hello \' \\ \" " World');
+  });
+
   it('should execute function if reference is a function', () => {
     const template  = 'Hello {w}';
     const r         = new Renderer().render(template, { w: () => 'World' });

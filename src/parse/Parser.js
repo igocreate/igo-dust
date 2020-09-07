@@ -16,7 +16,8 @@ class Parser {
 
   // add string
   pushString(str) {
-    // escape single quotes
+    // escape backslashes and single quotes
+    str = str.replace(/\\/g, '\\\\');
     str = str.replace(/'/g, '\\\'');
     
     const i     = this.buffer.length - 1
