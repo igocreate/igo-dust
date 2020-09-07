@@ -123,6 +123,12 @@ describe('Render Helpers', () => {
     assert.equal(r, 'Hello World !');
   });
 
+  it('should render custom helper with empty string param', () => {
+    const template  = 'Hello {@t key="" /} !';
+    const r         = new Renderer().render(template);
+    assert.equal(r, 'Hello  !');
+  });
+
   it('should render custom helper with ref param', () => {
     const template  = 'Hello {@t key=txt.w /} !';
     const r         = new Renderer().render(template, { txt: { w: 'World' }});

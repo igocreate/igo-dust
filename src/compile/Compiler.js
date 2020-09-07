@@ -143,6 +143,10 @@ class Compiler {
       let ret = [], match, index = 0, s;
 
       param = ParseUtils.stripDoubleQuotes(param);
+      if (!param) {
+        // empty string
+        return '\'\'';
+      }
 
       // replace references in string
       const ref = new RegExp('\\{([^\\}]*)\\}', 'msg');
