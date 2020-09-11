@@ -2,7 +2,7 @@
 const ParseUtils  = require('./ParseUtils');
 const Tags        = require('./Tags');
 
-const Config      = require('../Config');
+const config      = require('../Config');
 
 
 class Parser {
@@ -70,7 +70,7 @@ class Parser {
 
   parse(str) {
     // remove spaces at the beginning of lines and line breaks
-    if (Config.htmltrim) {
+    if (config.htmltrim) {
       str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '');
     } else {
       str = str.replace(/\r/g , '\\r').replace(/\n/g , '\\n');
@@ -178,11 +178,11 @@ class Parser {
       const s   = f.indexOf('s');
       if (s > -1) {
         f.splice(s, 1);
-      } else if (Config.htmlencode) {
+      } else if (config.htmlencode) {
         f.push('h');
       }
       block.f = f;
-    } else if (Config.htmlencode) {
+    } else if (config.htmlencode) {
       block.f = ['h'];
     }
   }

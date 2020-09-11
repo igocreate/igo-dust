@@ -9,11 +9,10 @@ class Config {
     this.htmltrim   = true;
   }
 
-  load(options) {
-    this.once = true;
-
-    this.cache  = !!options.cache;
-    this.views  = options.settings.views || this.views;
+  init(settings) {
+    this._settings  = settings;
+    this.cache      = settings['view cache'];
+    this.views      = settings.views || this.views;
   }
 
 };

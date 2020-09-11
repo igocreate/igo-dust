@@ -6,7 +6,7 @@ const Helpers   = require('./src/render/Helpers');
 const Utils     = require('./src/render/Utils');
 
 const Cache     = require('./src/Cache');
-const Config    = require('./src/Config');
+const config    = require('./src/Config');
 
 //
 module.exports.compile = (src) => {
@@ -19,11 +19,13 @@ module.exports.render = (compiled, data) => {
   return new Renderer().render(compiled, data);
 };
 
+//
+module.exports.configure = (app) => {
+  config.init(app.settings);
+}
+
 // expressjs engine
 module.exports.engine = (filePath, options, callback) => {
-  if (!Config.once) {
-    Config.load(options);
-  }
   const compiled = Cache.getCompiled(filePath);
   const rendered = module.exports.render(compiled, options);
   callback(null, rendered);
@@ -32,4 +34,4 @@ module.exports.engine = (filePath, options, callback) => {
 //
 module.exports.helpers  = Helpers;
 module.exports.filters  = Utils.f;
-module.exports.config   = Config;
+module.exports.config   = config;
