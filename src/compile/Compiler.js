@@ -6,7 +6,7 @@ class Compiler {
 
   constructor(options) {
     this.i  =   0;
-    this.r  = `var r='',l=l||{},c=c||{};`;
+    this.r  = `var r='',l=l||{},c=c||{ctx:[]};`;
   }
 
   compileBuffer(buffer) {
@@ -36,41 +36,33 @@ class Compiler {
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
         const not = block.type === '^' ? '!' : '';
-        this._addParamsToLocals(block.params);
+        this._pushContext(block.params);
         this.r += `if(${not}u.b(${this._getValue(block.tag)})){`;
         this.compileBuffer(block.buffer);
         this.r += '}';
         this._else(block);
-        this._cleanParamsFromLocals(block.params);
+        this._popContext(block.params);
       } else if (block.type === '#') {
         // loop block
         this.i++;
         const { i } = this;
-        this._addParamsToLocals(block.params);
+        this._pushContext(block.params, true);
         this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
         this.r += `if(a${i}){`;
         if (!block.buffer) {
           this.r += `r+=a${i};`
         } else {
           const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || '_it';
-          // Save previous it, index and length
-          this.r += `c.p_it${i}=l._it;`;
-          this.r += `c.p_idx${i}=l.$idx;`;
-          this.r += `c.p_length${i}=l.$length;`;
           this.r += `l.$length=a${i}.length;`; // current array length
           this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
           this.r += `l.${it}=a${i}[i${i}];`;
           this.r += `l.$idx=i${i};`; // current id
-          this.compileBuffer(block.buffer);
+          this.compileBuffer(block.buffer, true);
           this.r += '}';
-          // Reset previous index and length
-          this.r += `l._it=c.p_it${i};`;
-          this.r += `l.$idx=c.p_idx${i};`;
-          this.r += `l.$length=c.p_length${i};`;
         }
         this.r += `}`;
         this._else(block);
-        this._cleanParamsFromLocals(block.params);
+        this._popContext(block.params, true);
       } else if (block.type === '@') {
         // helper
         this.i++;
@@ -86,10 +78,10 @@ class Compiler {
         this._else(block);
       } else if (block.type === '>') {
         // include
-        this._addParamsToLocals(block.params);
+        this._pushContext(block.params);
         const file = this._getParam(block.file);
         this.r += `r+=u.i(${file})(l,u,c);`;
-        this._cleanParamsFromLocals(block.params);
+        this._popContext(block.params);
       } else if (!block.type){
         // default: raw text
         this.r += `r+='${block}';`;
@@ -112,6 +104,42 @@ class Compiler {
       this.r += '}';
     }
   }
+
+  _pushContext(params, isArray) {
+    const { i } = this;
+    this.r += `var ctx${i}={};`; 
+    Object.keys(params).forEach(key => {
+      if (key === '$') {
+        return;
+      }
+      this.r += `ctx${i}.${key}=l.${key};`;
+      this.r += `l.${key}=${this._getParam(params[key])};`;
+    });
+    if (isArray) {
+      this.r += `ctx${i}.it=l._it;`;
+      this.r += `ctx${i}.idx=l.$idx;`;
+      this.r += `ctx${i}.length=l.$length;`;
+    }
+
+    this.r += `c.ctx.push(ctx${i});`;
+  }
+
+  _popContext(params, isArray) {
+    const { i } = this;
+    this.r += `var p_ctx${i}=c.ctx.pop();`
+    Object.keys(params).forEach(key => {
+      if (key === '$') {
+        return;
+      }
+      this.r += `l.${key}=p_ctx${i}.${key};`;
+    });
+    if (isArray) {
+      this.r += `l._it=p_ctx${i}.it;`;
+      this.r += `l.$idx=p_ctx${i}.idx;`;
+      this.r += `l.$length=p_ctx${i}.length;`;
+    }
+  }
+
 
   //
   _addParamsToLocals(params) {

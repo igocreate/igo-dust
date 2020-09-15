@@ -22,6 +22,12 @@ describe('Render Loops', () => {
     assert.equal(r, 'Hello aaa');
   });
 
+  it('should render consecutive loops', () => {
+    const template  = 'Hello {#COL1}{.}{/COL1} {#COL1}{.}{/COL1}';
+    const r         = new Renderer().render(template, { COL1 });
+    assert.equal(r, 'Hello 123 123');
+  });
+
   it('should render nested loops', () => {
     const template  = 'Hello {#COL1}{.}{#COL2}{.}{/COL2} {/COL1}';
     const r         = new Renderer().render(template, { COL1, COL2 });
@@ -155,3 +161,5 @@ describe('Render Loops', () => {
   });
 
 });
+
+

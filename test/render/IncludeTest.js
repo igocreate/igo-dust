@@ -57,6 +57,23 @@ describe('Render Includes & Layouts', () => {
     const r         = new Renderer().render(template, {company: { name: 'World' }});
     assert.equal(r, 'Hi World!  ');
   });
-  
+
+
+  it('should render recursive include', () => {
+    const template  = '{#user}{> "./templates/_recursive" friends_list=.friends/}{.name}{/user}';
+    const r         = new Renderer().render(template, {
+      user: {
+        friends: [{
+          name: 'John',
+          friends: [{
+            name: 'Jane',
+            friends: []
+          }]
+        }],
+        name: 'Bernard'
+      }
+    });
+    assert.equal(r, 'John, Jane, Bernard');
+  });
 
 });
