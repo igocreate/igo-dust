@@ -22,7 +22,7 @@ const BS      = /\\/g,
 
 
 const htmlencode = (s)=> {
-  if (!s.replace || !HCHARS.test(s)) {
+  if (!s || !s.replace || !HCHARS.test(s)) {
     return s;
   }
   return s
@@ -51,7 +51,7 @@ const escapeJs = (s) => {
 };
 
 const stringifyJson = (o) => {
-  return JSON.stringify(o)
+  return o && JSON.stringify(o)
           .replace(LS, '\\u2028')
           .replace(PS, '\\u2029')
           .replace(LT, '\\u003c');
@@ -70,12 +70,15 @@ const f = {
 };
 
 
-// return value (if it's a function, invoke it with locals)
+// return value to be displayed (if it's a function, invoke it with locals)
 const v = (s, t, l) => {
   if (typeof s === 'function') {
     return s.call(t, l);
   }
-  return s;
+  if (s === 0) {
+    return s;
+  }
+  return s || '';
 };
 
 // return boolean

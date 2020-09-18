@@ -1,6 +1,7 @@
 const assert    = require('assert');
 
 const Renderer  = require('../../src/render/Renderer');
+const Helpers   = require('../../src/render/Helpers');
 
 describe('Render Basics', () => {
 
@@ -18,6 +19,12 @@ describe('Render Basics', () => {
 
   it('should not crash when reference does not exist', () => {
     const template  = 'Hello {a.b.c}';
+    const r         = new Renderer().render(template);
+    assert.equal(r, 'Hello ');
+  });
+
+  it('should not crash when reference does not exist and not escaped', () => {
+    const template  = 'Hello {a.b.c|s}';
     const r         = new Renderer().render(template);
     assert.equal(r, 'Hello ');
   });
@@ -74,6 +81,19 @@ describe('Render Basics', () => {
     const template  = 'Hello {users[idx].lastname}';
     const r         = new Renderer().render(template, { users: [ {}, { lastname: 'World' } ], idx: 1});
     assert.equal(r, 'Hello World');
+  });
+
+  it('should render 0 value in reference', () => {
+    const template  = 'Hello {zero}';
+    const r         = new Renderer().render(template, { zero: 0 });
+    assert.equal(r, 'Hello 0');
+  });
+
+  it('should render 0 value in param', () => {
+    const template  = 'Hello {@tap value="{zero}" /}';
+    Helpers.tap = (params, locals) => { return params.value };
+    const r         = new Renderer().render(template, { zero: 0 });
+    assert.equal(r, 'Hello 0');
   });
 
 });

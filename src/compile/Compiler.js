@@ -182,7 +182,7 @@ class Compiler {
         // left part
         ret.push(`'${param.substring(index, match.index)}'`);
         index = match.index + match[0].length;
-        ret.push(`(${this._getValue(match[1])}||'')`);
+        ret.push(this._getValue(match[1]));
       }
       // final right part
       if (index < param.length) {
@@ -255,11 +255,8 @@ class Compiler {
     if (ret.length === 1) {
       return `u.v(${ret[0]},null,l)`;
     }
-    const last  = ret[ret.length - 1];
-    const _this = ret[ret.length - 2];
-    ret[ret.length - 1] = `u.v(${last},${_this},l)`;
-
-    return ret.join('&&');
+    const _this = ret.slice(0,-1);
+    return `u.v(${ret.join('&&')},${_this.join('&&')},l)`;
 
   }
 
@@ -273,7 +270,7 @@ class Compiler {
   }
 
   _getReference(block) {
-    let ret = `(${this._getValue(block.tag)}||'')`;
+    let ret = this._getValue(block.tag);
     if (!block.f) {
       return ret;
     }
