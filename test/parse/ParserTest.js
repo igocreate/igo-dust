@@ -302,6 +302,14 @@ describe('Parser', () => {
     assert.equal(buffer[0].type, '?');
     assert.equal(buffer[0].buffer.length, 1);
     assert.equal(buffer[0].bodies.else.length, 5);
+  });
+
+  it('should parse insert tags', () => {
+    const TEMPLATE = '<meta name="description" content="{+description/}">';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    assert.equal(buffer[1].type, '+');
+    assert.equal(buffer[1].tag, 'description');
   })
 
   

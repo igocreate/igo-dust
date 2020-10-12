@@ -76,4 +76,10 @@ describe('Render Includes & Layouts', () => {
     assert.equal(r, 'John, Jane, Bernard');
   });
 
+  it('should replace missing insert tags', () => {
+    const template = '<meta name="description" content="{+description/}"></meta>';
+    const r         = new Renderer().render(template);
+    assert.equal(r, '<meta name="description" content=""></meta>')
+  });
+
 });

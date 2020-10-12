@@ -157,7 +157,7 @@ class Parser {
     }
     
     // remove first char
-    block.tag = ParseUtils.parseTag(block.tag);
+    block.tag = ParseUtils.parseTag(str);
 
     // parse params
     block.params = ParseUtils.parseParams(str);
