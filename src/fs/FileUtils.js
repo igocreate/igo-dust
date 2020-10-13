@@ -1,17 +1,17 @@
 
-const fs          = require('fs');
-const { resolve } = require('path');
+const fs      = require('fs');
+const path    = require('path');
 
-const config      = require('../Config');
+const config  = require('../Config');
 
 
 // get absolute path
 module.exports.getFilePath = (filePath) => {
-  if (filePath[0] !== '/' && filePath[0] !== '.') {
+  if (!path.isAbsolute(filePath) && filePath[0] !== '.') {
     // prefix views folder
     filePath = `${config.views}/${filePath}`;
   }
-  return resolve(filePath);
+  return path.resolve(filePath);
 }
 
 //
