@@ -1,9 +1,16 @@
 
-#form {
-  text-align: center;
+
+fieldset {
+  border: 0;
+  width: 400px;
 }
 
-#template {
- width: 400px;
+label {
+  text-align: left;
+  display: block;
+}
+
+textarea {
+ width: 100%;
  height: 140px;
 }
