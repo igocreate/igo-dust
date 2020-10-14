@@ -16,5 +16,8 @@ module.exports.getFilePath = (filePath) => {
 
 //
 module.exports.loadFile = (filePath) => {
+  if (typeof window !== 'undefined') {
+    return '';
+  }
   return fs.readFileSync(filePath, 'utf8');
 }
