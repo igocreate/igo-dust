@@ -1,0 +1,34 @@
+
+---
+layout: default
+---
+
+<body>
+    <fieldset>
+      <label>Template</label>
+      <textarea id="template">Hello {w}!<br />
+<br/>
+My friends are {#friends}{@last} and {/last}{.}{@sep}, {/sep}{/friends}.<br />
+{?hasFriends}Yay friends!{/hasFriends}
+      </textarea>
+    </fieldset>
+    <fieldset>
+      <label>Datas</label>
+    <textarea id="locals">{
+"w": "World",
+"friends": ["Alice", "Bob", "Charlie"],
+"hasFriends": function(p, l) {
+  return p.friends;
+}
+}</textarea>
+    </fieldset>
+
+    <br />
+    <button id="compile">Compile</button>
+  </div>
+  <hr />
+  <div id="result"></div>
+
+  <script src="./js/bundle.js"></script>
+  <script src="./js/main.js"></script>
+</body>
