@@ -1,4 +1,9 @@
 ---
+---
+
+@import "{{ site.theme }}";
+
+---
 layout: default
 ---
 
