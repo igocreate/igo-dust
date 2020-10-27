@@ -142,6 +142,12 @@ describe('Render Loops', () => {
     assert.equal(r, 'Hello #1 #2 ');
   });
 
+  it('should allow . notation in nested loop even with it param', () => {
+    const template  = 'Hello {#users}{#.friends it="user"}#{.id} {/.friends}{/users}';
+    const r         = new Renderer().render(template, { users: [{ friends: FRIENDS }]});
+    assert.equal(r, 'Hello #1 #2 ');
+  });
+
   it('should not loop if no buffer', () => {
     const template  = 'Hello {#COL1 /}';
     const r         = new Renderer().render(template, { COL1: 1 });

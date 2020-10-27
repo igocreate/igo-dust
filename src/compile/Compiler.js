@@ -52,10 +52,13 @@ class Compiler {
         if (!block.buffer) {
           this.r += `r+=a${i};`
         } else {
-          const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it) || '_it';
+          const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it);
           this.r += `l.$length=a${i}.length;`; // current array length
           this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
-          this.r += `l.${it}=a${i}[i${i}];`;
+          if (it) {
+            this.r += `l.${it}=a${i}[i${i}];`;
+          }
+          this.r += `l._it=a${i}[i${i}];`;
           this.r += `l.$idx=i${i};`; // current id
           this.compileBuffer(block.buffer, true);
           this.r += '}';
@@ -116,7 +119,7 @@ class Compiler {
       this.r += `l.${key}=${this._getParam(params[key])};`;
     });
     if (isArray) {
-      this.r += `ctx${i}.it=l._it;`;
+      this.r += `ctx${i}._it=l._it;`;
       this.r += `ctx${i}.idx=l.$idx;`;
       this.r += `ctx${i}.length=l.$length;`;
     }
@@ -134,7 +137,7 @@ class Compiler {
       this.r += `l.${key}=p_ctx${i}.${key};`;
     });
     if (isArray) {
-      this.r += `l._it=p_ctx${i}.it;`;
+      this.r += `l._it=p_ctx${i}._it;`;
       this.r += `l.$idx=p_ctx${i}.idx;`;
       this.r += `l.$length=p_ctx${i}.length;`;
     }
@@ -204,16 +207,15 @@ class Compiler {
 
   //
   _getValue(tag) {
-    // TEMP / this syntax will be deprecated
-    if (tag === '.') {
-      return 'l._it';
-    }
-
+    
     if (!isNaN(tag)) {
       return tag;
     }
-
-    if (tag[0] === '.') {
+    
+    // . notation
+    if (tag === '.') {
+      return 'l._it';
+    } else if (tag[0] === '.') {
       tag = '_it' + tag;
     }
 
