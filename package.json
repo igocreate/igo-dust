@@ -1,0 +1,24 @@
+{
+  "name": "igo-dust",
+  "version": "1.0.0",
+  "description": "website",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^3.2.0",
+    "igo-dust": "^0.1.14"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "generate": "node generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igocreate/igo-dust.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/igocreate/igo-dust/issues"
+  },
+  "homepage": "https://github.com/igocreate/igo-dust#readme"
+}

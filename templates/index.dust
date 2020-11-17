@@ -1,0 +1,9 @@
+{> "./templates/_layout" /}
+
+{<content}
+  <div class="playground">
+    <textarea class="template"></textarea>
+    <textarea class="data"></textarea>
+    <textarea class="output"></textarea>
+  </div>
+{/content}
