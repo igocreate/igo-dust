@@ -1,5 +1,0 @@
-
-{#friends_list}
-  {.name}, 
-  {> "./templates/_recursive" friends_list=.friends /}
-{/friends_list}

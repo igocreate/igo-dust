@@ -5,62 +5,62 @@ const Renderer  = require('../../src/render/Renderer');
 describe('Render Includes & Layouts', () => {
 
   it('should render include with param', () => {
-    const template  = 'Hello {> "./templates/_world_ref" world="World" /}';
+    const template  = 'Hello {> "./test/templates/_world_ref" world="World" /}';
     const r         = new Renderer().render(template);
     assert.equal(r, 'Hello World!');
   });
 
   it('should render include with reference param', () => {
-    const template  = 'Hello {> "./templates/_world_ref" world=w /}';
+    const template  = 'Hello {> "./test/templates/_world_ref" world=w /}';
     const r         = new Renderer().render(template, {w: 'World'});
     assert.equal(r, 'Hello World!');
   });
 
   it('should render include with nested reference param', () => {
-    const template  = 'Hello {> "./templates/_world_ref" world=test.w /}';
+    const template  = 'Hello {> "./test/templates/_world_ref" world=test.w /}';
     const r         = new Renderer().render(template, {test: {w: 'World'}});
     assert.equal(r, 'Hello World!');
   });
 
   it('should render layout with content', () => {
-    const template  = '{> "./templates/layout" /} {<content}{test.w}{/content}';
+    const template  = '{> "./test/templates/layout" /} {<content}{test.w}{/content}';
     const r         = new Renderer().render(template, {test: {w: 'World'}});
     assert.equal(r, 'Hello World! ');
   });
 
   it('should not crash if no content', () => {
-    const template  = '{> "./templates/layout" /}';
+    const template  = '{> "./test/templates/layout" /}';
     const r         = new Renderer().render(template, {test: {w: 'World'}});
     assert.equal(r, 'Hello !');
   });
 
   it('should render dynamic include', () => {
-    const template  = 'Hello {> "./templates/{file}" /}';
+    const template  = 'Hello {> "./test/templates/{file}" /}';
     const r         = new Renderer().render(template, {file: '_world_ref', world: 'World'});
     assert.equal(r, 'Hello World!');
   });
 
   it('should render layout with content and loop', () => {
-    const template  = '{> "./templates/layout" /} {<content}{#company}{.name}{/company}{/content}';
+    const template  = '{> "./test/templates/layout" /} {<content}{#company}{.name}{/company}{/content}';
     const r         = new Renderer().render(template, {company: { name: 'World' }});
     assert.equal(r, 'Hello World! ');
   });
 
   it('should render layout with default content', () => {
-    const template  = '{> "./templates/layout_title" /} {<content}World{/content}';
+    const template  = '{> "./test/templates/layout_title" /} {<content}World{/content}';
     const r         = new Renderer().render(template, {company: { name: 'World' }});
     assert.equal(r, 'Hello World! ');
   });
 
   it('should render layout with default content', () => {
-    const template  = '{> "./templates/layout_title" /} {<title}Hi{/title} {<content}World{/content}';
+    const template  = '{> "./test/templates/layout_title" /} {<title}Hi{/title} {<content}World{/content}';
     const r         = new Renderer().render(template, {company: { name: 'World' }});
     assert.equal(r, 'Hi World!  ');
   });
 
 
   it('should render recursive include', () => {
-    const template  = '{#user}{> "./templates/_recursive" friends_list=.friends/}{.name}{/user}';
+    const template  = '{#user}{> "./test/templates/_recursive" friends_list=.friends/}{.name}{/user}';
     const r         = new Renderer().render(template, {
       user: {
         friends: [{
