@@ -3,10 +3,19 @@
   "version": "0.1.14",
   "description": "Javascript template engine",
   "main": "index.js",
+  "engines": {
+    "node": "12.19.0",
+    "npm": "6.14.8"
+  },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "nyc": "^15.1.0",
+    "eslint": "^7.12.1",
+    "mocha": "^8.2.1"
+  },
   "scripts": {
-    "test": "mocha --recursive"
+    "lint": "eslint src/**/*.js test/**/*.js *.js",
+    "test": "nyc --reporter=lcov mocha --exit --recursive"
   },
   "author": "Igocreate.com",
   "license": "ISC"

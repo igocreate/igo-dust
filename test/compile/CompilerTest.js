@@ -1,7 +1,8 @@
-
+'use strict';
+/* global describe, it */
 const assert  = require('assert');
 
-const Parser    = require('../../src/parse/Parser');
+// const Parser    = require('../../src/parse/Parser');
 const Compiler  = require('../../src/compile/Compiler');
 const Utils     = require('../../src/render/Utils');
 

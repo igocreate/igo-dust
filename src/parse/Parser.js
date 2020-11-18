@@ -20,7 +20,7 @@ class Parser {
     str = str.replace(/\\/g, '\\\\');
     str = str.replace(/'/g, '\\\'');
     
-    const i     = this.buffer.length - 1
+    const i     = this.buffer.length - 1;
     const last  = this.buffer[i];
 
     // concat with previous string buffer
@@ -120,7 +120,7 @@ class Parser {
     }
 
     if (index < str.length) {
-      this.pushString(str.slice(index))
+      this.pushString(str.slice(index));
     }
 
     // console.log('--- done ---');

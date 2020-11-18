@@ -1,3 +1,6 @@
+'use strict';
+/* global describe, it */
+
 const assert    = require('assert');
 
 const Renderer  = require('../../src/render/Renderer');
@@ -6,12 +9,12 @@ const COL1 = [ 1, 2, 3 ];
 const COL2 = [ 'a', 'b' ];
 const FRIENDS =  [{
   id:   1,
-  name: "Gardner Alvarez",
-  friends: [{"name": "Gates Lewis"},{"name": "Britt Stokes"}]
+  name: 'Gardner Alvarez',
+  friends: [{'name': 'Gates Lewis'},{'name': 'Britt Stokes'}]
 },{
   id:   2,
-  name: "Gates Lewis",
-  friends: [{"name": "Gardner Alvarez"}]
+  name: 'Gates Lewis',
+  friends: [{'name': 'Gardner Alvarez'}]
 }];
 
 describe('Render Loops', () => {
@@ -66,7 +69,7 @@ describe('Render Loops', () => {
 
   it('should render loops with check on "."', () => {
     const template  = 'Hello {#COL0}{?.a}{.b}{/.a}{/COL0}';
-    const r         = new Renderer().render(template, { COL0: [{a: false, b: "False"}, {a: true, b: 'True'}] });
+    const r         = new Renderer().render(template, { COL0: [{a: false, b: 'False'}, {a: true, b: 'True'}] });
     assert.equal(r, 'Hello True');
   });
 

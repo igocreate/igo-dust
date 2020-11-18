@@ -1,3 +1,5 @@
+'use strict';
+/* global describe, it */
 
 const assert  = require('assert');
 
@@ -83,7 +85,7 @@ describe('Parser', () => {
   it('should handle tag error', () => {
     const TEMPLATE = 'Hello {world ok.';
     try {
-      const buffer = new Parser().parse(TEMPLATE);
+      new Parser().parse(TEMPLATE);
     } catch(err) {
       assert.equal(err.message, 'Missing closing "}" at index 7');
     }
@@ -232,7 +234,7 @@ describe('Parser', () => {
     const TEMPLATE = ' {> "./templates/layout" } {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 4);
-    const content = buffer[1];
+    // const content = buffer[1];
     assert.equal(buffer[0].type, '>');
     assert.equal(buffer[2].type, '<');
   });
@@ -310,7 +312,7 @@ describe('Parser', () => {
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].type, '+');
     assert.equal(buffer[1].tag, 'description');
-  })
+  });
 
   
 });

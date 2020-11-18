@@ -12,7 +12,7 @@ module.exports.getFilePath = (filePath) => {
     filePath = `${config.views}/${filePath}`;
   }
   return path.resolve(filePath);
-}
+};
 
 //
 module.exports.loadFile = (filePath) => {
@@ -20,4 +20,4 @@ module.exports.loadFile = (filePath) => {
     return '';
   }
   return fs.readFileSync(filePath, 'utf8');
-}
+};

@@ -1,3 +1,6 @@
+'use strict';
+/* global describe, it */
+
 const assert    = require('assert');
 
 const FileUtils = require('../../src/fs/FileUtils');
