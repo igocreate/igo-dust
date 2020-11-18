@@ -9,13 +9,16 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "nyc": "^15.1.0",
     "eslint": "^7.12.1",
-    "mocha": "^8.2.1"
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
+    "webpack": "^5.5.0",
+    "webpack-cli": "^4.2.0"
   },
   "scripts": {
     "lint": "eslint src/**/*.js test/**/*.js *.js",
-    "test": "nyc --reporter=lcov mocha --exit --recursive"
+    "test": "nyc --reporter=lcov mocha --exit --recursive",
+    "build": "webpack"
   },
   "author": "Igocreate.com",
   "license": "ISC"

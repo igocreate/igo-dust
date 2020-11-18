@@ -1,23 +1,38 @@
+'use strict';
 
-const fs      = require('fs');
-const path    = require('path');
-
-const config  = require('../Config');
-
+const {isBrowser, isNode} = require('./../environment');
+const config = require('../Config');
 
 // get absolute path
 module.exports.getFilePath = (filePath) => {
-  if (!path.isAbsolute(filePath) && filePath[0] !== '.') {
-    // prefix views folder
-    filePath = `${config.views}/${filePath}`;
+  if (isBrowser) {
+    console.error('not implemented for browser');  // eslint-disable-line
+    return '';
   }
-  return path.resolve(filePath);
+
+  if (isNode) {
+    const path = require('path');
+    if (!path.isAbsolute(filePath) && filePath[0] !== '.') {
+      // prefix views folder
+      filePath = `${config.views}/${filePath}`;
+    }
+    return path.resolve(filePath);
+  }
+
+  console.error('unknown environment'); // eslint-disable-line
+  return '';
 };
 
 //
 module.exports.loadFile = (filePath) => {
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
+    console.error('not implemented for browser'); // eslint-disable-line
     return '';
   }
-  return fs.readFileSync(filePath, 'utf8');
+  if (isNode) {
+    const fs = require('fs');
+    return fs.readFileSync(filePath, 'utf8');
+  }
+  console.error('unknown environment');  // eslint-disable-line
+  return '';
 };
