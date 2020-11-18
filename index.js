@@ -1,4 +1,6 @@
+'use strict';
 
+const environment = require('./src/environment');
 const Parser    = require('./src/parse/Parser');
 const Compiler  = require('./src/compile/Compiler');
 const Renderer  = require('./src/render/Renderer');
@@ -35,3 +37,11 @@ module.exports.engine = (filePath, options, callback) => {
 module.exports.helpers  = Helpers;
 module.exports.filters  = Utils.f;
 module.exports.config   = config;
+
+if (environment.isBrowser) {
+  window.IgoDust = {
+    render:  (compiled, data) => {
+      return new Renderer().render(compiled, data);
+    }
+  };
+}

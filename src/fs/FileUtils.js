@@ -2,6 +2,8 @@
 
 const {isBrowser, isNode} = require('./../environment');
 const config = require('../Config');
+const path = require('path');
+const fs = require('fs');
 
 // get absolute path
 module.exports.getFilePath = (filePath) => {
@@ -11,7 +13,6 @@ module.exports.getFilePath = (filePath) => {
   }
 
   if (isNode) {
-    const path = require('path');
     if (!path.isAbsolute(filePath) && filePath[0] !== '.') {
       // prefix views folder
       filePath = `${config.views}/${filePath}`;
@@ -30,7 +31,6 @@ module.exports.loadFile = (filePath) => {
     return '';
   }
   if (isNode) {
-    const fs = require('fs');
     return fs.readFileSync(filePath, 'utf8');
   }
   console.error('unknown environment');  // eslint-disable-line

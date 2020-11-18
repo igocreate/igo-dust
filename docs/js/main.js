@@ -1,25 +1,27 @@
+'use strict';
 
+/* global IgoDust */
 
+const template = document.getElementById('template');
+const locals = document.getElementById('locals');
+const button = document.getElementById('compile');
+const result = document.getElementById('result');
 
-var template = document.getElementById('template');
-var locals = document.getElementById('locals');
-var button = document.getElementById('compile');
-var result = document.getElementById('result');
-
-document.getElementById('compile').onclick = function() {
-  var compiled  = IgoDust.compile(template.value);
-
-  var data = locals.value;
+button.onclick = function() {
+  const compiled  = IgoDust.compile(template.value);
+  let data = locals.value;
   if (!data) {
     result.innerHTML = IgoDust.render(compiled);
-    return 
+    return;
   }
 
   try {
     const f = new Function('return ' + data + ';');
     data = f();
     result.innerHTML = IgoDust.render(compiled, data);
-  } catch {
-    result.innerHTML = 'Invalid data :('
+  } catch (e) {
+    result.innerHTML = `Error while compiling - ${e.message}`;
+    console.error(e); // eslint-disable-line
   }
+  return false;
 };
