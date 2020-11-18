@@ -23,6 +23,6 @@ const isJsDom = () => (typeof window !== 'undefined' && window.name === 'nodejs'
   || navigator.userAgent.includes('Node.js')
   || navigator.userAgent.includes('jsdom');
 
-export {
+module.exports = exports = {
   isBrowser, isWebWorker, isNode, isJsDom
 };

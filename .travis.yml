@@ -3,7 +3,6 @@ node_js:
   - 10
   - 12
 script:
-  - "npm install" # install npm dependencies
   - "npm run lint" # run lint sanity checks on code
   - "npm test" # run mocha unit tests
   - "npm run build" # build distribution files for browser
