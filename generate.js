@@ -18,7 +18,7 @@ async.waterfall([
         cb(null, ret);
       })
     },
-    function (files, cb) {
+    function (templates, cb) {
       async.eachSeries(templates, (template, callback) => {
         IgoDust.engine(`${TEMPLATES_DIR}/${template}`, {}, (err, html) => {
           if (err) {
