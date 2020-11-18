@@ -1,5 +1,6 @@
-
 # igo-dust
+
+[![Build Status](https://travis-ci.org/igocreate/igo-dust.svg?branch=master)](https://travis-ci.org/igocreate/igo-dust)
 
 Asynchronous Javascript templating, inspired by [Dust.js](https://github.com/linkedin/dustjs).
 
