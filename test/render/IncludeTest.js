@@ -1,3 +1,7 @@
+'use strict';
+/* global describe, it */
+
+
 const assert    = require('assert');
 
 const Renderer  = require('../../src/render/Renderer');
@@ -79,7 +83,7 @@ describe('Render Includes & Layouts', () => {
   it('should replace missing insert tags', () => {
     const template = '<meta name="description" content="{+description/}"></meta>';
     const r         = new Renderer().render(template);
-    assert.equal(r, '<meta name="description" content=""></meta>')
+    assert.equal(r, '<meta name="description" content=""></meta>');
   });
 
 });

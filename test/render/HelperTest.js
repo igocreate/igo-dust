@@ -1,3 +1,7 @@
+'use strict';
+/* global describe, it */
+
+
 const assert        = require('assert');
 const Renderer      = require('../../src/render/Renderer');
 const Helpers       = require('../../src/render/Helpers');
@@ -14,7 +18,7 @@ const HELPERS = {
     const color = params.value ? 'success' : 'danger';
     return `<div class="bullet bullet-sm bullet-${color}"></div>`;
   }
-}
+};
 
 
 describe('Render Helpers', () => {
@@ -101,21 +105,21 @@ describe('Render Helpers', () => {
     Helpers.boolean = HELPERS.boolean;
 
     // boolean false
-    let template = `Hello ? {@boolean value=b /}`;
+    let template = 'Hello ? {@boolean value=b /}';
     let r = new Renderer(HELPERS).render(template, {b: false});
-    assert.equal(r, `Hello ? <div class="bullet bullet-sm bullet-danger"></div>`);
+    assert.equal(r, 'Hello ? <div class="bullet bullet-sm bullet-danger"></div>');
     // boolean true
     r = new Renderer(HELPERS).render(template, {b: true});
-    assert.equal(r, `Hello ? <div class="bullet bullet-sm bullet-success"></div>`);
+    assert.equal(r, 'Hello ? <div class="bullet bullet-sm bullet-success"></div>');
     // nl2br
-    template = `{@nl2br value=text /}`;
-    r = new Renderer(HELPERS).render(template, {text: "Hello\nWorld"});
-    assert.equal(r, `Hello<br/>World`);
+    template = '{@nl2br value=text /}';
+    r = new Renderer(HELPERS).render(template, {text: 'Hello\nWorld'});
+    assert.equal(r, 'Hello<br/>World');
   });
 
-  Helpers.t = (params, locals) => {
+  Helpers.t = (params, locals) => { // eslint-disable-line
     return params.key;
-  }
+  };
 
   it('should render custom helper with string param', () => {
     const template  = 'Hello {@t key="World" /} !';

@@ -22,7 +22,7 @@ module.exports.render = (compiled, data) => {
 //
 module.exports.configure = (app) => {
   config.init(app.settings);
-}
+};
 
 // expressjs engine
 module.exports.engine = (filePath, options, callback) => {

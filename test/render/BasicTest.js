@@ -1,3 +1,6 @@
+'use strict';
+/* global describe, it */
+
 const assert    = require('assert');
 
 const Renderer  = require('../../src/render/Renderer');
@@ -42,9 +45,9 @@ describe('Render Basics', () => {
   });
 
   it('should allow escaped special characters', () => {
-    const template  = 'Hello \' \\ \" " World';
+    const template  = 'Hello \' \\ " " World';
     const r         = new Renderer().render(template);
-    assert.equal(r, 'Hello \' \\ \" " World');
+    assert.equal(r, 'Hello \' \\ " " World');
   });
 
   it('should execute function if reference is a function', () => {
@@ -91,7 +94,7 @@ describe('Render Basics', () => {
 
   it('should render 0 value in param', () => {
     const template  = 'Hello {@tap value="{zero}" /}';
-    Helpers.tap = (params, locals) => { return params.value };
+    Helpers.tap = (params, locals) => { return params.value; }; // eslint-disable-line
     const r         = new Renderer().render(template, { zero: 0 });
     assert.equal(r, 'Hello 0');
   });

@@ -1,3 +1,7 @@
+'use strict';
+/* global describe, it */
+
+
 const assert    = require('assert');
 
 const Renderer  = require('../../src/render/Renderer');

@@ -1,7 +1,7 @@
 
 //
 const truthTest = (tag, test) => {
-  return (params, locals) => test(params.key, params.value);
+  return (params, locals) => test(params.key, params.value);  // eslint-disable-line
 };
 
 //
@@ -17,6 +17,6 @@ module.exports = {
   last:   (params, locals) => locals.$length && locals.$length - 1 === locals.$idx,
   sep:    (params, locals) => locals.$length && locals.$length - 1 !== locals.$idx,
   
-  select: () => console.log('Error : @select not supported !'),
+  select: () => console.log('Error : @select not supported !'), // eslint-disable-line
 };
 

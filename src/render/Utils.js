@@ -3,22 +3,22 @@ const Cache = require('../Cache');
 
 // special chars
 const HCHARS  = /[&<>"']/,
-      AMP     = /&/g,
-      LT      = /</g,
-      GT      = />/g,
-      QUOT    = /\"/g,
-      SQUOT   = /\'/g;
+  AMP     = /&/g,
+  LT      = /</g,
+  GT      = />/g,
+  QUOT    = /"/g,
+  SQUOT   = /'/g;
 
 const BS      = /\\/g,
-      FS      = /\//g,
-      CR      = /\r/g,
-      LS      = /\u2028/g,
-      PS      = /\u2029/g,
-      NL      = /\n/g,
-      LF      = /\f/g,
-      SQ      = /'/g,
-      DQ      = /"/g,
-      TB      = /\t/g;
+  FS      = /\//g,
+  CR      = /\r/g,
+  LS      = /\u2028/g,
+  PS      = /\u2029/g,
+  NL      = /\n/g,
+  LF      = /\f/g,
+  SQ      = /'/g,
+  DQ      = /"/g,
+  TB      = /\t/g;
 
 
 const htmlencode = (s)=> {
@@ -26,11 +26,11 @@ const htmlencode = (s)=> {
     return s;
   }
   return s
-      .replace(AMP,'&amp;')
-      .replace(LT,'&lt;')
-      .replace(GT,'&gt;')
-      .replace(QUOT,'&quot;')
-      .replace(SQUOT, '&#39;');
+    .replace(AMP,'&amp;')
+    .replace(LT,'&lt;')
+    .replace(GT,'&gt;')
+    .replace(QUOT,'&quot;')
+    .replace(SQUOT, '&#39;');
 };
 
 const escapeJs = (s) => {
@@ -52,9 +52,9 @@ const escapeJs = (s) => {
 
 const stringifyJson = (o) => {
   return o && JSON.stringify(o)
-          .replace(LS, '\\u2028')
-          .replace(PS, '\\u2029')
-          .replace(LT, '\\u003c');
+    .replace(LS, '\\u2028')
+    .replace(PS, '\\u2029')
+    .replace(LT, '\\u003c');
 };
 
 // Filters

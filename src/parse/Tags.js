@@ -1,22 +1,21 @@
 
-const ParseUtils = require('./ParseUtils');
-
+// const ParseUtils = require('./ParseUtils');
 
 const _if = (parser, block) => {
   parser.pushBlock(block);
-  parser.stackBlock(block)
+  parser.stackBlock(block);
 };
 
 const _loop = (parser, block) => {
   parser.pushBlock(block);
   if (!block.selfClosedTag) {
-    parser.stackBlock(block)
+    parser.stackBlock(block);
   }
 };
 
 const _not = (parser, block) => {
   parser.pushBlock(block);
-  parser.stackBlock(block)
+  parser.stackBlock(block);
 };
 
 const _helper = (parser, block) => {
@@ -33,7 +32,7 @@ const _body = (parser, block) => {
 const _end = (parser, block) => {
   const opening = parser.pop();
   if (opening && opening.type !== '>' && opening.tag !== block.tag)  {
-    console.error(`Open/close tag mismatch! '${opening.tag}' <> '${block.tag}'`);
+    console.error(`Open/close tag mismatch! '${opening.tag}' <> '${block.tag}'`); // eslint-disable-line
   }
 };
 

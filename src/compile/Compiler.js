@@ -4,9 +4,9 @@ const ParseUtils  = require('../parse/ParseUtils');
 
 class Compiler {
 
-  constructor(options) {
+  constructor() {
     this.i  =   0;
-    this.r  = `var r='',l=l||{},c=c||{ctx:[]};`;
+    this.r  = 'var r=\'\',l=l||{},c=c||{ctx:[]};';
   }
 
   compileBuffer(buffer) {
@@ -16,7 +16,7 @@ class Compiler {
       if (block.type === '<') {
         this.r += `c._${block.tag}=function(){var r='';`;
         this.compileBuffer(block.buffer);
-        this.r += `return r;};`;
+        this.r += 'return r;};';
       }
     });
 
@@ -29,9 +29,9 @@ class Compiler {
         // insert content (invoke content function)
         this.r += `if(c._${block.tag}){r+=c._${block.tag}();}`;
         if (block.buffer) {
-          this.r += `else{`;
+          this.r += 'else{';
           this.compileBuffer(block.buffer);
-          this.r += `}`;
+          this.r += '}';
         }
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
@@ -44,13 +44,13 @@ class Compiler {
         this._popContext(block.params);
       } else if (block.type === '#') {
         // loop block
-        this.i++;
+        this.i = this.i + 1;
         const { i } = this;
         this._pushContext(block.params, true);
-        this.r += `var a${i}=u.a(${this._getValue(block.tag)});`
+        this.r += `var a${i}=u.a(${this._getValue(block.tag)});`;
         this.r += `if(a${i}){`;
         if (!block.buffer) {
-          this.r += `r+=a${i};`
+          this.r += `r+=a${i};`;
         } else {
           const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it);
           this.r += `l.$length=a${i}.length;`; // current array length
@@ -63,19 +63,19 @@ class Compiler {
           this.compileBuffer(block.buffer, true);
           this.r += '}';
         }
-        this.r += `}`;
+        this.r += '}';
         this._else(block);
         this._popContext(block.params, true);
       } else if (block.type === '@') {
         // helper
-        this.i++;
+        this.i = this.i + 1;
         const { i } = this;
-        this.r += `var h${i}=u.h('${block.tag}',${this._getParams(block.params)},l);`
+        this.r += `var h${i}=u.h('${block.tag}',${this._getParams(block.params)},l);`;
         this.r += `if(h${i}){`;
         if (block.buffer) {
           this.compileBuffer(block.buffer);
         } else {
-          this.r += `r+=h${i};`
+          this.r += `r+=h${i};`;
         }
         this.r += '}';
         this._else(block);
@@ -129,7 +129,7 @@ class Compiler {
 
   _popContext(params, isArray) {
     const { i } = this;
-    this.r += `var p_ctx${i}=c.ctx.pop();`
+    this.r += `var p_ctx${i}=c.ctx.pop();`;
     Object.keys(params).forEach(key => {
       if (key === '$') {
         return;
@@ -222,7 +222,7 @@ class Compiler {
     const elements = [];
     let i, c, sub = false, idx = 0;
     // parse ref
-    for (i = 0; i < tag.length; i++) {
+    for (i = 0; i < tag.length; i = 1 + i) {
       c = tag[i];
       if (!sub && (c === '.' || c === '[')) {
         if (i > idx) {
@@ -265,7 +265,7 @@ class Compiler {
   _getParams(params) {
     let ret = '{';
     for (let key in params) {
-      ret += `${key}:${this._getParam(params[key])},`
+      ret += `${key}:${this._getParam(params[key])},`;
     }
     ret += '}';
     return ret;
