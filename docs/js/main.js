@@ -7,6 +7,17 @@ const locals = document.getElementById('locals');
 const button = document.getElementById('compile');
 const result = document.getElementById('result');
 
+const initial =
+    'Hello {w}!'+
+    '<br/><br/>'+
+    'My friends are {#friends}{@last} and {/last}{.}{@sep}, {/sep}{/friends}.'+
+    '<br/>'+
+    '{?hasFriends}Yay friends!{/hasFriends}';
+
+window.onload = function () {
+  template.value = initial;
+}
+
 button.onclick = function() {
   const compiled  = IgoDust.compile(template.value);
   let data = locals.value;
