@@ -1,6 +1,6 @@
 
 const TEMPLATES_DIR = './templates';
-const DEST_DIR      = './www';
+const DEST_DIR      = './docs';
 
 const async   = require('async');
 const fs      = require('fs');
