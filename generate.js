@@ -43,6 +43,6 @@ async.waterfall([
   }
   console.log('Done.');
   process.exit(0);
-})
+});
 
 
