@@ -1,10 +1,53 @@
 {> "./templates/_layout" /}
 
-{<content}
+{
+<content}
 <h1>Using filters</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce massa velit, maximus ac bibendum ac, tristique mattis augue. Praesent viverra vel nunc sit amet tincidunt. Etiam eget posuere enim. Nullam ultricies malesuada sem, sit amet tempor diam lobortis sit amet. Phasellus a sem leo. Morbi vitae nulla lobortis, sollicitudin ante ac, rhoncus nisi. In tempus at lacus in blandit. Mauris lobortis odio libero, non varius erat elementum eget. Donec id lacinia enim.</p>
-<p>Pellentesque at orci suscipit, mollis quam quis, vehicula nulla. Morbi eros ipsum, fringilla at elementum eu, sagittis ac lectus. Nunc nec lacus mi. Sed sapien lectus, blandit eu faucibus sed, ornare in ex. Integer pharetra auctor lacinia. Cras in justo bibendum, luctus nunc vitae, gravida purus. Sed lectus lorem, aliquam volutpat posuere a, scelerisque id sem. Donec et accumsan elit. Phasellus varius pretium auctor. Morbi quam dolor, consectetur nec enim at, auctor elementum ipsum. Aliquam placerat risus nec enim sodales, quis posuere lectus varius. Morbi posuere augue a orci eleifend, dignissim imperdiet sem mollis. Integer non lacus tristique, molestie purus id, lacinia nisl. Nam bibendum ut ligula quis tristique. Sed euismod elementum augue sit amet sagittis.</p>
-<p>Praesent aliquet ipsum vel velit congue consectetur. Duis feugiat egestas sollicitudin. Nam vitae sodales est, a efficitur ligula. Ut vestibulum gravida condimentum. Proin ac rhoncus elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque nec nibh scelerisque, volutpat sapien et, convallis turpis. Nam ultrices ipsum augue, ac vestibulum arcu sollicitudin suscipit. Aenean dignissim vulputate ligula a gravida. Aenean tincidunt lorem sit amet scelerisque fringilla. Fusce hendrerit turpis et ultricies fermentum. Curabitur orci nibh, hendrerit vel turpis sit amet, congue aliquam metus. Sed fringilla congue erat in scelerisque. Vivamus sodales nibh est, ut consectetur tortor bibendum at. Phasellus blandit nec dolor maximus eleifend. Maecenas eu sagittis mauris.</p>
-<p>Morbi vestibulum sed est sed sollicitudin. In dapibus magna ac ipsum pulvinar feugiat. Proin vel porta nulla. Ut fermentum vulputate tortor eget fermentum. Phasellus pretium, lectus sit amet posuere egestas, dolor eros viverra ligula, sit amet imperdiet augue sapien eget elit. In sit amet interdum leo. Etiam rutrum purus et egestas iaculis. Vivamus enim augue, suscipit vitae lobortis condimentum, molestie sed mi. In hac habitasse platea dictumst. Praesent erat turpis, placerat eu ante eget, lacinia fringilla augue.</p>
-<p>Praesent tincidunt, odio convallis semper luctus, sapien est tincidunt diam, ut mattis risus odio id quam. Pellentesque pellentesque rhoncus libero in finibus. Donec risus nulla, malesuada vel accumsan vel, rutrum ut nisl. Praesent pellentesque sem ut rutrum gravida. Donec a dignissim sapien. Nulla vel accumsan dui. Vivamus quis pellentesque elit. Etiam condimentum fermentum congue. Vivamus imperdiet quis ante in fermentum. Mauris vehicula venenatis nisl sed efficitur.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce massa velit, maximus ac bibendum ac, tristique mattis
+    augue. Praesent viverra vel nunc sit amet tincidunt. Etiam eget posuere enim. Nullam ultricies malesuada sem, sit
+    amet tempor diam lobortis sit amet. Phasellus a sem leo. Morbi vitae nulla lobortis, sollicitudin ante ac, rhoncus
+    nisi. In tempus at lacus in blandit. Mauris lobortis odio libero, non varius erat elementum eget. Donec id lacinia
+    enim.</p>
+<p>Pellentesque at orci suscipit, mollis quam quis, vehicula nulla. Morbi eros ipsum, fringilla at elementum eu,
+    sagittis ac lectus. Nunc nec lacus mi. Sed sapien lectus, blandit eu faucibus sed, ornare in ex. Integer pharetra
+    auctor lacinia. Cras in justo bibendum, luctus nunc vitae, gravida purus. Sed lectus lorem, aliquam volutpat posuere
+    a, scelerisque id sem. Donec et accumsan elit. Phasellus varius pretium auctor. Morbi quam dolor, consectetur nec
+    enim at, auctor elementum ipsum. Aliquam placerat risus nec enim sodales, quis posuere lectus varius. Morbi posuere
+    augue a orci eleifend, dignissim imperdiet sem mollis. Integer non lacus tristique, molestie purus id, lacinia nisl.
+    Nam bibendum ut ligula quis tristique. Sed euismod elementum augue sit amet sagittis.</p>
+<p>Praesent aliquet ipsum vel velit congue consectetur. Duis feugiat egestas sollicitudin. Nam vitae sodales est, a
+    efficitur ligula. Ut vestibulum gravida condimentum. Proin ac rhoncus elit. Pellentesque habitant morbi tristique
+    senectus et netus et malesuada fames ac turpis egestas. Quisque nec nibh scelerisque, volutpat sapien et, convallis
+    turpis. Nam ultrices ipsum augue, ac vestibulum arcu sollicitudin suscipit. Aenean dignissim vulputate ligula a
+    gravida. Aenean tincidunt lorem sit amet scelerisque fringilla. Fusce hendrerit turpis et ultricies fermentum.
+    Curabitur orci nibh, hendrerit vel turpis sit amet, congue aliquam metus. Sed fringilla congue erat in scelerisque.
+    Vivamus sodales nibh est, ut consectetur tortor bibendum at. Phasellus blandit nec dolor maximus eleifend. Maecenas
+    eu sagittis mauris.</p>
+<p>Morbi vestibulum sed est sed sollicitudin. In dapibus magna ac ipsum pulvinar feugiat. Proin vel porta nulla. Ut
+    fermentum vulputate tortor eget fermentum. Phasellus pretium, lectus sit amet posuere egestas, dolor eros viverra
+    ligula, sit amet imperdiet augue sapien eget elit. In sit amet interdum leo. Etiam rutrum purus et egestas iaculis.
+    Vivamus enim augue, suscipit vitae lobortis condimentum, molestie sed mi. In hac habitasse platea dictumst. Praesent
+    erat turpis, placerat eu ante eget, lacinia fringilla augue.</p>
+<p>Praesent tincidunt, odio convallis semper luctus, sapien est tincidunt diam, ut mattis risus odio id quam.
+    Pellentesque pellentesque rhoncus libero in finibus. Donec risus nulla, malesuada vel accumsan vel, rutrum ut nisl.
+    Praesent pellentesque sem ut rutrum gravida. Donec a dignissim sapien. Nulla vel accumsan dui. Vivamus quis
+    pellentesque elit. Etiam condimentum fermentum congue. Vivamus imperdiet quis ante in fermentum. Mauris vehicula
+    venenatis nisl sed efficitur.</p>
+
+<h1>Example explaining using filters</h1>
+<div class="playground">
+    <textarea class="template" id="template"></textarea>
+    <textarea class="data" id="locals"></textarea>
+</div>
+<p></p>
+<button class="btn btn-success" id="compile">Compile</button>
+<hr>
+<div id="result"></div>
+<script type="text/javascript">
+    window.onload = function () {
+        const exampleTemplate = '{w} {d} {e}!';
+        const exampleData = '{"w": "Using", "d":"", "e":"filters"}';
+        return init(exampleTemplate, exampleData, window.document);
+    }
+</script>
 {/content}

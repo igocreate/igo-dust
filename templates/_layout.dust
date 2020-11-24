@@ -9,7 +9,18 @@
     <meta name="description" content="{+description}Page description placeholder{/description}"/>
     <meta name="keywords" content="{+keywords}Keywords,placeholder{/keywords}"/>
 </head>
+<style>
+    #forkMe {
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 33969;
+    }
+</style>
 <body>
+<a href="https://github.com/igocreate/igo-dust" id="forkMe">
+    <img loading="lazy" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+</a>
 <div class="container-fluid">
     <div class="row">
         <div class="col">
@@ -47,7 +58,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1">
+        <div class="col-2 col-sm-4 col-md-3 col-lg-2 col-xl-2">
             <!-- menu starts -->
             <ul class="nav flex-column">
                 <li class="nav-item">

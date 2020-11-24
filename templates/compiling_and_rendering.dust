@@ -6,4 +6,21 @@
 <p>Praesent aliquet ipsum vel velit congue consectetur. Duis feugiat egestas sollicitudin. Nam vitae sodales est, a efficitur ligula. Ut vestibulum gravida condimentum. Proin ac rhoncus elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque nec nibh scelerisque, volutpat sapien et, convallis turpis. Nam ultrices ipsum augue, ac vestibulum arcu sollicitudin suscipit. Aenean dignissim vulputate ligula a gravida. Aenean tincidunt lorem sit amet scelerisque fringilla. Fusce hendrerit turpis et ultricies fermentum. Curabitur orci nibh, hendrerit vel turpis sit amet, congue aliquam metus. Sed fringilla congue erat in scelerisque. Vivamus sodales nibh est, ut consectetur tortor bibendum at. Phasellus blandit nec dolor maximus eleifend. Maecenas eu sagittis mauris.</p>
 <p>Morbi vestibulum sed est sed sollicitudin. In dapibus magna ac ipsum pulvinar feugiat. Proin vel porta nulla. Ut fermentum vulputate tortor eget fermentum. Phasellus pretium, lectus sit amet posuere egestas, dolor eros viverra ligula, sit amet imperdiet augue sapien eget elit. In sit amet interdum leo. Etiam rutrum purus et egestas iaculis. Vivamus enim augue, suscipit vitae lobortis condimentum, molestie sed mi. In hac habitasse platea dictumst. Praesent erat turpis, placerat eu ante eget, lacinia fringilla augue.</p>
 <p>Praesent tincidunt, odio convallis semper luctus, sapien est tincidunt diam, ut mattis risus odio id quam. Pellentesque pellentesque rhoncus libero in finibus. Donec risus nulla, malesuada vel accumsan vel, rutrum ut nisl. Praesent pellentesque sem ut rutrum gravida. Donec a dignissim sapien. Nulla vel accumsan dui. Vivamus quis pellentesque elit. Etiam condimentum fermentum congue. Vivamus imperdiet quis ante in fermentum. Mauris vehicula venenatis nisl sed efficitur.</p>
+
+<h1>Example explaining compiling and rendering:</h1>
+<div class="playground">
+    <textarea class="template" id="template"></textarea>
+    <textarea class="data" id="locals"></textarea>
+</div>
+<p></p>
+<button class="btn btn-success" id="compile">Compile</button>
+<hr>
+<div id="result"></div>
+<script type="text/javascript">
+    window.onload = function () {
+        const exampleTemplate = '{w}!';
+        const exampleData = '{"w": "Example explaining compiling and rendering"}';
+        return init(exampleTemplate, exampleData, window.document);
+    }
+</script>
 {/content}

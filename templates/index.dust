@@ -3,10 +3,25 @@
 {<content}
   <div class="playground">
     <textarea class="template" id="template"></textarea>
-    <textarea class="data" id="locals">{"w": "World","friends": ["Alice", "Bob", "Charlie"],"hasFriends": function(p, l) {return p.friends;}}</textarea>
+    <textarea class="data" id="locals"></textarea>
   </div>
   <p></p>
   <button class="btn btn-success" id="compile">Compile</button>
   <hr>
   <div id="result"></div>
+
+
+<script type="text/javascript">
+  window.onload = function (){
+    const exampleTemplate =
+            'Hello {w}!'+
+            '<br/><br/>'+
+            'My friends are {#friends}{@last} and {/last}{.}{@sep}, {/sep}{/friends}.'+
+            '<br/>'+
+            '{?hasFriends}Yay friends!{/hasFriends}';
+    const exampleData = '{"w": "World","friends": ["Alice", "Bob", "Charlie"],"hasFriends": function(p, l) {return p.friends;}}';
+    return init(exampleTemplate, exampleData, window.document);
+  }
+</script>
+
 {/content}
