@@ -2,21 +2,15 @@
 
 /* global IgoDust */
 
-$(function() {
-  const template = document.getElementById('template');
-  const locals = document.getElementById('locals');
-  const button = document.getElementById('compile');
-  const result = document.getElementById('result');
-  
-  const initial =
-      'Hello {w}!'+
-      '<br/><br/>'+
-      'My friends are {#friends}{@last} and {/last}{.}{@sep}, {/sep}{/friends}.'+
-      '<br/>'+
-      '{?hasFriends}Yay friends!{/hasFriends}';
-  
-  template.value = initial;
-  
+function init(tpl, data, document, prefix) {
+  const prefixToUse = !prefix ? '' : prefix;
+  const template = document.getElementById(`${prefixToUse}template`);
+  const locals = document.getElementById(`${prefixToUse}locals`);
+  const button = document.getElementById(`${prefixToUse}compile`);
+  const result = document.getElementById(`${prefixToUse}result`);
+  template.value = tpl;
+  locals.value = data;
+
   button.onclick = function() {
     const compiled  = IgoDust.compile(template.value);
     let data = locals.value;
@@ -24,7 +18,7 @@ $(function() {
       result.innerHTML = IgoDust.render(compiled);
       return;
     }
-  
+
     try {
       const f = new Function('return ' + data + ';');
       data = f();
@@ -35,5 +29,4 @@ $(function() {
     }
     return false;
   };
-  
-});
+}
