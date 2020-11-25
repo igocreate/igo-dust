@@ -1,6 +1,7 @@
 {> "./templates/_layout" /}
 
 {<content}
+  <h1>Example 1</h1>
   <div class="playground">
     <textarea class="template" id="template"></textarea>
     <textarea class="data" id="locals"></textarea>
@@ -9,6 +10,16 @@
   <button class="btn btn-success" id="compile">Compile</button>
   <hr>
   <div id="result"></div>
+
+  <h1>Example 2</h1>
+  <div class="playground">
+    <textarea class="template" id="example2_template"></textarea>
+    <textarea class="data" id="example2_locals"></textarea>
+  </div>
+  <p></p>
+  <button class="btn btn-success" id="example2_compile">Compile</button>
+  <hr>
+  <div id="example2_result"></div>
 
 
 <script type="text/javascript">
@@ -20,7 +31,9 @@
             '<br/>'+
             '{?hasFriends}Yay friends!{/hasFriends}';
     const exampleData = '{"w": "World","friends": ["Alice", "Bob", "Charlie"],"hasFriends": function(p, l) {return p.friends;}}';
-    return init(exampleTemplate, exampleData, window.document);
+    init(exampleTemplate, exampleData, window.document);
+    init('Hello, {w}!', '{"w": "Example 2"}', window.document, 'example2_');
+    return;
   }
 </script>
 

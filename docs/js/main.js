@@ -2,11 +2,12 @@
 
 /* global IgoDust */
 
-function init(tpl, data, document) {
-  const template = document.getElementById('template');
-  const locals = document.getElementById('locals');
-  const button = document.getElementById('compile');
-  const result = document.getElementById('result');
+function init(tpl, data, document, prefix) {
+  const prefixToUse = !prefix ? '' : prefix;
+  const template = document.getElementById(`${prefixToUse}template`);
+  const locals = document.getElementById(`${prefixToUse}locals`);
+  const button = document.getElementById(`${prefixToUse}compile`);
+  const result = document.getElementById(`${prefixToUse}result`);
   template.value = tpl;
   locals.value = data;
   button.onclick = function() {
