@@ -10,6 +10,7 @@ function init(tpl, data, document, prefix) {
   const result = document.getElementById(`${prefixToUse}result`);
   template.value = tpl;
   locals.value = data;
+
   button.onclick = function() {
     const compiled  = IgoDust.compile(template.value);
     let data = locals.value;
@@ -17,6 +18,7 @@ function init(tpl, data, document, prefix) {
       result.innerHTML = IgoDust.render(compiled);
       return;
     }
+
     try {
       const f = new Function('return ' + data + ';');
       data = f();
