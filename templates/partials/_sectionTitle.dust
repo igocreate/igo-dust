@@ -1,0 +1,5 @@
+<!-- Just to style the title of a session -->
+<div>
+	<h3>{title}</h3>
+	<hr/>
+</div>

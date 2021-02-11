@@ -1,0 +1,41 @@
+body {
+	background-color: #e2e2e2;
+}
+
+.codeArea {
+	resize: none;
+	overflow: auto;
+	background-color: black;
+	color: #5fcc96;
+	padding-left: 10px;
+	font-family: 'Ubuntu Mono', monospace;
+}
+
+.hightlightText {
+	font-family: 'courier new';
+	color: #00698c;
+	background-color: #d4d4d4;
+	padding: 0 4px 0 4px;
+}
+
+.nav-item > h3 {
+	color: gray;
+}
+.nav-item > a {
+	margin-left: 10px;
+}
+
+.card-body {
+	background-color: #f4f3f3;
+}
+
+.card-subtitle {
+	color: gold;
+	background-color: gray;
+	text-align: end;
+	padding-right: 10px;
+}
+
+.fullHeight {
+	min-height: 100vh;
+}

@@ -1,26 +1,52 @@
 {> "./templates/_layout" /}
+<!-- Not finish !!!!!!!!! -->
 
 {<content}
-<h1>Dust helpers</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce massa velit, maximus ac bibendum ac, tristique mattis augue. Praesent viverra vel nunc sit amet tincidunt. Etiam eget posuere enim. Nullam ultricies malesuada sem, sit amet tempor diam lobortis sit amet. Phasellus a sem leo. Morbi vitae nulla lobortis, sollicitudin ante ac, rhoncus nisi. In tempus at lacus in blandit. Mauris lobortis odio libero, non varius erat elementum eget. Donec id lacinia enim.</p>
-<p>Pellentesque at orci suscipit, mollis quam quis, vehicula nulla. Morbi eros ipsum, fringilla at elementum eu, sagittis ac lectus. Nunc nec lacus mi. Sed sapien lectus, blandit eu faucibus sed, ornare in ex. Integer pharetra auctor lacinia. Cras in justo bibendum, luctus nunc vitae, gravida purus. Sed lectus lorem, aliquam volutpat posuere a, scelerisque id sem. Donec et accumsan elit. Phasellus varius pretium auctor. Morbi quam dolor, consectetur nec enim at, auctor elementum ipsum. Aliquam placerat risus nec enim sodales, quis posuere lectus varius. Morbi posuere augue a orci eleifend, dignissim imperdiet sem mollis. Integer non lacus tristique, molestie purus id, lacinia nisl. Nam bibendum ut ligula quis tristique. Sed euismod elementum augue sit amet sagittis.</p>
-<p>Praesent aliquet ipsum vel velit congue consectetur. Duis feugiat egestas sollicitudin. Nam vitae sodales est, a efficitur ligula. Ut vestibulum gravida condimentum. Proin ac rhoncus elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque nec nibh scelerisque, volutpat sapien et, convallis turpis. Nam ultrices ipsum augue, ac vestibulum arcu sollicitudin suscipit. Aenean dignissim vulputate ligula a gravida. Aenean tincidunt lorem sit amet scelerisque fringilla. Fusce hendrerit turpis et ultricies fermentum. Curabitur orci nibh, hendrerit vel turpis sit amet, congue aliquam metus. Sed fringilla congue erat in scelerisque. Vivamus sodales nibh est, ut consectetur tortor bibendum at. Phasellus blandit nec dolor maximus eleifend. Maecenas eu sagittis mauris.</p>
-<p>Morbi vestibulum sed est sed sollicitudin. In dapibus magna ac ipsum pulvinar feugiat. Proin vel porta nulla. Ut fermentum vulputate tortor eget fermentum. Phasellus pretium, lectus sit amet posuere egestas, dolor eros viverra ligula, sit amet imperdiet augue sapien eget elit. In sit amet interdum leo. Etiam rutrum purus et egestas iaculis. Vivamus enim augue, suscipit vitae lobortis condimentum, molestie sed mi. In hac habitasse platea dictumst. Praesent erat turpis, placerat eu ante eget, lacinia fringilla augue.</p>
-<p>Praesent tincidunt, odio convallis semper luctus, sapien est tincidunt diam, ut mattis risus odio id quam. Pellentesque pellentesque rhoncus libero in finibus. Donec risus nulla, malesuada vel accumsan vel, rutrum ut nisl. Praesent pellentesque sem ut rutrum gravida. Donec a dignissim sapien. Nulla vel accumsan dui. Vivamus quis pellentesque elit. Etiam condimentum fermentum congue. Vivamus imperdiet quis ante in fermentum. Mauris vehicula venenatis nisl sed efficitur.</p>
-<h1>Example explaining contexts</h1>
-<div class="playground">
-    <textarea class="template" id="template"></textarea>
-    <textarea class="data" id="locals"></textarea>
-</div>
-<p></p>
-<button class="btn btn-success" id="compile">Compile</button>
-<hr>
-<div id="result"></div>
-<script type="text/javascript">
-    window.onload = function () {
-        const exampleTemplate = '{w} {d}!';
-        const exampleData = '{"w": "Context", "d":"is good!"}';
-        return init(exampleTemplate, exampleData, window.document);
-    }
-</script>
+	<h1>Dust helpers</h1>
+	{> "./templates/partials/_sectionTitle" title="Using Helpers"/}
+	{+prologue /}
+	{> "./templates/partials/_sectionTitle" title="Logic Helpers"/}
+	{+section1 /}
+	{> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
+
+<script type="text/javascript" src="./js/pages/helpers.js"></script>
 {/content}
+
+
+{<prologue }
+<div>
+	<p>
+		Dust helpers extend the templating language in the same way as context helpers. 
+		Unlike context helpers, however, Dust helpers are global and can be used in any template without including them in the context.
+	</p>
+	<p>
+		{! that don't work need to find a way to output curly brace !}
+		Helpers look like {@helper}.
+	</p>
+</div>
+{/prologue }
+
+
+{<section1 }
+<div>
+	<p>
+		The helpers library comes with the following logic helpers:
+	</p>
+	<ul>
+		<li><span>{@eq}</span> : strictly equal to</li> 
+		<li><span>{@ne}</span> : not strictly equal to</li> 
+		<li><span>{@gt}</span> : greater than</li> 
+		<li><span>{@lt}</span> : less than</li> 
+		<li><span>{@gte}</span> : greater than or equal to</li> 
+		<li><span>{@lte}</span> : less than or equal to</li> 
+	</ul>
+	<p>
+		These helpers allow you to print content if one value compared in a certain way to another value is true. For each helper, you specify the first value with the key attribute and the second value with the value attribute. 
+		Both key and value can point to a reference or a literal value. Wrap literal values in quotes and leave references un-quoted.
+	</p>
+	<p>
+		In the following example, the first helper looks for the value of level in the underlying JSON data and checks if it is equal to the literal string “master”. 
+		The second checks to see if the value for the age reference is greater than the value of the starfighterRentalAge reference.
+	</p>
+</div>
+{/section1 }

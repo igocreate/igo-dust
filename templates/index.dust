@@ -1,39 +1,48 @@
 {> "./templates/_layout" /}
+<!-- Not finish !!!!!!!!! -->
 
 {<content}
-  <h1>Example 1</h1>
-  <div class="playground">
-    <textarea class="template" id="template"></textarea>
-    <textarea class="data" id="locals"></textarea>
+	{> 
+		"./templates/partials/_title" 
+		title="What is Dust?" 
+	/}
+	{+section1 /}
+	{> 
+		"./templates/partials/_sectionTitle" 
+		title="Not logicless… just less logic" 
+	/}
+	{+section2 /}
+
+  <div>
+    {> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
+    {> "./templates/partials/_playground.dust" prefixToUse="Example2" /}
+    {> "./templates/partials/_playground.dust" prefixToUse="Example3" /}
+    {> "./templates/partials/_playground.dust" prefixToUse="Example4" /}
+
   </div>
-  <p></p>
-  <button class="btn btn-success" id="compile">Compile</button>
-  <hr>
-  <div id="result"></div>
-
-  <h1>Example 2</h1>
-  <div class="playground">
-    <textarea class="template" id="example2_template"></textarea>
-    <textarea class="data" id="example2_locals"></textarea>
-  </div>
-  <p></p>
-  <button class="btn btn-success" id="example2_compile">Compile</button>
-  <hr>
-  <div id="example2_result"></div>
-
-
-<script type="text/javascript">
-  window.onload = function (){
-    const exampleTemplate =
-            'Hello {w}!'+
-            '<br/><br/>'+
-            'My friends are {#friends}{@last} and {/last}{.}{@sep}, {/sep}{/friends}.'+
-            '<br/>'+
-            '{?hasFriends}Yay friends!{/hasFriends}';
-    const exampleData = '{"w": "World","friends": ["Alice", "Bob", "Charlie"],"hasFriends": function(p, l) {return p.friends;}}';
-    init(exampleTemplate, exampleData, window.document);
-    init('Hello, {w}!', '{"w": "Example 2"}', window.document, 'example2_');
-    return;
-  }
-</script>
+<script type="text/javascript" src="./js/pages/index.js"></script>
 {/content}
+
+{<section1 }
+	<div>
+		<p>
+			Dust is a Javascript templating engine. It inherits its look from the ctemplate family of languages, 
+			and is designed to run asynchronously on both the server and the browser.
+		</p>
+	</div>
+{/section1}
+
+{<section2 }
+	<div>
+		<p>
+			You cannot write arbitrary Javascript inside Dust templates. However, you still have basic logical operators like comparison, 
+			less than / greater than, and exists / not exists. This strikes a balance between template readability 
+			and data control.
+		</p>
+		<p>
+			Instead, Dust encourages you to move the logic to your data model.
+			You can create functions inside the model that are then called by the template, giving you complete control over 
+			how your templates render without cluttering them with logic. So instead of this:
+		</p>
+	</div>
+{/section2 }
