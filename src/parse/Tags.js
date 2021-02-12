@@ -53,7 +53,19 @@ const _insert = (parser, block) => {
   }
 };
 
+const SPECIALS = {
+	s		: ' ',
+	n		: '\\n',
+	r		: '\\r\\n',
+	lb	: '{',
+	rb	: '}',
+};
 
+const _special = (parser, block) => {
+	if (SPECIALS[block.tag]){
+		parser.pushBlock(SPECIALS[block.tag]);
+	}
+};
 
 const TAGS = {
   '?': _if,
@@ -65,7 +77,7 @@ const TAGS = {
   '>': _include,
   '<': _content,
   '+': _insert,
+	'~': _special,
 };
-
 
 module.exports = TAGS;
