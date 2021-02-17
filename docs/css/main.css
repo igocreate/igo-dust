@@ -29,12 +29,33 @@ body {
 	background-color: #f4f3f3;
 }
 
+.card-title {
+	color: gold;
+	background-color: gray;
+	padding-right: 10px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.card-left {
+	color : black;
+	padding: 0px 10px 0px 10px;
+	background : rgb(224, 192, 11);
+}
+
 .card-subtitle {
 	color: gold;
 	background-color: gray;
-	text-align: end;
 	padding-right: 10px;
+	text-align: end;
 }
+
+
+.card-right {
+	text-align: end;
+	border : 1px solid red;
+}
+
 
 .fullHeight {
 	min-height: 100vh;

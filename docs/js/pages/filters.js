@@ -1,17 +1,17 @@
 window.onload = function () {
 	const examples = [
 		new Example(
-			'Contexts',
+			'contexts',
 			`{title}`,
 			`{"title": '"All is <Fair> in Love & War"'}`
 		),
 		new Example(
-			'Contexts',
+			'contexts',
 			`{title|s}`,
 			`{"title": '"All is <Fair> in Love & War"'}`
 		),
 		new Example(
-			'Contexts',
+			'contexts',
 			`{title|js|s}`,
 			`{"title": '"All is <Fair> in Love & War"'}`
 		),

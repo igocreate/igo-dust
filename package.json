@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "async": "^3.2.0",
-    "igo-dust": "^0.1.14"
+    "igo-dust": "^0.1.15"
   },
   "devDependencies": {},
   "scripts": {

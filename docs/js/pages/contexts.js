@@ -2,7 +2,7 @@ window.onload = function () {
 	const examples = [
 		// need to look at this template, sections don't work like dustjs.
 		new Example(
-			'Sections',
+			'sections',
 			`Parent: {firstName} {lastName}<br/>\n` +
 				`Children: {#children}{firstName} {lastName} {/children}`,
 			`{\n` +

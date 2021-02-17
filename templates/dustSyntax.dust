@@ -1,46 +1,38 @@
 {> "./templates/_layout" /}
 <!-- Not finish !!!!!!!!! -->
+
 {<content}
-	{> "./templates/partials/_title" title="Template Syntax Reference"/}
-	{> "./templates/partials/_sectionTitle" title="Reference"/}
-	{+section1 /}
-	{> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
-	{> "./templates/partials/_sectionTitle" title="Comments"/}
-	{> "./templates/partials/_sectionTitle" title="Section"/}
-	{> "./templates/partials/_sectionTitle" title="Exists"/}
-	{> "./templates/partials/_sectionTitle" title="Not-exists"/}
-	{> "./templates/partials/_sectionTitle" title="Helper"/}
-	{> "./templates/partials/_sectionTitle" title="Inline-partial"/}
-	{> "./templates/partials/_sectionTitle" title="Partial"/}
-	{> "./templates/partials/_sectionTitle" title="Special"/}
+	{> "./templates/partials/_title" title="Template Syntax"/}
+	
+	{> "./templates/partials/_sectionTitle" title="reference"/}
+	{> "./templates/dustSyntaxPartials/_reference" /}
+	{> "./templates/partials/_playground" prefixToUse="Example1" /}
+
+	{> "./templates/partials/_sectionTitle" title="!comments!"/}
+	{> "./templates/dustSyntaxPartials/_comment" /}
+	{> "./templates/partials/_playground" prefixToUse="Example2" /}
+	
+	{> "./templates/partials/_sectionTitle" title="#section"/}
+	{> "./templates/partials/_playground" prefixToUse="Example3" /}
+
+	{> "./templates/partials/_sectionTitle" title="exists"/}
+	{> "./templates/partials/_playground" prefixToUse="Example4" /}
+
+	{> "./templates/partials/_sectionTitle" title="not-exists"/}
+	{> "./templates/partials/_playground" prefixToUse="Example5" /}
+
+	{> "./templates/partials/_sectionTitle" title="helper"/}
+	{> "./templates/partials/_playground" prefixToUse="Example6" /}
+
+	{> "./templates/partials/_sectionTitle" title="inline-partial"/}
+	{> "./templates/partials/_playground" prefixToUse="Example7" /}
+
+	{> "./templates/partials/_sectionTitle" title="partial"/}
+	{> "./templates/partials/_playground" prefixToUse="Example8" /}
+
+	{> "./templates/partials/_sectionTitle" title="~lbSpecial~rb"/}
+	{> "./templates/partials/_playground" prefixToUse="Example9" /}
 
 	<script type="text/javascript" src="./js/pages/dustSyntax.js"></script>
 
 {/content}
-
-
-{<section1}
-<div>
-	<p>
-		A reference is used to insert values from your context (or JSON data) into your template.
-	</p>
-	<p>
-		A Dust path is one or more Dust keys, separated by dots (<span class="hightlightText">.</span>).
-	</p>
-	<p>
-		A Dust key is one or more of the following characters: 
-		<span class="hightlightText">a-z</span>, 
-		<span class="hightlightText">A-Z</span>, 
-		<span class="hightlightText">_</span>(underscore), 
-		<span class="hightlightText">$</span>, 
-		<span class="hightlightText">0-9</span>, or 
-		<span class="hightlightText">=</span>.
-	</p>
-	<p>
-		NOTE: The first character of a reference cannot be 
-		<span class="hightlightText">0-9</span> 
-		or 
-		<span class="hightlightText">-</span>.
-	</p>
-</div>
-{/section1}

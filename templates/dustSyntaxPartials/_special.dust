@@ -1,0 +1,9 @@
+A special is converted to a special character
+
+A special is a single opeing curly brace {, followed by a tilde ~, follwed by any of the characters in a reference, followed by a single closing curly brace }. Dust supports five “specials”:
+
+{~s} becomes a single space
+{~n} becomes a new line
+{~r} becomes a carriage return
+{~lb} becomes a left curly brace {
+{~rb} becomes a right curly brace }

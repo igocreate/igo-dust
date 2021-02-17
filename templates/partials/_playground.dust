@@ -1,10 +1,12 @@
 
-<h3 id="{prefixToUse}title"></h3>
 
 <div class="playground">
-  <div class="card w-100">
-    <div class="card-body">
-      <p class="card-subtitle ">Dust Template</p>
+	<div class="card w-100">
+		<div class="card-body">
+			<p class="card-title">
+				<span id="{prefixToUse}title" class="card-left"></span>
+				<span>Dust Template</span>
+			</p>
       <textarea 
       	class="template card-text w-100 codeArea" 
       	id="{prefixToUse}template" 
