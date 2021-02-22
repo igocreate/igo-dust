@@ -2,51 +2,54 @@
 <!-- Not finish !!!!!!!!! -->
 
 {<content}
-	<h1>Dust helpers</h1>
-	{> "./templates/partials/_sectionTitle" title="Using Helpers"/}
-	{+prologue /}
-	{> "./templates/partials/_sectionTitle" title="Logic Helpers"/}
-	{+section1 /}
-	{> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
+  
+  <h1>Dust helpers</h1>
+  {> "./templates/partials/_sectionTitle" title="Using Helpers"/}
+  
+  {+prologue /}
+  {> "./templates/partials/_sectionTitle" title="Logic Helpers"/}
+  
+  {+section1 /}
+  {> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
 
-<script type="text/javascript" src="./js/pages/helpers.js"></script>
+  <script type="text/javascript" src="./js/pages/helpers.js"></script>
 {/content}
 
 
 {<prologue }
-<div>
-	<p>
-		Dust helpers extend the templating language in the same way as context helpers. 
-		Unlike context helpers, however, Dust helpers are global and can be used in any template without including them in the context.
-	</p>
-	<p>
-		{! that don't work need to find a way to output curly brace !}
-		Helpers look like {@helper}.
-	</p>
-</div>
+  <div>
+    <p>
+      Dust helpers extend the templating language in the same way as context helpers. 
+      Unlike context helpers, however, Dust helpers are global and can be used in any template without including them in the context.
+    </p>
+    <p>
+      {! that don't work need to find a way to output curly brace !}
+      Helpers look like {@helper}.
+    </p>
+  </div>
 {/prologue }
 
 
 {<section1 }
-<div>
-	<p>
-		The helpers library comes with the following logic helpers:
-	</p>
-	<ul>
-		<li><span>{@eq}</span> : strictly equal to</li> 
-		<li><span>{@ne}</span> : not strictly equal to</li> 
-		<li><span>{@gt}</span> : greater than</li> 
-		<li><span>{@lt}</span> : less than</li> 
-		<li><span>{@gte}</span> : greater than or equal to</li> 
-		<li><span>{@lte}</span> : less than or equal to</li> 
-	</ul>
-	<p>
-		These helpers allow you to print content if one value compared in a certain way to another value is true. For each helper, you specify the first value with the key attribute and the second value with the value attribute. 
-		Both key and value can point to a reference or a literal value. Wrap literal values in quotes and leave references un-quoted.
-	</p>
-	<p>
-		In the following example, the first helper looks for the value of level in the underlying JSON data and checks if it is equal to the literal string “master”. 
-		The second checks to see if the value for the age reference is greater than the value of the starfighterRentalAge reference.
-	</p>
-</div>
+  <div>
+    <p>
+      The helpers library comes with the following logic helpers:
+    </p>
+    <ul>
+      <li><span>{@eq}</span> : strictly equal to</li> 
+      <li><span>{@ne}</span> : not strictly equal to</li> 
+      <li><span>{@gt}</span> : greater than</li> 
+      <li><span>{@lt}</span> : less than</li> 
+      <li><span>{@gte}</span> : greater than or equal to</li> 
+      <li><span>{@lte}</span> : less than or equal to</li> 
+    </ul>
+    <p>
+      These helpers allow you to print content if one value compared in a certain way to another value is true. For each helper, you specify the first value with the key attribute and the second value with the value attribute. 
+      Both key and value can point to a reference or a literal value. Wrap literal values in quotes and leave references un-quoted.
+    </p>
+    <p>
+      In the following example, the first helper looks for the value of level in the underlying JSON data and checks if it is equal to the literal string “master”. 
+      The second checks to see if the value for the age reference is greater than the value of the starfighterRentalAge reference.
+    </p>
+  </div>
 {/section1 }

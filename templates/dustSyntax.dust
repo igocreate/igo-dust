@@ -2,37 +2,34 @@
 <!-- Not finish !!!!!!!!! -->
 
 {<content}
-	{> "./templates/partials/_title" title="Template Syntax"/}
-	
-	{> "./templates/partials/_sectionTitle" title="reference"/}
-	{> "./templates/dustSyntaxPartials/_reference" /}
-	{> "./templates/partials/_playground" prefixToUse="Example1" /}
+  {> "./templates/partials/_title" title="Template Syntax"/}
+  
+  {> "./templates/partials/_sectionTitle" title="reference"/}
+  {> "./templates/dustSyntaxPartials/_reference" /}
+  {> "./templates/partials/_playground" prefixToUse="Example1" /}
 
-	{> "./templates/partials/_sectionTitle" title="!comments!"/}
-	{> "./templates/dustSyntaxPartials/_comment" /}
-	{> "./templates/partials/_playground" prefixToUse="Example2" /}
-	
-	{> "./templates/partials/_sectionTitle" title="#section"/}
-	{> "./templates/partials/_playground" prefixToUse="Example3" /}
+  {> "./templates/partials/_sectionTitle" title="!comments!"/}
+  {> "./templates/dustSyntaxPartials/_comment" /}
+  {> "./templates/partials/_playground" prefixToUse="Example2" /}
+  
+  {> "./templates/partials/_sectionTitle" title="#section"/}
+  {> "./templates/partials/_playground" prefixToUse="Example3" /}
 
-	{> "./templates/partials/_sectionTitle" title="exists"/}
-	{> "./templates/partials/_playground" prefixToUse="Example4" /}
+  {> "./templates/partials/_sectionTitle" title="exists"/}
+  {> "./templates/partials/_playground" prefixToUse="Example4" /}
 
-	{> "./templates/partials/_sectionTitle" title="not-exists"/}
-	{> "./templates/partials/_playground" prefixToUse="Example5" /}
+  {> "./templates/partials/_sectionTitle" title="not-exists"/}
+  {> "./templates/partials/_playground" prefixToUse="Example5" /}
 
-	{> "./templates/partials/_sectionTitle" title="helper"/}
-	{> "./templates/partials/_playground" prefixToUse="Example6" /}
+  {> "./templates/partials/_sectionTitle" title="helper"/}
+  {> "./templates/partials/_playground" prefixToUse="Example6" /}
 
-	{> "./templates/partials/_sectionTitle" title="inline-partial"/}
-	{> "./templates/partials/_playground" prefixToUse="Example7" /}
+  {> "./templates/partials/_sectionTitle" title="inline-partial"/}
+  {> "./templates/partials/_playground" prefixToUse="Example7" /}
 
-	{> "./templates/partials/_sectionTitle" title="partial"/}
-	{> "./templates/partials/_playground" prefixToUse="Example8" /}
+  {> "./templates/partials/_sectionTitle" title="{~lb}Special~rb"/}
+  {> "./templates/partials/_playground" prefixToUse="Example8" /}
 
-	{> "./templates/partials/_sectionTitle" title="~lbSpecial~rb"/}
-	{> "./templates/partials/_playground" prefixToUse="Example9" /}
-
-	<script type="text/javascript" src="./js/pages/dustSyntax.js"></script>
+  <script type="text/javascript" src="./js/pages/dustSyntax.js"></script>
 
 {/content}

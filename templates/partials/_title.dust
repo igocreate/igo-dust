@@ -1,5 +1,5 @@
 <!-- just to style the title of a page -->
 <div>
-	<h1>{title}</h1>
-	<hr/>
+  <h1>{title}</h1>
+  <hr/>
 </div>

@@ -2,10 +2,10 @@
 <!-- Not finish !!!!!!!!! -->
 
 {<content}
-    {> "./templates/partials/_title" title="Filter API"/}
-    <div>
-        {> "./templates/partials/_sectionTitle" title="Filter call"/}
-        <p>
-        </p>
-    </div>
+  {> "./templates/partials/_title" title="Filter API"/}
+  <div>
+    {> "./templates/partials/_sectionTitle" title="Filter call"/}
+    <p>
+    </p>
+  </div>
 {/content}

@@ -2,42 +2,42 @@
 <!-- Not finish !!!!!!!!! -->
 
 {<content}
-    {> "./templates/partials/_title" title="Using filters" /}
-    <p>
-			Filters are used to transform a variable before outputting it. You can attach one or many filters to a variable, 
-			and you can add your own filters to augment the ones built-in to Dust.
-		</p>
-    <p>
-			Filters are attached to a Dust reference by adding a pipe | and the filter name after the reference name. 
-			You can chain filters by adding multiple pipes. The filters will be run from left-to-right.
-		</p>
-    {> "./templates/partials/_sectionTitle" title="Built-In Filters"/}
-    {+list /}
-    <p>
-			Dust applies the <span class="hightlightText">h</span> filter to all references by default, ensuring that variables are HTML-escaped. 
-			You can undo this autoescaping by appending the <span class="hightlightText">s</span> filter.
-		</p>
-    {> "./templates/partials/_sectionTitle" title="Example explaining using filters"/}
-		<p>
-			Filters are attached to a Dust reference by adding a pipe <span class="hightlightText">|</span> and the filter name after the reference name. 
-			You can chain filters by adding multiple pipes. The filters will be run from left-to-right.
-		</p>
-    {> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
-    {> "./templates/partials/_playground.dust" prefixToUse="Example2" /}
-    {> "./templates/partials/_playground.dust" prefixToUse="Example3" /}
+  {> "./templates/partials/_title" title="Using filters" /}
+  <p>
+    Filters are used to transform a variable before outputting it. You can attach one or many filters to a variable, 
+    and you can add your own filters to augment the ones built-in to Dust.
+  </p>
+  <p>
+    Filters are attached to a Dust reference by adding a pipe | and the filter name after the reference name. 
+    You can chain filters by adding multiple pipes. The filters will be run from left-to-right.
+  </p>
+  {> "./templates/partials/_sectionTitle" title="Built-In Filters"/}
+  {+list /}
+  <p>
+    Dust applies the <span class="hightlightText">h</span> filter to all references by default, ensuring that variables are HTML-escaped. 
+    You can undo this autoescaping by appending the <span class="hightlightText">s</span> filter.
+  </p>
+  {> "./templates/partials/_sectionTitle" title="Example explaining using filters"/}
+  <p>
+    Filters are attached to a Dust reference by adding a pipe <span class="hightlightText">|</span> and the filter name after the reference name. 
+    You can chain filters by adding multiple pipes. The filters will be run from left-to-right.
+  </p>
+  {> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
+  {> "./templates/partials/_playground.dust" prefixToUse="Example2" /}
+  {> "./templates/partials/_playground.dust" prefixToUse="Example3" /}
 
-		<script type="text/javascript" src="./js/pages/filters.js"></script>
+  <script type="text/javascript" src="./js/pages/filters.js"></script>
 {/content}
 
 
 {<list}
-<ul>
+  <ul>
     <li>  <span class="hightlightText">h</span> – HTML-encode</li>
-    <li> 	<span class="hightlightText">s</span> – turn off automatic HTML encoding</li>
+    <li>  <span class="hightlightText">s</span> – turn off automatic HTML encoding</li>
     <li>  <span class="hightlightText">j</span> – Javascript string encode </li>   
     <li>  <span class="hightlightText">u</span> – encodeURI </li>   
     <li>  <span class="hightlightText">uc</span> – encodeURIComponent </li>   
     <li>  <span class="hightlightText">js</span> – JSON.stringify </li>   
     <li>  <span class="hightlightText">jp</span> – JSON.parse </li>   
-</ul>
+  </ul>
 {/list}

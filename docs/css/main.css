@@ -1,62 +1,62 @@
 body {
-	background-color: #e2e2e2;
+  background-color: #e2e2e2;
 }
 
 .codeArea {
-	resize: none;
-	overflow: auto;
-	background-color: black;
-	color: #5fcc96;
-	padding-left: 10px;
-	font-family: 'Ubuntu Mono', monospace;
+  resize: none;
+  overflow: auto;
+  background-color: black;
+  color: #5fcc96;
+  padding-left: 10px;
+  font-family: 'Ubuntu Mono', monospace;
 }
 
 .hightlightText {
-	font-family: 'courier new';
-	color: #00698c;
-	background-color: #d4d4d4;
-	padding: 0 4px 0 4px;
+  font-family: 'courier new';
+  color: #00698c;
+  background-color: #d4d4d4;
+  padding: 0 4px 0 4px;
 }
 
 .nav-item > h3 {
-	color: gray;
+  color: gray;
 }
 .nav-item > a {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 
 .card-body {
-	background-color: #f4f3f3;
+  background-color: #f4f3f3;
 }
 
 .card-title {
-	color: gold;
-	background-color: gray;
-	padding-right: 10px;
-	display: flex;
-	justify-content: space-between;
+  color: gold;
+  background-color: gray;
+  padding-right: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .card-left {
-	color : black;
-	padding: 0px 10px 0px 10px;
-	background : rgb(224, 192, 11);
+  color : black;
+  padding: 0px 10px 0px 10px;
+  background : rgb(224, 192, 11);
 }
 
 .card-subtitle {
-	color: gold;
-	background-color: gray;
-	padding-right: 10px;
-	text-align: end;
+  color: gold;
+  background-color: gray;
+  padding-right: 10px;
+  text-align: end;
 }
 
 
 .card-right {
-	text-align: end;
-	border : 1px solid red;
+  text-align: end;
+  border : 1px solid red;
 }
 
 
 .fullHeight {
-	min-height: 100vh;
+  min-height: 100vh;
 }

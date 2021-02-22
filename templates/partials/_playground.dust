@@ -1,18 +1,18 @@
 
 
 <div class="playground">
-	<div class="card w-100">
-		<div class="card-body">
-			<p class="card-title">
-				<span id="{prefixToUse}title" class="card-left"></span>
-				<span>Dust Template</span>
-			</p>
+  <div class="card w-100">
+    <div class="card-body">
+      <p class="card-title">
+        <span id="{prefixToUse}title" class="card-left"></span>
+        <span>Dust Template</span>
+      </p>
       <textarea 
-      	class="template card-text w-100 codeArea" 
-      	id="{prefixToUse}template" 
-      	oninput="auto_grow(this)"
-      	onclick="auto_grow(this)" 
-				spellcheck="false"
+        class="template card-text w-100 codeArea" 
+        id="{prefixToUse}template" 
+        oninput="auto_grow(this)"
+        onclick="auto_grow(this)" 
+        spellcheck="false"
       ></textarea>
     </div>
   </div>
@@ -20,22 +20,22 @@
     <div class="card-body">
       <p class="card-subtitle">Data</p>
       <textarea 
-      	class="data card-text w-100 codeArea" 
-      	id="{prefixToUse}locals" 
-      	oninput="auto_grow(this)"
-      	onclick="auto_grow(this)"
-				spellcheck="false"
+        class="data card-text w-100 codeArea" 
+        id="{prefixToUse}locals" 
+        oninput="auto_grow(this)"
+        onclick="auto_grow(this)"
+        spellcheck="false"
       ></textarea>
     </div>
   </div>
   <div class="card w-100">
     <div class="card-body">
       <p class="card-subtitle">Result</p>
-			<p 
-      	class="template card-text w-100 codeArea" 
-      	id="{prefixToUse}result"
+      <p 
+        class="template card-text w-100 codeArea" 
+        id="{prefixToUse}result"
       ><br/></p>
-			<button class="btn btn-success " id="{prefixToUse}compile">Compile</button>
+      <button class="btn btn-success " id="{prefixToUse}compile">Compile</button>
     </div>
   </div>
 </div>

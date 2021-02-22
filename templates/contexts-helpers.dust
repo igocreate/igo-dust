@@ -1,0 +1,25 @@
+{> "./templates/_layout" /}
+<!-- Not finish !!!!!!!!! -->
+{<content}
+
+  {> "./templates/partials/_title" title="Context helpers"/}
+  {+prologue /}	
+
+  {> "./templates/partials/_sectionTitle" title="Writing context helpers"/}
+  {> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
+  {> "./templates/partials/_sectionTitle" title="Writing context helpers"/}
+  {> "./templates/partials/_playground.dust" prefixToUse="Example2" /}
+
+<script type="text/javascript" src="./js/pages/contexts-helpers.js"></script>
+
+{/content}
+
+
+{<prologue}
+  <div>
+    <p>
+      The most basic context helpers simply return a value. The value will act just like a value contained in the context.
+    </p>
+
+  </div>
+{/prologue}

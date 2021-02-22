@@ -2,47 +2,47 @@
 <!-- Not finish !!!!!!!!! -->
 
 {<content}
-	{> 
-		"./templates/partials/_title" 
-		title="What is Dust?" 
-	/}
-	{+section1 /}
-	{> 
-		"./templates/partials/_sectionTitle" 
-		title="Not logicless… just less logic" 
-	/}
-	{+section2 /}
+  {> 
+    "./templates/partials/_title" 
+    title="What is Dust?" 
+  /}
+  {+section1 /}
+  {> 
+    "./templates/partials/_sectionTitle" 
+    title="Not logicless… just less logic" 
+  /}
+  {+section2 /}
 
   <div>
     {> "./templates/partials/_playground.dust" prefixToUse="Example1" /}
     {> "./templates/partials/_playground.dust" prefixToUse="Example2" /}
     {> "./templates/partials/_playground.dust" prefixToUse="Example3" /}
     {> "./templates/partials/_playground.dust" prefixToUse="Example4" /}
-
   </div>
-<script type="text/javascript" src="./js/pages/index.js"></script>
+
+  <script type="text/javascript" src="./js/pages/index.js"></script>
 {/content}
 
 {<section1 }
-	<div>
-		<p>
-			Dust is a Javascript templating engine. It inherits its look from the ctemplate family of languages, 
-			and is designed to run asynchronously on both the server and the browser.
-		</p>
-	</div>
+  <div>
+    <p>
+      Dust is a Javascript templating engine. It inherits its look from the ctemplate family of languages, 
+      and is designed to run asynchronously on both the server and the browser.
+    </p>
+  </div>
 {/section1}
 
 {<section2 }
-	<div>
-		<p>
-			You cannot write arbitrary Javascript inside Dust templates. However, you still have basic logical operators like comparison, 
-			less than / greater than, and exists / not exists. This strikes a balance between template readability 
-			and data control.
-		</p>
-		<p>
-			Instead, Dust encourages you to move the logic to your data model.
-			You can create functions inside the model that are then called by the template, giving you complete control over 
-			how your templates render without cluttering them with logic. So instead of this:
-		</p>
-	</div>
+  <div>
+    <p>
+      You cannot write arbitrary Javascript inside Dust templates. However, you still have basic logical operators like comparison, 
+      less than / greater than, and exists / not exists. This strikes a balance between template readability 
+      and data control.
+    </p>
+    <p>
+      Instead, Dust encourages you to move the logic to your data model.
+      You can create functions inside the model that are then called by the template, giving you complete control over 
+      how your templates render without cluttering them with logic. So instead of this:
+    </p>
+  </div>
 {/section2 }
