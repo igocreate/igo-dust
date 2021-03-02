@@ -8,7 +8,7 @@ class Example {
   constructor(title, template, data) {
     this.title 		= title;
     this.template = template;
-    this.data 		= data;d
+    this.data 		= data;
   }
 }
 

@@ -76,6 +76,11 @@ window.onload = function () {
       `{+greeting}Hello!{/greeting} world.\n` +
       `{<greeting}Howdy{/greeting}`,
       `{ }`
+    ),
+    new Example (
+      ``,
+      `{~lb}Hello!\n{~rb}`,
+      `{ }`
     )
   ];
 

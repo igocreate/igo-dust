@@ -36,12 +36,12 @@
       The helpers library comes with the following logic helpers:
     </p>
     <ul>
-      <li><span>{@eq}</span> : strictly equal to</li> 
-      <li><span>{@ne}</span> : not strictly equal to</li> 
-      <li><span>{@gt}</span> : greater than</li> 
-      <li><span>{@lt}</span> : less than</li> 
-      <li><span>{@gte}</span> : greater than or equal to</li> 
-      <li><span>{@lte}</span> : less than or equal to</li> 
+      <li><span>@eq</span> : strictly equal to</li> 
+      <li><span>@ne</span> : not strictly equal to</li> 
+      <li><span>@gt</span> : greater than</li> 
+      <li><span>@lt</span> : less than</li> 
+      <li><span>@gte</span> : greater than or equal to</li> 
+      <li><span>@lte</span> : less than or equal to</li> 
     </ul>
     <p>
       These helpers allow you to print content if one value compared in a certain way to another value is true. For each helper, you specify the first value with the key attribute and the second value with the value attribute. 
