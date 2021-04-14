@@ -2,22 +2,28 @@ window.onload = function () {
   const examples = [
     new Example(
       '',
-      `Dust does {#features}{name}{@sep}, {/sep}{/features}!`,
-      `{\n` +
-        ` features: [\n` +
-        `   {name: "async"},\n` +
-        `   {name: "helpers"},\n` +
-        `   {name: "filters"},\n` +
-        `   {name: "a little bit of logic"},\n` +
-        `   {name: "and more"}\n` +
-        ` ]\n` +
-        `}`
-    ),
-    new Example('Title', `Hello, {w}!`, `{"w": "world"}`),
+      `Dust does {#features}{.name}{@sep}, {/sep}{/features}!`,
+      `{
+  features: [
+    { name: 'async' },
+    { name: 'helpers' },
+    { name: 'filters' },
+    { name: 'a little bit of logic' },
+    { name: 'and more.' }
+  ]
+}`),
+    new Example(
+      'Title',
+      `Hello {w}!`,
+      `{
+  w: 'World'
+}`),
     new Example(
       'If Else statement',
-      `Have banana ? {?banana } yeah {:else} no {/banana}`,
-      `{banana : true}`
+      `Have banana ? {?banana}yeah{:else}no{/banana}`,
+      `{
+  banana: true
+}`
     ),
     new Example(
       'test',
@@ -26,16 +32,20 @@ window.onload = function () {
         `My friends are {#friends}{@last} and {/last}{.}{@sep}, {/sep}{/friends}.\n` +
         `<br/>\n` +
         `{?hasFriends}Yay friends!{/hasFriends}`,
-      `{"w": "World","friends": ["Alice", "Bob", "Charlie"],"hasFriends": function(p, l) {return p.friends;}}`
+      `{
+  w:          'World',
+  friends:    ['Alice', 'Bob', 'Charlie'],
+  hasFriends: (params, locals) => { return params.friends; }
+}`
     ),
   ];
-  examples.forEach((example, index) => {
+  examples.forEach((example, i) => {
     init(
       example.title,
       example.template,
       example.data,
       window.document,
-      `Example${index + 1}`
+      `Example${i + 1}`
     );
   });
   return;
