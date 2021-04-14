@@ -1,17 +1,14 @@
 {
   "name": "igo-dust",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Javascript template engine",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^7.12.1",
-    "mocha": "^8.2.1",
-    "webpack": "^5.5.0",
-    "webpack-cli": "^4.2.0"
+    "webpack": "^5.32.0",
+    "webpack-cli": "^4.6.0"
   },
   "scripts": {
-    "lint": "eslint src/**/*.js test/**/*.js *.js",
     "test": "mocha --exit --recursive",
     "build": "webpack"
   },
