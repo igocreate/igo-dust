@@ -12,6 +12,8 @@ npm install --save igo-dust
 
 ## Documentation
 
+[Check our website](https://igocreate.github.io/igo-dust)
+
 - [Syntax Basics](/docs/basics.md)
 - Compiling and Rendering
 - Loops
