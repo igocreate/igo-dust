@@ -35,7 +35,7 @@ module.exports.parseParams = (s) => {
   }
 
   // ref param
-  const refParam = new RegExp('(\\w+)=([^" ]+)', 'msg');
+  const refParam = new RegExp('(\\w+)=([^" \n\r]+)', 'msg');
   while ((match = refParam.exec(s)) !== null) {
     params[match[1]] = match[2];
   }

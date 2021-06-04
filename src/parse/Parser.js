@@ -16,6 +16,10 @@ class Parser {
 
   // add string
   pushString(str) {
+    if (config.htmltrim) {
+      str = str.replace(/[\r\n]+\s*/g , '');
+    }
+    
     // escape backslashes and single quotes
     str = str.replace(/\\/g, '\\\\');
     str = str.replace(/'/g, '\\\'');
@@ -71,7 +75,7 @@ class Parser {
   parse(str) {
     // remove spaces at the beginning of lines and line breaks
     if (config.htmltrim) {
-      str = str.replace(/^\s+/gm, '').replace(/[\r\n]/g , '');
+      str = str.replace(/^\s+/g, '');
     } else {
       str = str.replace(/\r/g , '\\r').replace(/\n/g , '\\n');
     }

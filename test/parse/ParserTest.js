@@ -39,7 +39,7 @@ describe('Parser', () => {
     const TEMPLATE = '<style> body {\r\n    background-color: #f6f6f6;\r\n  }</style>';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 1);
-    assert.equal(buffer[0], TEMPLATE.replace(/^\s+/gm, '').replace(/[\r\n]/g , ''));
+    assert.equal(buffer[0], '<style> body {background-color: #f6f6f6;}</style>');
   });
 
   it('should ignore js code ', () => {
@@ -267,12 +267,13 @@ describe('Parser', () => {
     assert.equal(buffer[0].params.text, '"ok-{test}"');
   });
 
-  // TOFIX
-  it.skip('should allow line returns in tags', () => {
+  it('should allow line returns in tags', () => {
     const TEMPLATE  = 'Hello {> "./test/templates/_world_ref" world=w\n  index=1\nid=1 }';
-    console.dir(TEMPLATE);
     const buffer = new Parser().parse(TEMPLATE);
-    console.dir(buffer);
+    assert.equal(buffer.length, 2);
+    assert(buffer[1].params.world, 'w');
+    assert(buffer[1].params.index, '1');
+    assert(buffer[1].params.id, '1');
   });
 
   it('should detect self closed tag with string param', () => {
