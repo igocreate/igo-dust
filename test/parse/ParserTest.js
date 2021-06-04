@@ -267,6 +267,14 @@ describe('Parser', () => {
     assert.equal(buffer[0].params.text, '"ok-{test}"');
   });
 
+  // TOFIX
+  it.skip('should allow line returns in tags', () => {
+    const TEMPLATE  = 'Hello {> "./test/templates/_world_ref" world=w\n  index=1\nid=1 }';
+    console.dir(TEMPLATE);
+    const buffer = new Parser().parse(TEMPLATE);
+    console.dir(buffer);
+  });
+
   it('should detect self closed tag with string param', () => {
     const TEMPLATE = 'Hello {#world params="value" /}';
     const buffer = new Parser().parse(TEMPLATE);
