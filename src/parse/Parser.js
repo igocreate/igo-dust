@@ -79,7 +79,6 @@ class Parser {
     if (config.htmltrim) {
       str = str.replace(/^\s+/g, '');
     } else {
-      console.log('hello');
       str = str.replace(/\r/g , '\\r').replace(/\n/g , '\\n');
     }
 
