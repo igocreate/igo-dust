@@ -3,6 +3,7 @@
 
 const assert    = require('assert');
 
+const Config  = require('../../src/Config');
 const Renderer  = require('../../src/render/Renderer');
 const Helpers   = require('../../src/render/Helpers');
 
@@ -47,7 +48,7 @@ describe('Render Basics', () => {
   it('should allow escaped special characters', () => {
     const template  = 'Hello \' \\ " " World';
     const r         = new Renderer().render(template);
-    assert.equal(r, 'Hello \' \\ " " World');
+    assert.equal(r, template);
   });
 
   it('should execute function if reference is a function', () => {
@@ -98,5 +99,15 @@ describe('Render Basics', () => {
     const r         = new Renderer().render(template, { zero: 0 });
     assert.equal(r, 'Hello 0');
   });
+
+  it('should keep line returns if htmltrim is disabled', () => {
+    Config.htmltrim = false;
+    const template  = ' Hello \r\n World \r\n<meta name="description" content="{+description/}">\r\n OK.';
+    const r         = new Renderer().render(template, {});
+    assert.strictEqual(r, ' Hello \r\n World \r\n<meta name="description" content="">\r\n OK.');
+    Config.htmltrim = true;
+  });
+
+  
 
 });

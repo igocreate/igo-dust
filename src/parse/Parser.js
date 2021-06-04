@@ -17,11 +17,13 @@ class Parser {
   // add string
   pushString(str) {
     if (config.htmltrim) {
+      // remove line returns and following spaces
       str = str.replace(/[\r\n]+\s*/g , '');
+      // escape backslashes
+      str = str.replace(/\\/g, '\\\\');
     }
     
-    // escape backslashes and single quotes
-    str = str.replace(/\\/g, '\\\\');
+    // escape single quotes
     str = str.replace(/'/g, '\\\'');
     
     const i     = this.buffer.length - 1;
@@ -77,6 +79,7 @@ class Parser {
     if (config.htmltrim) {
       str = str.replace(/^\s+/g, '');
     } else {
+      console.log('hello');
       str = str.replace(/\r/g , '\\r').replace(/\n/g , '\\n');
     }
 
