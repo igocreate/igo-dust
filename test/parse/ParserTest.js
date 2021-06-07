@@ -69,6 +69,13 @@ describe('Parser', () => {
     assert.equal(buffer[0], 'Hello World!');
   });
 
+  it('should ignore multilines comments', () => {
+    const TEMPLATE = 'Hello {! comment on\nhello world\n !}World!';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], 'Hello World!');
+  });
+
   it('should parse multiple references', () => {
     const TEMPLATE = 'Hello {world}, ok. {world}{world}';
     const buffer = new Parser().parse(TEMPLATE);
