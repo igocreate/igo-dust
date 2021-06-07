@@ -7,6 +7,28 @@ module.exports.cleanStr = (s) => {
   return match && match[1];
 };
 
+// strip comments
+module.exports.removeComments = (str) => {
+  let index = 0;
+  let openCommentMatch, closeCommentMatch;
+
+  const openCommentRegexp   = new RegExp('{!', 'msg');
+  const closeCommentRegexp  = new RegExp('!}', 'msg');
+
+  // find opening '{!'
+  while ((openCommentMatch = openCommentRegexp.exec(str)) !== null) {
+    index = openCommentMatch.index + 2;
+    // find closing '!}'
+    closeCommentRegexp.lastIndex = index;
+    while ((closeCommentMatch = closeCommentRegexp.exec(str)) !== null) {
+      str = str.slice(0, openCommentMatch.index) + str.slice(closeCommentMatch.index + 2);
+      break;
+    };
+  }
+
+  return str;
+};
+
 // remove spaces and double quotes
 module.exports.stripDoubleQuotes = (s) => {
   const regexp = new RegExp('"', 'sg');

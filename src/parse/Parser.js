@@ -83,7 +83,7 @@ class Parser {
     }
 
     // remove comments
-    str = str.replace(/{!.*!}/gms, '');
+    str = ParseUtils.removeComments(str);
     
     const openRegexp   = new RegExp('(.*?)\\{', 'msg');
     const closeRegexp  = new RegExp('(.*?)\\}', 'msg');

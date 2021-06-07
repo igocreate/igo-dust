@@ -69,8 +69,22 @@ describe('Parser', () => {
     assert.equal(buffer[0], 'Hello World!');
   });
 
+  it('should ignore comment content', () => {
+    const TEMPLATE = 'Hello {! comment {on} hello ! world !}World!';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], 'Hello World!');
+  });
+
   it('should ignore multilines comments', () => {
     const TEMPLATE = 'Hello {! comment on\nhello world\n !}World!';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], 'Hello World!');
+  });
+
+  it('should ignore two comments and keep content', () => {
+    const TEMPLATE = 'Hello {! comment 1 !}World!{! comment 2 !}';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 1);
     assert.equal(buffer[0], 'Hello World!');
