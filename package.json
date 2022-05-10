@@ -1,12 +1,12 @@
 {
   "name": "igo-dust",
-  "version": "0.1.19",
+  "version": "0.2.0",
   "description": "Javascript template engine",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "webpack": "^5.38.1",
-    "webpack-cli": "^4.7.0"
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
   },
   "scripts": {
     "test": "mocha --exit --recursive",

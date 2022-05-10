@@ -17,8 +17,8 @@ module.exports.compile = (src) => {
 };
 
 //
-module.exports.render = (compiled, data) => {
-  return new Renderer().render(compiled, data);
+module.exports.render = (compiled, data, res) => {
+  return new Renderer().render(compiled, data, res);
 };
 
 //
@@ -27,10 +27,17 @@ module.exports.configure = (app) => {
 };
 
 // expressjs engine
-module.exports.engine = (filePath, options, callback) => {
+module.exports.engine = (filePath, data, callback) => {
   const compiled = Cache.getCompiled(filePath);
-  const rendered = module.exports.render(compiled, options);
+  const rendered = module.exports.render(compiled, data);
   callback(null, rendered);
+};
+
+// stream
+module.exports.stream = (res, filePath, data) => {
+  const compiled = Cache.getCompiled(filePath + '.dust');
+  module.exports.render(compiled, data, res);
+  res.end();
 };
 
 //

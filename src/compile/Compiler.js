@@ -6,7 +6,8 @@ class Compiler {
 
   constructor() {
     this.i  =   0;
-    this.r  = 'var r=\'\',l=l||{},c=c||{ctx:[]};';
+    this.r  = `var r='',l=l||{},c=c||{ctx:[]};`;
+    this.r += 'var a=s?function(x){s.write(x)}:function(x){r+=x};';
   }
 
   compileBuffer(buffer) {
@@ -15,6 +16,7 @@ class Compiler {
     buffer.forEach(block => {
       if (block.type === '<') {
         this.r += `c._${block.tag}=function(){var r='';`;
+        this.r += 'var a=s?function(x){s.write(x)}:function(x){r+=x};';
         this.compileBuffer(block.buffer);
         this.r += 'return r;};';
       }
@@ -24,10 +26,10 @@ class Compiler {
     buffer.forEach(block => {
       if (block.type === 'r') {
         // reference
-        this.r += `r+=${this._getReference(block)};`;
+        this.r += `a(${this._getReference(block)});`;
       } else if (block.type === '+') {
         // insert content (invoke content function)
-        this.r += `if(c._${block.tag}){r+=c._${block.tag}();}`;
+        this.r += `if(c._${block.tag}){a(c._${block.tag}())}`;
         if (block.buffer) {
           this.r += 'else{';
           this.compileBuffer(block.buffer);
@@ -50,7 +52,7 @@ class Compiler {
         this.r += `var a${i}=u.a(${this._getValue(block.tag)});`;
         this.r += `if(a${i}){`;
         if (!block.buffer) {
-          this.r += `r+=a${i};`;
+          this.r += `a(a${i})`;
         } else {
           const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it);
           this.r += `l.$length=a${i}.length;`; // current array length
@@ -75,7 +77,7 @@ class Compiler {
         if (block.buffer) {
           this.compileBuffer(block.buffer);
         } else {
-          this.r += `r+=h${i};`;
+          this.r += `a(h${i});`;
         }
         this.r += '}';
         this._else(block);
@@ -83,11 +85,11 @@ class Compiler {
         // include
         this._pushContext(block.params);
         const file = this._getParam(block.file);
-        this.r += `r+=u.i(${file})(l,u,c);`;
+        this.r += `a(u.i(${file})(l,u,c,s));`;
         this._popContext(block.params);
       } else if (!block.type){
         // default: raw text
-        this.r += `r+='${block}';`;
+        this.r += `a('${block}');`;
       }
     });
   }
@@ -97,7 +99,7 @@ class Compiler {
     this.compileBuffer(buffer);
     this.r += 'return r;';
     // console.log(this.r);
-    return new Function('l', 'u', 'c', this.r);
+    return new Function('l', 'u', 'c', 's', this.r);
   }
 
   _else(block) {

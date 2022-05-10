@@ -7,15 +7,15 @@ const Compiler  = require('../compile/Compiler');
 
 class Renderer {
 
-  render(str, data) {
+  render(str, data, res) {
     Utils.h.helpers = Helpers;
     if (typeof str === 'function') {
-      return str(data, Utils);
+      return str(data, Utils, null, res);
     }
     const buffer  = new Parser().parse(str);
     const fn      = new Compiler().compile(buffer);
 
-    return fn(data, Utils);
+    return fn(data, Utils, null, res);
   }
 }
 
