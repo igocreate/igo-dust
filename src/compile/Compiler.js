@@ -7,7 +7,7 @@ class Compiler {
   constructor() {
     this.i  =   0;
     this.r  = `var r='',l=l||{},c=c||{ctx:[]};`;
-    this.r += 'var a=s?function(x){s.write(x)}:function(x){r+=x};';
+    this.r += 'var a=s?function(x){s.write(String(x))}:function(x){r+=x};';
   }
 
   compileBuffer(buffer) {
@@ -16,7 +16,7 @@ class Compiler {
     buffer.forEach(block => {
       if (block.type === '<') {
         this.r += `c._${block.tag}=function(){var r='';`;
-        this.r += 'var a=s?function(x){s.write(x)}:function(x){r+=x};';
+        this.r += 'var a=s?function(x){s.write(String(x))}:function(x){r+=x};';
         this.compileBuffer(block.buffer);
         this.r += 'return r;};';
       }
@@ -52,7 +52,7 @@ class Compiler {
         this.r += `var a${i}=u.a(${this._getValue(block.tag)});`;
         this.r += `if(a${i}){`;
         if (!block.buffer) {
-          this.r += `a(a${i}[0])`;
+          this.r += `a(a${i})`;
         } else {
           const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it);
           this.r += `l.$length=a${i}.length;`; // current array length
