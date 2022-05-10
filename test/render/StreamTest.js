@@ -13,6 +13,9 @@ class Stream {
   }
   
   write(x) {
+    if (typeof x !== 'string') {
+      throw new Error('chunk must be a string, found ' + typeof x);
+    }
     this.buffer += x;
   }
 
@@ -34,5 +37,13 @@ describe('Stream response', () => {
     new Renderer().render(template, {test: {w: 'World'}}, stream);
     assert.equal(stream.buffer, 'Hello World! ');
   });
+
+  it('should execute function if tag is a function', () => {
+    const template  = 'Hello {#t key="World" /}';
+    const stream    = new Stream();
+    const r         = new Renderer().render(template, { t: (params) => params.key }, stream);
+    assert.equal(stream.buffer, 'Hello World');
+  });
+
 
 });

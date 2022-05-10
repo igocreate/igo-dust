@@ -52,7 +52,7 @@ class Compiler {
         this.r += `var a${i}=u.a(${this._getValue(block.tag)});`;
         this.r += `if(a${i}){`;
         if (!block.buffer) {
-          this.r += `a(a${i})`;
+          this.r += `a(a${i}[0])`;
         } else {
           const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it);
           this.r += `l.$length=a${i}.length;`; // current array length
