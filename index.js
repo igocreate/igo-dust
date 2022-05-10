@@ -37,7 +37,6 @@ module.exports.engine = (filePath, data, callback) => {
 module.exports.stream = (res, filePath, data) => {
   const compiled = Cache.getCompiled(filePath + '.dust');
   module.exports.render(compiled, data, res);
-  res.end();
 };
 
 //
