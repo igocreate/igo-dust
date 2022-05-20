@@ -17,6 +17,10 @@ const HELPERS = {
   boolean: function(params) {
     const color = params.value ? 'success' : 'danger';
     return `<div class="bullet bullet-sm bullet-${color}"></div>`;
+  },
+
+  isNull: (params) => {
+    return params.value === null;
   }
 };
 
@@ -147,8 +151,15 @@ describe('Render Helpers', () => {
 
   it('should render custom helper with string + missingref param', () => {
     const template  = 'Hello {#obj}{@t key="txt.{.attr}" /}{/obj} !';
-    const r         = new Renderer().render(template, { obj: 1, txt: { w: 'World' }});
+    const r         = new Renderer().render(template, { obj: 1 });
     assert.equal(r, 'Hello txt. !');
+  });
+
+  it('should send null param and not emptystring', () => {
+    Helpers.isNull  = HELPERS.isNull;
+    const template  = 'Hello {@isNull value=obj /} !';
+    const r         = new Renderer().render(template, { obj: null});
+    assert.equal(r, 'Hello true !');
   });
 
 });

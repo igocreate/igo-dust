@@ -70,15 +70,23 @@ const f = {
 };
 
 
-// return value to be displayed (if it's a function, invoke it with locals)
+// return value to be displayed
+const d = (s, t, l) => {
+  if (typeof s === 'function') {
+    return s.call(t, l);
+  }
+  if (s === null || s === undefined) {
+    return '';
+  }
+  return s;
+};
+
+// return value (if it's a function, invoke it with locals)
 const v = (s, t, l) => {
   if (typeof s === 'function') {
     return s.call(t, l);
   }
-  if (s === 0) {
-    return s;
-  }
-  return s || '';
+  return s;
 };
 
 // return boolean
@@ -119,4 +127,4 @@ const i = (file) => {
   return Cache.getCompiled(file);
 };
 
-module.exports = { a, b, v, h, f, i };
+module.exports = { a, b, v, d, h, f, i };

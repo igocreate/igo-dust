@@ -187,7 +187,7 @@ class Compiler {
         // left part
         ret.push(`'${param.substring(index, match.index)}'`);
         index = match.index + match[0].length;
-        ret.push(this._getValue(match[1]));
+        ret.push(this._getValue(match[1], 'u.d'));
       }
       // final right part
       if (index < param.length) {
@@ -208,7 +208,7 @@ class Compiler {
   }
 
   //
-  _getValue(tag) {
+  _getValue(tag, utilFn='u.v') {
     
     if (!isNaN(tag)) {
       return tag;
@@ -255,12 +255,12 @@ class Compiler {
       ret.push(current);
     });
 
-    // use u.v to invoke function on last element
+    // use utilFn (u.v by default) to invoke function on last element
     if (ret.length === 1) {
-      return `u.v(${ret[0]},null,l)`;
+      return `${utilFn}(${ret[0]},null,l)`;
     }
     const _this = ret.slice(0,-1);
-    return `u.v(${ret.join('&&')},${_this.join('&&')},l)`;
+    return `${utilFn}(${ret.join('&&')},${_this.join('&&')},l)`;
 
   }
 
@@ -274,7 +274,7 @@ class Compiler {
   }
 
   _getReference(block) {
-    let ret = this._getValue(block.tag);
+    let ret = this._getValue(block.tag, 'u.d');
     if (!block.f) {
       return ret;
     }
