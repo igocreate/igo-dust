@@ -55,6 +55,12 @@ describe('Render Loops', () => {
     assert.equal(r, 'Hello b');
   });
 
+  it('should render else if emty', () => {
+    const template  = 'Hello {#COL1}a{:else}b{/COL1}';
+    const r         = new Renderer().render(template, { COL1: [] });
+    assert.equal(r, 'Hello b');
+  });
+
   it('should render nested loops on "it"', () => {
     const template  = 'Hello {#COL0}z{#.}x{.}{/.}{/COL0}';
     const r         = new Renderer().render(template, { COL0: [COL1, COL2] });

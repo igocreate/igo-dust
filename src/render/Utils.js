@@ -103,6 +103,9 @@ const b = (v) => {
 // return array
 const a = (v) => {
   if (Array.isArray(v)) {
+    if (v.length === 0) {
+      return null;
+    }
     return v;
   }
   if (v) {
