@@ -122,4 +122,11 @@ describe('Render carriage return', function () {
 		const r 				=	new Renderer().render(template, data);
 		assert.equal(r, 'You\r\nare\r\nno\r\nlonger\r\na\r\nPadawan.');
 	});
+
+	it.skip('should do something with single quotes?', () => {
+	const template 	=	`{@eq key=level value='master'}No longer a Padawan.{/eq}`;
+		const data 			=	{ level: 'master' };
+		const r 				=	new Renderer().render(template, data);
+		assert.equal(r, 'No longer a Padawan.');
+	});
 })

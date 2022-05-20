@@ -67,5 +67,15 @@ module.exports.parseParams = (s) => {
   if ((match = unnamedStringParam.exec(s)) !== null) {
     params.$ = match[1];
   }
+
+  // // check singlequotes
+  // Object.keys(params).forEach(key => {
+  //   const param = params[key];
+  //   if (param && param[0] === '\'' && param[param.length-1] === '\'') {
+  //     // console.error(`Parsing warning: Please use double quotes for Igo dust string params.\n{${s}...`);
+  //     params[key] = `"${param.substring(1, param.length-1)}"`;
+  //   }
+  // });
+
   return params;
 };
