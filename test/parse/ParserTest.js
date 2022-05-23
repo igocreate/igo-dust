@@ -191,7 +191,7 @@ describe('Parser', () => {
     assert.equal(nested.bodies.else[1].tag, 'name');
   });
 
-  it('should parse many bodies tags', () => {
+  it.skip('should parse many bodies tags', () => {
     const TEMPLATE = '{?tag}Hello{:else}World{:other}Good Bye{/tag}, ok.';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 2);

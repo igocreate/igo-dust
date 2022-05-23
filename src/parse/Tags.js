@@ -25,7 +25,11 @@ const _helper = (parser, block) => {
   }
 };
 
+const ALLOWED_BODIES = [ 'else' ];
 const _body = (parser, block) => {
+  if (ALLOWED_BODIES.indexOf(block.tag) === -1) {
+    throw new Error(`Unexpected tag {${block.type}${block.tag}..`)
+  }
   parser.addBody(block.tag);
 };
 

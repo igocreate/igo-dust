@@ -48,4 +48,15 @@ describe('Parser', () => {
     }
   });
   
+  it('should not allow custom bodies', () => {
+    const TEMPLATE = 'Hello {?test}world{:custom}noo{/test}.';
+    try {
+      new Parser().parse(TEMPLATE);
+      assert.fail();
+    } catch(err) {
+      assert.equal(err.message, 'Unexpected tag {:custom..');
+    }
+  });
+
+
 });
