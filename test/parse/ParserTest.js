@@ -232,6 +232,14 @@ describe('Parser', () => {
     assert.equal(buffer[1].file, '"./templates/_world"');
   });
 
+  it('should parse included file without leading space', () => {
+    const TEMPLATE = ' Hello {>"./templates/_world"} !';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    assert.equal(buffer[1].type, '>');
+    assert.equal(buffer[1].file, '"./templates/_world"');
+  });
+
   it('should parse tag with params with spaces', () => {
     const TEMPLATE = 'Hello {> "./templates/_world" text="hello world" }';
     const buffer = new Parser().parse(TEMPLATE);

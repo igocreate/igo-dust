@@ -68,7 +68,7 @@ module.exports.parseParams = (s) => {
   }
 
   // unnamed string param
-  const unnamedStringParam = new RegExp('[^=] ("[^="]*")', 'msg');
+  const unnamedStringParam = new RegExp('[^=] ?("[^="]*")', 'msg');
   if ((match = unnamedStringParam.exec(s)) !== null) {
     params.$ = match[1];
   }
