@@ -125,6 +125,11 @@ class Parser {
       }
     }
 
+    // stack should be empty
+    if (this.stack.length > 0) {
+      throw new Error(`Missing closing tag for {${this.stack[0].type}${this.stack[0].tag}...`);
+    }
+
     if (index < str.length) {
       this.pushString(str.slice(index));
     }
