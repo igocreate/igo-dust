@@ -1,4 +1,4 @@
-'use strict';
+
 
 const environment = require('./src/environment');
 const Parser = require('./src/parse/Parser');
@@ -9,6 +9,11 @@ const Utils = require('./src/render/Utils');
 
 const Cache = require('./src/Cache');
 const config = require('./src/Config');
+
+//
+module.exports.getCompiled = (filePath) => {
+  return Cache.getCompiled(filePath);
+}
 
 //
 module.exports.compile = (src) => {
@@ -30,6 +35,9 @@ module.exports.configure = (app) => {
 module.exports.engine = (filePath, data, callback) => {
   const compiled = Cache.getCompiled(filePath);
   const rendered = module.exports.render(compiled, data);
+  if (!callback) {
+    return rendered;
+  }
   callback(null, rendered);
 };
 

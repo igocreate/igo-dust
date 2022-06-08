@@ -1,4 +1,4 @@
-'use strict';
+
 
 const {isBrowser, isNode} = require('./../environment');
 const config = require('../Config');
