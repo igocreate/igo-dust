@@ -117,7 +117,7 @@ const a = (v) => {
 // helpers
 const h = (t, p, l) => {
   if (!h.helpers || !h.helpers[t]) {
-    return null;
+    throw new Error(`Error: helper @${t} not found!`);
   }
   return h.helpers[t](p, l);
 };

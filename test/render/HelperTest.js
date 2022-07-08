@@ -57,12 +57,6 @@ describe('Render Helpers', () => {
     assert.equal(r, 'Hello ');
   });
 
-  it('should not crash with missing helper', () => {
-    const template  = 'Hello {@reverse key=w /}';
-    const r         = new Renderer().render(template, { w: 'World' });
-    assert.equal(r, 'Hello ');
-  });
-
   it('should not crash with missing params', () => {
     const template  = 'Hello {@eq key=w}{w}{/eq}';
     const r         = new Renderer().render(template, { w: 'World' });
@@ -160,6 +154,16 @@ describe('Render Helpers', () => {
     const template  = 'Hello {@isNull value=obj /} !';
     const r         = new Renderer().render(template, { obj: null});
     assert.equal(r, 'Hello true !');
+  });
+
+  it('should throw error if helper does not exist', () => {
+    const template  = 'Hello {@foo value=obj /} !';
+    try {
+      new Renderer().render(template);
+      assert.fail();
+    } catch(err) {
+      assert.equal(err.message, 'Error: helper @foo not found!');
+    }
   });
 
 });
