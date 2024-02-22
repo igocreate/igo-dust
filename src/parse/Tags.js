@@ -48,6 +48,9 @@ const _content = (parser, block) => {
 const _include = (parser, block) => {
   block.file = block.params.$;
   parser.pushBlock(block);
+  if (!block.selfClosedTag) {
+    parser.stackBlock(block);
+  }
 };
 
 const _insert = (parser, block) => {

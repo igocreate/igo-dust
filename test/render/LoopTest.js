@@ -104,7 +104,7 @@ describe('Render Loops', () => {
   });
 
   it('should render loops inside includes', () => {
-    const template  = 'Hello {> "./test/templates/_array" world=w}.';
+    const template  = 'Hello {> "./test/templates/_array" world=w /}.';
     const r         = new Renderer().render(template, { w: 'World', array: COL1});
     assert.equal(r, 'Hello World 1, World 2, World 3.');
   });
@@ -116,13 +116,13 @@ describe('Render Loops', () => {
   });
 
   it('should pass it at param', () => {
-    const template  = 'Hello {#COL2}A{> "./test/templates/_world_ref" world=.}{@sep} {/sep}{/COL2}';
+    const template  = 'Hello {#COL2}A{> "./test/templates/_world_ref" world=. /}{@sep} {/sep}{/COL2}';
     const r         = new Renderer().render(template, { COL2 });
     assert.equal(r, 'Hello Aa! Ab!');
   });
 
   it('should pass it attribute as param', () => {
-    const template  = 'Hello {#COL}A{> "./test/templates/_world_ref" world=.a}{@sep} {/sep}{/COL}';
+    const template  = 'Hello {#COL}A{> "./test/templates/_world_ref" world=.a /}{@sep} {/sep}{/COL}';
     const r         = new Renderer().render(template, {COL: [ {a: 1}, {a: 2}] });
     assert.equal(r, 'Hello A1! A2!');
   });

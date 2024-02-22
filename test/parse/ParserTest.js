@@ -225,15 +225,25 @@ describe('Parser', () => {
   });
 
   it('should parse included file', () => {
-    const TEMPLATE = ' Hello {> "./templates/_world" } !';
+    const TEMPLATE = ' Hello {> "./templates/_world" /} !';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].type, '>');
     assert.equal(buffer[1].file, '"./templates/_world"');
   });
 
+  it('should parse included file with body', () => {
+    const TEMPLATE = ' Hello {> "./templates/_world"}world{/>} !';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    assert.equal(buffer[1].type, '>');
+    assert.equal(buffer[1].file, '"./templates/_world"');
+    assert.equal(buffer[1].buffer[0], 'world');
+  });
+
+
   it('should parse included file without leading space', () => {
-    const TEMPLATE = ' Hello {>"./templates/_world"} !';
+    const TEMPLATE = ' Hello {>"./templates/_world" /} !';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].type, '>');
@@ -241,7 +251,7 @@ describe('Parser', () => {
   });
 
   it('should parse tag with params with spaces', () => {
-    const TEMPLATE = 'Hello {> "./templates/_world" text="hello world" }';
+    const TEMPLATE = 'Hello {> "./templates/_world" text="hello world" /}';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 2);
     assert.equal(buffer[1].type, '>');
@@ -251,7 +261,7 @@ describe('Parser', () => {
 
 
   it('should parse include tag with params', () => {
-    const TEMPLATE = ' Hello {> "./templates/_world_ref" string="str" reference=ref} ...';
+    const TEMPLATE = ' Hello {> "./templates/_world_ref" string="str" reference=ref /} ...';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 3);
     assert.equal(buffer[1].type, '>');
@@ -260,7 +270,7 @@ describe('Parser', () => {
   });
 
   it('should parse layout tag', () => {
-    const TEMPLATE = ' {> "./templates/layout" } {<content}World{/content} ';
+    const TEMPLATE = ' {> "./templates/layout" /} {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 4);
     // const content = buffer[1];
@@ -288,7 +298,7 @@ describe('Parser', () => {
   });
 
   it('should parse params with curly braces', () => {
-    const TEMPLATE = ' {> "./includes/{file}" text="ok-{test}" } ';
+    const TEMPLATE = ' {> "./includes/{file}" text="ok-{test}" /} ';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 2);
     assert.equal(buffer[0].type, '>');
@@ -297,7 +307,7 @@ describe('Parser', () => {
   });
 
   it('should allow line returns in tags', () => {
-    const TEMPLATE  = 'Hello {> "./test/templates/_world_ref" world=w\n  index=1\nid=1 }';
+    const TEMPLATE  = 'Hello {> "./test/templates/_world_ref" world=w\n  index=1\nid=1 /}';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 2);
     assert(buffer[1].params.world, 'w');

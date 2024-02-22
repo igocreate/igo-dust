@@ -11,7 +11,6 @@ class Compiler {
   }
 
   compileBuffer(buffer) {
-
     // precompile, for content functions
     buffer.forEach(block => {
       if (block.type === '<') {
@@ -27,6 +26,9 @@ class Compiler {
       if (block.type === 'r') {
         // reference
         this.r += `a(${this._getReference(block)});`;
+      } else if (block.type === '+' && !block.tag) {
+        // insert body (invoke content function)
+        this.r += `if(c._$body){a(c._$body())}`;
       } else if (block.type === '+') {
         // insert content (invoke content function)
         this.r += `if(c._${block.tag}){a(c._${block.tag}())}`;
@@ -83,6 +85,15 @@ class Compiler {
         this._else(block);
       } else if (block.type === '>') {
         // include
+
+        // precompile if buffer
+        if (block.buffer) {
+          this.r += `c._$body=function(){var r='';`;
+          this.r += 'var a=s?function(x){s.write(String(x))}:function(x){r+=x};';
+          this.compileBuffer(block.buffer);
+          this.r += 'return r;};';
+        }
+
         this._pushContext(block.params);
         const file = this._getParam(block.file);
         this.r += `a(u.i(${file})(l,u,c,s));`;
