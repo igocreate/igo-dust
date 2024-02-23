@@ -232,6 +232,15 @@ describe('Parser', () => {
     assert.equal(buffer[1].file, '"./templates/_world"');
   });
 
+  it('should crash if include tag is not closed', () => {
+    const TEMPLATE = ' Hello {> "./templates/_world" } !';
+    try {
+      new Parser().parse(TEMPLATE);
+    } catch(err) {
+      assert.equal(err.message, 'Missing closing tag for {>...');
+    }
+  });
+
   it('should parse included file with body', () => {
     const TEMPLATE = ' Hello {> "./templates/_world"}world{/>} !';
     const buffer = new Parser().parse(TEMPLATE);
@@ -258,7 +267,6 @@ describe('Parser', () => {
     assert.equal(buffer[1].file, '"./templates/_world"');
     assert.equal(buffer[1].params.text, '"hello world"');
   });
-
 
   it('should parse include tag with params', () => {
     const TEMPLATE = ' Hello {> "./templates/_world_ref" string="str" reference=ref /} ...';

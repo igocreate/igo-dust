@@ -1,11 +1,11 @@
 {
   "name": "igo-dust",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "description": "Javascript template engine",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "webpack": "^5.89.0",
+    "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
   },
   "scripts": {

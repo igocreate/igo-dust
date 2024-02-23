@@ -14,38 +14,6 @@ describe('Render Includes & Layouts', () => {
     assert.equal(r, 'Hello World!');
   });
 
-  it('should render include with body', () => {
-    const template  = '! {> "./test/templates/_body"}body{/>} !';
-    const r         = new Renderer().render(template);
-    assert.equal(r, '! Le body est inséré ici !');
-  });
-
-  it('should render include with reference body', () => {
-    const template  = '! {> "./test/templates/_body"}{b}{/>} !';
-    const r         = new Renderer().render(template, {b: 'body'});
-    assert.equal(r, '! Le body est inséré ici !');
-  });
-
-  it('should render include with body and ref', () => {
-    const template  = '1 {> "./test/templates/_body2" quatre="4"}3{/>} 7';
-    const r         = new Renderer().render(template, { n: 5,});
-
-    assert.equal(r, '1 2 3 4 5 6 7');
-  });
-
-  it('should render several includes with body', () => {
-    const template  = '1 {> "./test/templates/_body2" quatre="4"}3{/>} {> "./test/templates/_body2" quatre="17"}18{/>} 7';
-    const r         = new Renderer().render(template, { n: 5,});
-    assert.equal(r, '1 2 3 4 5 6 2 18 17 5 6 7');
-  });
-
-  it('should render includes with body with include', () => {
-    const template  = 'Premier ({> "./test/templates/_body3"}include{/>}), Troisième ({> "./test/templates/_body2" quatre="4"}3{/>})';
-    const r         = new Renderer().render(template, { n: 5,});
-    assert.equal(r, 'Premier (Second include : "Le body est inséré ici"), Troisième (2 3 4 5 6)');
-  });
-
-
   it('should render include with reference param', () => {
     const template  = 'Hello {> "./test/templates/_world_ref" world=w /}';
     const r         = new Renderer().render(template, {w: 'World'});
@@ -121,6 +89,42 @@ describe('Render Includes & Layouts', () => {
     const template = '<meta name="description" content="{+description/}"></meta>';
     const r         = new Renderer().render(template);
     assert.equal(r, '<meta name="description" content=""></meta>');
+  });
+
+  it('should render include with body', () => {
+    const template  = '! {> "./test/templates/_body"}body{/>} !';
+    const r         = new Renderer().render(template);
+    assert.equal(r, '! Le body est inséré ici !');
+  });
+
+  it('should render include with reference body', () => {
+    const template  = '! {> "./test/templates/_body"}{b}{/>} !';
+    const r         = new Renderer().render(template, {b: 'body'});
+    assert.equal(r, '! Le body est inséré ici !');
+  });
+
+  it('should render include with body and ref', () => {
+    const template  = '1 {> "./test/templates/_body2" quatre="4"}3{/>} 7';
+    const r         = new Renderer().render(template, { n: 5,});
+    assert.equal(r, '1 2 3 4 5 6 7');
+  });
+
+  it('should render several includes with body', () => {
+    const template  = '1 {> "./test/templates/_body2" quatre="4"}3{/>} {> "./test/templates/_body2" quatre="17"}18{/>} 7';
+    const r         = new Renderer().render(template, { n: 5,});
+    assert.equal(r, '1 2 3 4 5 6 2 18 17 5 6 7');
+  });
+
+  it('should render includes with body with include', () => {
+    const template  = 'Premier ({> "./test/templates/_body3"}include{/>}), Troisième ({> "./test/templates/_body2" quatre="4"}3{/>})';
+    const r         = new Renderer().render(template, { n: 5,});
+    assert.equal(r, 'Premier (Second include : "Le body est inséré ici"), Troisième (2 3 4 5 6)');
+  });
+
+  it('should render includes with nested bodies', () => {
+    const template  = '! {> "./test/templates/_body"}OK {> "./test/templates/_body"}body{/>}{/>} !';
+    const r         = new Renderer().render(template, { n: 5,});
+    assert.equal(r, '! Le OK Le body est inséré ici est inséré ici !');
   });
 
 });
