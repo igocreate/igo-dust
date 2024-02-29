@@ -53,7 +53,7 @@ module.exports.parseParams = (s) => {
   let match;
   
   // string param
-  const stringParam = new RegExp('(\\w+)=("[^="]*")', 'msg');
+  const stringParam = new RegExp('(\\w+)=("[^"]*")', 'msg');
   while ((match = stringParam.exec(s)) !== null) {
     params[match[1]] = match[2];
   }
@@ -68,7 +68,7 @@ module.exports.parseParams = (s) => {
   }
 
   // unnamed string param
-  const unnamedStringParam = new RegExp('[^=] ?("[^="]*")', 'msg');
+  const unnamedStringParam = new RegExp('[^=] ?("[^"]*")', 'msg');
   if ((match = unnamedStringParam.exec(s)) !== null) {
     params.$ = match[1];
   }

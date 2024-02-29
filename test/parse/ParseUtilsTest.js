@@ -16,4 +16,13 @@ describe('ParseUtils', () => {
     assert.equal(params.c, '"hello {world}"');
 
   });
+
+  it('should handle = signs in params', () => {
+    const tag = '> "hello = world" a="azer = ty"';
+    const params = ParseUtils.parseParams(tag);
+
+    assert.equal(params.$, '"hello = world"');
+    assert.equal(params.a, '"azer = ty"');
+
+  });
 });

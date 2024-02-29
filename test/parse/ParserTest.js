@@ -268,6 +268,15 @@ describe('Parser', () => {
     assert.equal(buffer[1].params.text, '"hello world"');
   });
 
+  it('should parse tag with params with special chars', () => {
+    const TEMPLATE = 'Hello {> "./templates/_world" text="hello=/.\'_$world" /}';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 2);
+    assert.equal(buffer[1].type, '>');
+    assert.equal(buffer[1].file, '"./templates/_world"');
+    assert.equal(buffer[1].params.text, '"hello=/.\'_$world"');
+  });
+
   it('should parse include tag with params', () => {
     const TEMPLATE = ' Hello {> "./templates/_world_ref" string="str" reference=ref /} ...';
     const buffer = new Parser().parse(TEMPLATE);
