@@ -25,4 +25,13 @@ describe('ParseUtils', () => {
     assert.equal(params.a, '"azer = ty"');
 
   });
+
+  it('should handle = signs in params', () => {
+    const tag = '> "hello" url="/search?q={.q}" test=ok url2="/search?q={.q}" ';
+    const params = ParseUtils.parseParams(tag);
+
+    assert.equal(params.$, '"hello"');
+    assert.equal(params.url, '"/search?q={.q}"');
+  });
+
 });

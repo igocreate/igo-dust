@@ -48,23 +48,27 @@ const FORBIDDEN_FIRST_CHARS = [ '\'', '{', '[' ];
 
 //
 module.exports.parseParams = (s) => {
-  const params = {};
-  
+  const params    = {};
+  const original  = s
   let match;
   
   // string param
   const stringParam = new RegExp('(\\w+)=("[^"]*")', 'msg');
   while ((match = stringParam.exec(s)) !== null) {
     params[match[1]] = match[2];
+    s = s.substring(0, match.index) + s.substring(stringParam.lastIndex);
+    stringParam.lastIndex = match.index;
   }
 
   // ref param
   const refParam = new RegExp('(\\w+)=([^" \n\r]+)', 'msg');
   while ((match = refParam.exec(s)) !== null) {
     if (FORBIDDEN_FIRST_CHARS.indexOf(match[2][0]) >= 0) {
-      throw new Error(`Unexpected character "${match[2][0]}" in tag {${s}...`);
+      throw new Error(`Unexpected character "${match[2][0]}" in tag {${original}...`);
     }
     params[match[1]] = match[2];
+    s = s.substring(0, match.index) + s.substring(refParam.lastIndex);
+    refParam.lastIndex = match.index;
   }
 
   // unnamed string param
