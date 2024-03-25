@@ -97,6 +97,12 @@ describe('Render Includes & Layouts', () => {
     assert.equal(r, '! Le body est inséré ici !');
   });
 
+  it('should render include with body and dont keep the body after', () => {
+    const template  = '! {> "./test/templates/_body"}body{/>} {> "./test/templates/_body" /} {> "./test/templates/_body"}BODY{/>} !';
+    const r         = new Renderer().render(template);
+    assert.equal(r, '! Le body est inséré ici Le  est inséré ici Le BODY est inséré ici !');
+  });
+
   it('should render include with reference body', () => {
     const template  = '! {> "./test/templates/_body"}{b}{/>} !';
     const r         = new Renderer().render(template, {b: 'body'});

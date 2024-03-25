@@ -28,7 +28,7 @@ class Compiler {
         this.r += `a(${this._getReference(block)});`;
       } else if (block.type === '+' && !block.tag) {
         // insert body (invoke content function)
-        this.r += `if(c._$body){a(c._$body())}`;
+        this.r += `if(c._$body){a(c._$body());c._$body=null;}`;
       } else if (block.type === '+') {
         // insert content (invoke content function)
         this.r += `if(c._${block.tag}){a(c._${block.tag}())}`;
