@@ -15,7 +15,7 @@ class Config {
       this.cache = !!settings['view cache'];
     }
     if (settings.views !== undefined) {
-      this.views = !!settings.views;
+      this.views = settings.views;
     }
     ['htmlencode', 'htmltrim', 'cache'].forEach((key) => {
       if (settings[key] !== undefined) {

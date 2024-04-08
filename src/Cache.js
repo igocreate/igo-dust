@@ -35,7 +35,9 @@ class Cache {
     const buffer    = new Parser().parse(src);
     compiled        = new Compiler().compile(buffer);
     
-    this.put(filePath, compiled);
+    if (config.cache && compiled) {
+      this.put(filePath, compiled);
+    }
     return compiled;
   }
 
