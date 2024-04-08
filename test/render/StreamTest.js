@@ -3,9 +3,7 @@
 
 const assert    = require('assert');
 
-const Config  = require('../../src/Config');
 const Renderer  = require('../../src/render/Renderer');
-const Helpers   = require('../../src/render/Helpers');
 
 class Stream {
   constructor() {

@@ -1,65 +1,35 @@
 
 
-const environment = require('./src/environment');
-const Parser = require('./src/parse/Parser');
-const Compiler = require('./src/compile/Compiler');
-const Renderer = require('./src/render/Renderer');
-const Helpers = require('./src/render/Helpers');
-const Utils = require('./src/render/Utils');
+const config    = require('./src/Config');
+const Renderer  = require('./src/render/Renderer');
+const Helpers   = require('./src/render/Helpers');
+const Utils     = require('./src/render/Utils');
 
-const Cache = require('./src/Cache');
-const config = require('./src/Config');
 
-//
-module.exports.getCompiled = (filePath) => {
-  return Cache.getCompiled(filePath);
-}
-
-//
-module.exports.compile = (src) => {
-  const buffer = new Parser().parse(src);
-  return new Compiler().compile(buffer);
+// configure igo-dust
+module.exports.configure = (options) => {
+  config.configure(options);
 };
 
-//
-module.exports.render = (compiled, data, res) => {
-  return new Renderer().render(compiled, data, res);
+// render template
+module.exports.render = (src, data, stream=null) => {
+  return new Renderer().render(src, data, stream);
 };
 
-//
-module.exports.configure = (app) => {
-  config.init(app.settings);
+// render template file
+module.exports.renderFile = (filePath, data, stream=null) => {
+  return new Renderer().renderFile(filePath, data, stream);
 };
 
 // expressjs engine
 module.exports.engine = (filePath, data, callback) => {
-  const compiled = Cache.getCompiled(filePath);
-  const rendered = module.exports.render(compiled, data);
+  const rendered = module.exports.renderFile(filePath, data);
   if (!callback) {
     return rendered;
   }
   callback(null, rendered);
 };
 
-// stream
-module.exports.stream = (res, filePath, data) => {
-  const compiled = Cache.getCompiled(filePath + '.dust');
-  module.exports.render(compiled, data, res);
-};
-
-//
+// Helpers and filters
 module.exports.helpers = Helpers;
 module.exports.filters = Utils.f;
-module.exports.config = config;
-
-if (environment.isBrowser) {
-  window.IgoDust = {
-    render: (compiled, data) => {
-      return new Renderer().render(compiled, data);
-    },
-    compile: (src) => {
-      const buffer = new Parser().parse(src);
-      return new Compiler().compile(buffer);
-    },
-  };
-}

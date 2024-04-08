@@ -115,7 +115,7 @@ describe('Render Helpers', () => {
     assert.equal(r, 'Hello<br/>World');
   });
 
-  Helpers.t = (params, locals) => { // eslint-disable-line
+  Helpers.t = (params) => {
     return params.key;
   };
 

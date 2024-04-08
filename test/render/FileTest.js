@@ -10,8 +10,7 @@ const Renderer  = require('../../src/render/Renderer');
 describe('Render Files', () => {
 
   it('should render email template with css', () => {
-    const src = FileUtils.loadFile('./test/templates/email.dust');
-    const r   = new Renderer().render(src, {});
+    const r   = new Renderer().renderFile('./test/templates/email.dust', {});
     assert(r.match(/img {/));
     assert(r.match(/tr > td {/));
   });

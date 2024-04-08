@@ -1,22 +1,30 @@
 
 const Utils     = require('./Utils');
-const Helpers   = require('./Helpers');
+const Cache     = require('../Cache');
 
 const Parser    = require('../parse/Parser');
 const Compiler  = require('../compile/Compiler');
 
 class Renderer {
 
+  // render string template
   render(str, data, res) {
-    Utils.h.helpers = Helpers;
-    if (typeof str === 'function') {
-      return str(data, Utils, null, res);
-    }
-    const buffer  = new Parser().parse(str);
-    const fn      = new Compiler().compile(buffer);
-
-    return fn(data, Utils, null, res);
+    const buffer    = new Parser().parse(str);
+    const compiled  = new Compiler().compile(buffer);
+    return this.renderCompiled(compiled, data, res);
   }
+
+  // render file template
+  renderFile(filePath, data, res) {
+    const compiled = Cache.getCompiled(filePath);
+    return this.renderCompiled(compiled, data, res);
+  }
+
+  // render compiled template
+  renderCompiled(compiled, data, res) {
+    return compiled(data, Utils, null, res);
+  }
+
 }
 
 module.exports = Renderer;

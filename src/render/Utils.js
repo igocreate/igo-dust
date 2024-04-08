@@ -1,5 +1,6 @@
 
-const Cache = require('../Cache');
+const Cache   = require('../Cache');
+const Helpers = require('./Helpers');
 
 // special chars
 const HCHARS  = /[&<>"']/,
@@ -121,6 +122,7 @@ const h = (t, p, l) => {
   }
   return h.helpers[t](p, l);
 };
+h.helpers = Helpers;
 
 // include file
 const i = (file) => {

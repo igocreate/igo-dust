@@ -9,10 +9,20 @@ class Config {
     this.htmltrim   = true;
   }
 
-  init(settings) {
-    this._settings  = settings;
-    this.cache      = settings['view cache'];
-    this.views      = settings.views || this.views;
+  configure(settings) {
+
+    if (settings['view cache'] !== undefined) {
+      this.cache = !!settings['view cache'];
+    }
+    if (settings.views !== undefined) {
+      this.views = !!settings.views;
+    }
+    ['htmlencode', 'htmltrim', 'cache'].forEach((key) => {
+      if (settings[key] !== undefined) {
+        this[key] = !!settings[key];
+      }
+    });
+
   }
 
 };

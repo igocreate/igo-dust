@@ -3,7 +3,7 @@
 
 const assert    = require('assert');
 
-const Config  = require('../../src/Config');
+const config  = require('../../src/Config');
 const Renderer  = require('../../src/render/Renderer');
 const Helpers   = require('../../src/render/Helpers');
 
@@ -95,17 +95,17 @@ describe('Render Basics', () => {
 
   it('should render 0 value in param', () => {
     const template  = 'Hello {@tap value="{zero}" /}';
-    Helpers.tap = (params, locals) => { return params.value; }; // eslint-disable-line
+    Helpers.tap = (params, locals) => { return params.value; };
     const r         = new Renderer().render(template, { zero: 0 });
     assert.equal(r, 'Hello 0');
   });
 
   it('should keep line returns if htmltrim is disabled', () => {
-    Config.htmltrim = false;
+    config.configure({htmltrim: false});
     const template  = ' Hello \r\n World \r\n<meta name="description" content="{+description/}">\r\n OK.';
     const r         = new Renderer().render(template, {});
     assert.strictEqual(r, ' Hello \r\n World \r\n<meta name="description" content="">\r\n OK.');
-    Config.htmltrim = true;
+    config.configure({htmltrim: true});
   });
 
   
