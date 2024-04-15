@@ -1,0 +1,376 @@
+# Loops
+
+---
+
+* Looping: Iterate through arrays or objects using `{#}`.
+* Loop Helpers: Utilize loop helpers like `@first`, `@last`, and `@sep`.
+
+## Simple loop
+
+Render a section of text for each element in an array.
+
+```js
+// Template
+Hello {#COL1}a{/COL1}
+
+// Data
+{
+  COL1: [1, 2, 3]
+}
+
+// Output
+Hello aaa
+```
+
+## Nested Loops
+
+Render nested sections of text using nested loops with `.` notation.
+
+```js
+// Template
+Hello {#COL1}{.}{#COL2}{.}{/COL2} {/COL1}
+
+// Data
+{
+  COL1: [1, 2, 3],
+  COL2: ['a', 'b']
+}
+
+// Output
+Hello 1ab 2ab 3ab
+```
+
+## Not an array
+
+If the data is not an array, the loop will be executed once.
+
+```js
+// Template
+Hello {#COL1}a{.}{/COL1}
+
+// Data
+{
+  COL1: 1
+}
+
+// Output
+Hello a1
+```
+
+## Else
+
+Render different text if the input is null.
+
+```js
+// Template
+Hello {#COL1}a{:else}b{/COL1}
+
+// Data
+{
+  COL1: null
+}
+
+// Output
+Hello b
+```
+
+Render different text if the input is an empty array.
+
+```js
+// Template
+Hello {#COL1}a{:else}b{/COL1}
+
+// Data
+{
+  COL1: []
+}
+
+// Output
+Hello b
+```
+
+## Check
+
+Loops can be rendered with a check on a specific field.
+
+```js
+// Template
+Hello {#COL0}{?.a}{.b}{/.a}{/COL0}
+
+// Data
+{
+  COL0: [{a: false, b: 'False'}, {a: true, b: 'True'}]
+}
+
+// Output
+Hello True
+```
+
+## @first, @last, @sep
+
+Use `@first` to render text only for the first element.
+
+```js
+// Template
+Hello {#COL1}A{@first}{.}{/first}{/COL1}
+
+// Data
+{
+  COL1: [1, 2, 3]
+}
+
+// Output
+Hello A1AA
+```
+
+Use `@last` to render text only for the last element.
+
+```js
+// Template
+Hello {#COL1}A{@last}{.}{/last}{/COL1}
+
+// Data
+{
+  COL1: [1, 2, 3]
+}
+
+// Output
+Hello AAA3
+```
+
+Use `@sep` to render separator between elements.
+
+```js
+// Template
+Hello {#COL1}A{@sep}{.},{/sep}{/COL1}
+
+// Data
+{
+  COL1: [1, 2, 3]
+}
+
+// Output
+Hello A1,A2,A
+```
+
+## Parameters
+
+Render a loop with additional parameters.
+
+```js
+// Template
+Hello {#COL1 w="World"}World{@sep}{.},{/sep}{/COL1}
+
+// Data
+{
+  COL1: [1, 2, 3]
+}
+
+// Output
+Hello World1,World2,World
+```
+
+It is possible to pass the current context as a parameter to another model.
+
+```js
+// Template
+Hello {#COL2}A{> "./test/templates/_world_ref" world=. /}{@sep} {/sep}{/COL2}
+
+// ./test/templates/_world_ref
+{world}!
+
+// Data
+{
+  COL2: ['a', 'b']
+}
+
+// Output
+Hello Aa! Ab!
+```
+
+It is possible to pass an attribute of the current element as a parameter to another model.
+
+```js
+// Template
+Hello {#COL}A{> "./test/templates/_world_ref" world=.a /}{@sep} {/sep}{/COL}
+
+// ./test/templates/_world_ref
+{world}!
+
+// Data
+{
+  COL: [{a: 1}, {a: 2}]
+}
+
+// Output
+Hello A1! A2!
+```
+
+## Includes
+
+Render a loop with an include.
+
+```js
+// Template
+Hello {> "./test/templates/_array" world=w /}.
+
+// ./test/templates/_array
+{#array}{world} {.}{@sep}, {/sep}{/array}
+
+// Data
+{
+  w: 'World',
+  array: [1, 2, 3]
+}
+
+// Output
+Hello World 1, World 2, World 3.
+```
+
+## Complex loops
+
+Render a loop with a complex object.
+
+```js
+// Template
+{#friends}#{.id} {.name}: {#.friends}{.name}{@sep}, {/sep}{/.friends}{@sep}<br/>{/sep}{/friends}
+
+// Data
+{
+  friends: [{
+    id:   1,
+    name: 'Gardner Alvarez',
+    friends: [{'name': 'Gates Lewis'},{'name': 'Britt Stokes'}]
+  },{
+    id:   2,
+    name: 'Gates Lewis',
+    friends: [{'name': 'Gardner Alvarez'}]
+  }]
+}
+
+// Output
+#1 Gardner Alvarez: Gates Lewis, Britt Stokes<br/>#2 Gates Lewis: Gardner Alvarez
+```
+
+## Functions
+
+Execute a function if tag is a function.
+
+```js
+// Template
+Hello {#t key="World" /}
+
+// Data
+{
+  t: (params) => params.key
+}
+
+// Output
+Hello World
+```
+
+## Sections
+
+Sections are used to conditionally render blocks of content based on the value of a key in your context.
+
+```js
+// Template
+{! Outside of the section, Igo Dust looks for values at the root of the JSON context !} 
+The value of name is: {name} <br/>
+
+{#extraData }
+ {! Inside this section, Igo Dust looks for values within the extraData object !} 
+ Inside the section, the value of name is: {.name} <br/>
+{/extraData}
+
+The value of name is: {name}, again. <br/>
+
+{#nonExistentContext}
+ This is only output if "nonExistentContext" exists. <br/>
+{:else}
+ Because "nonExistentContext" does not exist, the else body is output. <br/>
+{/nonExistentContext}
+
+// Data
+{
+  "name": "Jimmy",
+  "extraData": {
+    "name": "Kate"
+  }
+}
+
+// Output
+The value of name is: Jimmy
+Inside the section, the value of name is: Kate
+The value of name is: Jimmy, again.
+Because "nonExistentContext" does not exist, the else body is output.
+```
+
+## Rename "it"
+
+Rename the "it" attribute of a loop.
+
+```js
+Hello {#users it="user"}{user.id}{@sep}, {/sep}{/users}!
+
+// Data
+{
+  users: [{id: 1}, {id: 2}]
+}
+
+// Output
+Hello 1, 2!
+```
+
+You can also rename the "it" attribute of a nested loop.
+
+```js
+// Template
+Hello {#users it="user"}#{user.id}: {#user.friends it="friend"}{friend.name}{@sep}, {/sep}{/user.friends} #{user.id}{@sep}<br/>{/sep}{/users}
+
+// Data
+{
+  user: [{
+    id:   1,
+    name: 'Gardner Alvarez',
+    friends: [{'name': 'Gates Lewis'},{'name': 'Britt Stokes'}]
+  },{
+    id:   2,
+    name: 'Gates Lewis',
+    friends: [{'name': 'Gardner Alvarez'}]
+  }]
+}
+
+// Output
+Hello #1: Gates Lewis, Britt Stokes #1<br/>#2: Gardner Alvarez #2
+```
+
+You can rename only the first occurrence of the "it" attribute in a loop.
+
+```js
+// Template
+Hello {#users it="user"}#{user.id}: {#user.friends}{.name}{@sep}, {/sep}{/user.friends} #{user.id}{@sep}<br/>{/sep}{/users}
+
+// Data
+{
+  user: [{
+    id:   1,
+    name: 'Gardner Alvarez',
+    friends: [{'name': 'Gates Lewis'},{'name': 'Britt Stokes'}]
+  },{
+    id:   2,
+    name: 'Gates Lewis',
+    friends: [{'name': 'Gardner Alvarez'}]
+  }]
+}
+
+// Output
+Hello #1: Gates Lewis, Britt Stokes #1<br/>#2: Gardner Alvarez #2
+```
+
+
+
+
+
+
+---
