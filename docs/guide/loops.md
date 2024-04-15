@@ -59,7 +59,7 @@ Hello a1
 
 ## Else
 
-Render different text if the input is null.
+Render different text if the input is a falsy value.
 
 ```js
 // Template
@@ -73,21 +73,7 @@ Hello {#COL1}a{:else}b{/COL1}
 // Output
 Hello b
 ```
-
-Render different text if the input is an empty array.
-
-```js
-// Template
-Hello {#COL1}a{:else}b{/COL1}
-
-// Data
-{
-  COL1: []
-}
-
-// Output
-Hello b
-```
+!> Note: In Igo Dust.js, an empty array `[]` evaluates to false in conditional statements.
 
 ## Check
 
@@ -275,11 +261,11 @@ Sections are used to conditionally render blocks of content based on the value o
 
 ```js
 // Template
-{! Outside of the section, Igo Dust looks for values at the root of the JSON context !} 
+{! Outside of the section, Igo Dust.js looks for values at the root of the JSON context !} 
 The value of name is: {name} <br/>
 
 {#extraData }
- {! Inside this section, Igo Dust looks for values within the extraData object !} 
+ {! Inside this section, Igo Dust.js looks for values within the extraData object !} 
  Inside the section, the value of name is: {.name} <br/>
 {/extraData}
 
@@ -344,30 +330,6 @@ Hello {#users it="user"}#{user.id}: {#user.friends it="friend"}{friend.name}{@se
 // Output
 Hello #1: Gates Lewis, Britt Stokes #1<br/>#2: Gardner Alvarez #2
 ```
-
-You can rename only the first occurrence of the "it" attribute in a loop.
-
-```js
-// Template
-Hello {#users it="user"}#{user.id}: {#user.friends}{.name}{@sep}, {/sep}{/user.friends} #{user.id}{@sep}<br/>{/sep}{/users}
-
-// Data
-{
-  user: [{
-    id:   1,
-    name: 'Gardner Alvarez',
-    friends: [{'name': 'Gates Lewis'},{'name': 'Britt Stokes'}]
-  },{
-    id:   2,
-    name: 'Gates Lewis',
-    friends: [{'name': 'Gardner Alvarez'}]
-  }]
-}
-
-// Output
-Hello #1: Gates Lewis, Britt Stokes #1<br/>#2: Gardner Alvarez #2
-```
-
 
 
 

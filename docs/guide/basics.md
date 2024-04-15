@@ -19,7 +19,7 @@ Hello, {w}!
 Hello, world!
 ```
 
-Igo Dust will not crash when a key is missing in the data object.
+Igo Dust.js will not crash when a key is missing in the data object.
 
 ```js
 // Template
@@ -47,7 +47,7 @@ Hello, {! comment !}world!
 Hello, world!
 ```
 
-Igo Dust will ignore data that are inside comments.
+Igo Dust.js will ignore data that are inside comments.
 
 ```js
 // Template
@@ -77,7 +77,7 @@ Hello, \' \\ " " World!
 Hello, ' \ " " World!
 ```
 
-You can also use special tags to escape Igo Dust tags.
+You can also use special tags to escape Igo Dust.js tags.
 
 ```js
 // Template

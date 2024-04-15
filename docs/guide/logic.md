@@ -2,9 +2,18 @@
 
 ---
 
-* If-Else Conditions: Use `{?}` and `{:else}` to create conditional statements. <br/>
-* Existence Check: Employ `{?}` to check if a key exists in the context. <br/>
-* Negation Check: Use `{^}` to check if a key does not exist in the context. <br/>
+* If-Else Conditions: Use `{?}` and `{:else}` to create conditional statements based on truthy values. <br />
+* Existence Check: Employ `{?}` to check if a key exists in the context by evaluating its truthy value. <br />
+* Negation Check: Utilize `{^}` to verify if a key does not exist in the context or if its value is falsy.
+
+!> Note: In Igo Dust.js, an empty array `[]` evaluates to false in conditional statements.
+
+
+
+
+
+
+
 
 ## Simple conditions
 
@@ -14,7 +23,7 @@ Render a section of text based on a simple condition.
 // Template
 Hello {?test}World{/test} OK.
 
-// Date
+// Data
 {
   test: true
 }
@@ -29,7 +38,7 @@ You can also render a section of text based on a condition applied to an attribu
 // Template
 Hello {?test.a}World{/test.a} OK.
 
-// Date
+// Data
 {
   test: { a: true }
 }
@@ -46,7 +55,7 @@ Render nested conditions based on multiple conditions.
 // Template
 {?world}World{?ok} OK{/ok}{/world}
 
-// Date
+// Data
 {
   world: true,
   ok: true
@@ -64,7 +73,7 @@ Render different text based on a condition, with an alternative if the condition
 // Template
 Hello {?test}World{:else}Good bye{/test} OK.
 
-// Date
+// Data
 {
   test: false
 }
@@ -81,7 +90,7 @@ Render a section of text based on the absence of an attribute in the context.
 // Template
 Hello {^test.a}World{/test.a} OK.
 
-// Date
+// Data
 {
   test: false
 }
@@ -95,7 +104,7 @@ You can also use `else` with the ^ condition.
 // Template
 Hello {^test.a}World{:else}Planet{/test.a}.
 
-// Date
+// Data
 {
   test: { a: true }
 }
@@ -112,7 +121,7 @@ Execute a function as a condition and render text based on its result.
 // Template
 Hello{?test world=w} World{/test}.
 
-// Date
+// Data
 {
   w: true,
   test: (locals) => locals.world
@@ -124,13 +133,13 @@ Hello World.
 
 ## Array
 
-Igo Dust consider empty arrays as `false`.
+Igo Dust.js consider empty arrays as `false`.
 
 ```js
 // Template
 OK {?users}{users.length} users{/users}.
 
-// Date
+// Data
 {
   users: []
 }

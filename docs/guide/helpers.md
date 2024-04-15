@@ -78,7 +78,6 @@ Render content if the key is less than the specified value.
 // Output
 Hello World
 ```
-
 > Note: You can use `@lte` to render content if the key is less than or equal to the specified value !
 
 ## Else
@@ -100,7 +99,7 @@ Hello Planet
 
 ## Custom Helpers
 
-You can define `custom helpers` to extend the functionality of Igo Dust.
+You can define `custom helpers` to extend the functionality of Igo Dust.js.
 
 ```js
 // Define custom helpers
