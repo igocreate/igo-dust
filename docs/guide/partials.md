@@ -1,12 +1,12 @@
-# Includes
+# Partials and Layouts
 
 ---
 
-The `@include` directive allows for the insertion of reusable templates within other templates. Additionally, layouts can be constructed to provide a consistent structure for rendering content.
+Igo Dust.js allows the insertion of reusable templates within your templates. Additionally, layouts can be constructed to provide a consistent structure for rendering content.
 
 ## Basics
 
-Includes with parameters:
+Simple with parameters:
 
 ```js
 // Template
@@ -15,14 +15,11 @@ Hello {> "./templates/_world_ref" world="World" /}
 // ./templates/_world_ref
 {world}!
 
-// Data
-{ }
-
 // Output
 Hello World!
 ```
 
-Includes with references parameters:
+With references parameters:
 
 ```js
 // Template
@@ -37,7 +34,7 @@ Hello {> "./templates/_world_ref" world=w /}
 Hello World!
 ```
 
-Include with Nested Reference Parameters:
+With Nested Reference Parameters:
 
 ```js
 // Template
@@ -52,24 +49,7 @@ Hello {> "./templates/_world_ref" world=test.w /}
 Hello World!
 ```
 
-Several Includes:
-
-```js
-1 {> "./test/templates/_body2" quatre="4"}3{/>} {> "./test/templates/_body2" quatre="17"}18{/>} 7
-
-// ./test/templates/_body2
-2 {+ /} {quatre} {n} 6
-
-// Data
-{
-  n: 5
-}
-
-// Output
-1 2 4 3 5 6 2 18 17 5 6 7
-```
-
-Dynamic Includes:
+Dynamic:
 
 ```js
 // Template 
@@ -94,10 +74,14 @@ Layout with Content Insertion
 
 ```js
 // Template
-{> "./templates/layout_title" /} {<content}{test.w}{/content}
+{> "./templates/layout_title" /}
+{<content}
+  {test.w}
+{/content}
 
 // ./templates/layout_title
-{+title}Hello{/title} {+content /}!
+{+title}Hello{/title}
+{+content /}!
 
 // Data
 { 
@@ -115,7 +99,7 @@ Layout with Default Content, custom title and includes with body
 {> "./test/templates/layout_title" /} {<title}Hi{/title} {<content}World, {> "./test/templates/_body"}body{/>}{/content}
 
 // ./test/templates/_body
-The {+ /} is inserted here
+The {+/} is inserted here
 
 // Data
 {
@@ -177,27 +161,19 @@ Hello World!
 John, Jane, Bernard
 ```
 
-## Nested
+## Partials with body
 
 ```js
 // Template
-! {> "./test/templates/_body"}OK {> "./test/templates/_body"}body{/>}{/>} !
+{> "./test/templates/_body"}
+  BODY
+{/>} !
 
 // ./test/templates/_body
-The {+ /} is insterted here
-
-// Data
-{
-  n: 5
-}
+The {+/} is inserted here
 
 // Output
-! The OK The body is insterted here is inserted here !
+The BODY is insterted here !
 ```
-
-
-
-
-
 
 ---

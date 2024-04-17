@@ -1,7 +1,10 @@
+
+
+
+# Igo Dust.js
+
 ![Build Status](https://github.com/igocreate/igo-dust/actions/workflows/node.js.yml/badge.svg) ![npm](https://img.shields.io/badge/version-0.3.5-0879BA) ![npm](https://img.shields.io/npm/dt/igo-dust)
 
-
-# Igo Dust.js 
 
 ## Introduction
 
@@ -17,7 +20,7 @@ Igo Dust.js is a high-performance templating library built on Dust.js, offering 
 
 > Note: The VSCode extension for Igo Dust.js is available [here](https://marketplace.visualstudio.com/items?itemName=IGOCREATE.igo-dust-language-support).
 
-<!-- > Benchmark [here](https://www.example.com) -->
+> Benchmark [here](https://github.com/itsarnaud/templating-engine-bench.git)
 
 ## Installation
 

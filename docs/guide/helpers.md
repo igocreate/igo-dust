@@ -103,25 +103,20 @@ You can define `custom helpers` to extend the functionality of Igo Dust.js.
 
 ```js
 // Define custom helpers
-const Helpers = require('../../src/render/Helpers');
+const igodust = require('igo-dust');
 
-const HELPERS = {
-
-  nl2br: function(params) {
-    if (params.value) {
-      return params.value.replace(/(\r\n|\n\r|\r|\n)/g, '<br/>');
-    }
-  },
-
-  boolean: function(params) {
-    const color = params.value ? 'success' : 'danger';
-    return `<div class="bullet bullet-sm bullet-${color}"></div>`;
+// @nl2br helper
+igodust.helpers.nl2br = (params, locals) => {
+  if (params.value) {
+    return params.value.replace(/(\r\n|\n\r|\r|\n)/g, '<br/>');
   }
 };
 
-// Add custom helpers
-Helpers.nl2br   = HELPERS.nl2br; // @nl2br
-Helpers.boolean = HELPERS.boolean; // @boolean
+// @boolean helper
+igodust.helpers.boolean = (params, locals) => {
+  const color = params.value ? 'success' : 'danger';
+  return `<div class="bullet bullet-sm bullet-${color}"></div>`;
+};
 ```
 
 You can now use the `custom helpers` in your templates.
@@ -140,23 +135,6 @@ Hello ? {@boolean value=b /}
 // Output
 Hello ? <div class="bullet bullet-sm bullet-success"></div>
 Hello<br/>World
-```
-
-## Handling non-existent helpers
-
-Handle errors gracefully when using non-existent custom helpers.
-
-```js
-// Template
-Hello {@foo value=obj /} !
-
-// Data
-{ 
-  obj: 'World'
-}
-
-// Output
-Error: helper @foo not found!
 ```
 
 ---

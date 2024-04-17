@@ -15,6 +15,8 @@ Filters are attached to a Dust reference by adding a pipe `|` and the filter nam
 * `uc` – encodeURIComponent
 * `js` – JSON.stringify
 * `jp` – JSON.parse
+* `uppercase` - Uppercase
+* `lowercase` - Lowercase
 
 !> Dust applies the `h` filter to all references by default, ensuring that variables are HTML-escaped. You can undo this autoescaping by appending the `s` filter.
 

@@ -25,9 +25,6 @@ Igo Dust.js will not crash when a key is missing in the data object.
 // Template
 Hello, {w}!
 
-// Data
-{ }
-
 // Output
 Hello, !
 ```
@@ -39,9 +36,6 @@ Comments are enclosed in `{!` and `!}`.
 ```js
 // Template
 Hello, {! comment !}world!
-
-// Data
-{ }
 
 // Output
 Hello, world!
@@ -64,27 +58,17 @@ Hello, world!
 
 ## Special characters
 
-Special characters are escaped with a backslash `\`.
+You can use special tags to escape Igo Dust.js tags.
 
-```js
-// Template
-Hello, \' \\ " " World!
-
-// Data
-{ }
-
-// Output
-Hello, ' \ " " World!
-```
-
-You can also use special tags to escape Igo Dust.js tags.
+- `{~s}`: ` `
+- `{~lb}`: `{`
+- `{~rb}`: `}`
+- `{~n}`: `\\n`
+- `{~r}`: `\\r\\n`
 
 ```js
 // Template
 {~lb}Hello!{~rb}
-
-// Data
-{ }
 
 // Output
 {Hello!}

@@ -7,3 +7,4 @@
 [GitHub](https://github.com/igocreate/igo-dust)
 [Get Started](getting-started)
 
+![color](rgba(211,248,255,1))
