@@ -2,7 +2,7 @@
 
 ## Render
 
-Render a Dust.js template with the given context.
+Render a Dust template string with data.
 
 ```js
 const igodust = require('igo-dust');
@@ -13,8 +13,12 @@ igodust.render('Hello, {name}!', { name: 'World' });
 
 ## Render File
 
-Render a Dust.js template file with the given context.
+Render a Dust template file with data.
 
 ```js
 const igodust = require('igo-dust');
+
+igodust.renderFile('path/to/template.dust', { name: 'World' });
+// => Hello, World!
+```
 
