@@ -7,11 +7,11 @@
 
 ## Simple loop
 
-Render a section of text for each element in an array.
+Render a section of text for each element in an array. `{.}` or `{it}` is a reference to the current element in the loop.
 
 ```js
 // Template
-Hello {#COL1}a{/COL1}
+Hello {#COL1}{.}{/COL1}
 
 // Data
 {
@@ -21,6 +21,61 @@ Hello {#COL1}a{/COL1}
 // Output
 Hello aaa
 ```
+
+## Context inside loops
+
+> ⚠️ **Warning:** Unlike good old Dust.js, **Igo-dust is stricter regarding context resolution**.
+
+When inside a loop such as `{#users}`, you must use **`{.first_name}`** to access properties of the current element.  
+Using `{first_name}` (without the dot) will **not** work—it tries to resolve the key in the **global context**, not the current loop item.
+
+### Example: loop context
+
+```js
+// Template
+{#users}{.first_name}{@sep}, {/sep}{/users}
+
+// Data
+{
+  users: [
+    { first_name: "Alice" },
+    { first_name: "Bob" }
+  ]
+}
+
+// Output
+Alice, Bob
+```
+
+## Dynamic includes based on current item
+
+You can use a dynamic path in an include by referencing the current context with `.`.
+
+### Example: dynamic include by status
+
+```js
+// Template
+{#users}{> "users/status/_{.status}" /}{/users}
+
+// users/status/_active.dust
+Active user: {.name}
+
+// users/status/_inactive.dust
+Inactive user: {.name}
+
+// Data
+{
+  users: [
+    { name: "Alice", status: "active" },
+    { name: "Bob", status: "inactive" }
+  ]
+}
+
+// Output
+Active user: Alice
+Inactive user: Bob
+```
+
 
 ## Nested Loops
 
