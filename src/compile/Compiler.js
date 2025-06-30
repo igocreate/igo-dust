@@ -105,12 +105,18 @@ class Compiler {
     });
   }
 
-  //
-  compile(buffer) {
+  // Generates the template function source code
+  toSource(buffer) {
     this.compileBuffer(buffer);
     this.r += 'return r;';
-    // console.log(this.r);
-    return new Function('l', 'u', 'c', 's', this.r);
+    return this.r;
+  }
+
+  // Compiles the template into an executable function
+  compile(buffer) {
+    const sourceCode = this.toSource(buffer);
+    // console.log(sourceCode);
+    return new Function('l', 'u', 'c', 's', sourceCode);
   }
 
   _else(block) {

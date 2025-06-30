@@ -1,6 +1,7 @@
 
 
-const config    = require('./src/Config');
+const Config    = require('./src/Config');
+const Cache     = require('./src/Cache');
 const Renderer  = require('./src/render/Renderer');
 const Helpers   = require('./src/render/Helpers');
 const Utils     = require('./src/render/Utils');
@@ -8,7 +9,17 @@ const Utils     = require('./src/render/Utils');
 
 // configure igo-dust
 module.exports.configure = (options) => {
-  config.configure(options);
+  Config.configure(options);
+};
+
+// compile template
+module.exports.compileFile = (filePath) => {
+  return Cache.getCompiled(filePath);
+};
+
+// get template source
+module.exports.getSource = (filePath) => {
+  return Cache.getSource(filePath);
 };
 
 // render template
@@ -22,12 +33,13 @@ module.exports.renderFile = (filePath, data, stream=null) => {
 };
 
 // expressjs engine
-module.exports.engine = (filePath, data, callback) => {
-  const rendered = module.exports.renderFile(filePath, data);
-  if (!callback) {
-    return rendered;
+module.exports.engine = (filePath, options, callback) => {
+  try {
+    const rendered = module.exports.renderFile(filePath, options);
+    return callback(null, rendered);
+  } catch (err) {
+    return callback(err);
   }
-  callback(null, rendered);
 };
 
 // Helpers and filters
