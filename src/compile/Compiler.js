@@ -14,7 +14,7 @@ class Compiler {
     // precompile, for content functions
     buffer.forEach(block => {
       if (block.type === '<') {
-        this.r += `c._${block.tag}=function(){var r='';`;
+        this.r += `c._${block.tag}=async function(){var r='';`;
         this.r += 'var a=s?function(x){s.write(String(x))}:function(x){r+=x};';
         this.compileBuffer(block.buffer);
         this.r += 'return r;};';
@@ -28,10 +28,10 @@ class Compiler {
         this.r += `a(${this._getReference(block)});`;
       } else if (block.type === '+' && !block.tag) {
         // insert body (invoke content function)
-        this.r += `if(c._$body){a(c._$body());c._$body=null;}`;
+        this.r += `if(c._$body){a(await c._$body());c._$body=null;}`;
       } else if (block.type === '+') {
         // insert content (invoke content function)
-        this.r += `if(c._${block.tag}){a(c._${block.tag}())}`;
+        this.r += `if(c._${block.tag}){a(await c._${block.tag}())}`;
         if (block.buffer) {
           this.r += 'else{';
           this.compileBuffer(block.buffer);
@@ -88,7 +88,7 @@ class Compiler {
 
         // precompile if buffer
         if (block.buffer) {
-          this.r += `c._$body=function(){var r='';`;
+          this.r += `c._$body=async function(){var r='';`;
           this.r += 'var a=s?function(x){s.write(String(x))}:function(x){r+=x};';
           this.compileBuffer(block.buffer);
           this.r += 'return r;};';
@@ -96,7 +96,7 @@ class Compiler {
 
         this._pushContext(block.params);
         const file = this._getParam(block.file);
-        this.r += `a(u.i(${file})(l,u,c,s));`;
+        this.r += `a(await (await u.i(${file}))(l,u,c,s));`;
         this._popContext(block.params);
       } else if (!block.type){
         // default: raw text
@@ -116,7 +116,7 @@ class Compiler {
   compile(buffer) {
     const sourceCode = this.toSource(buffer);
     // console.log(sourceCode);
-    return new Function('l', 'u', 'c', 's', sourceCode);
+    return new (Object.getPrototypeOf(async function(){}).constructor)('l', 'u', 'c', 's', sourceCode);
   }
 
   _else(block) {

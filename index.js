@@ -13,29 +13,29 @@ module.exports.configure = (options) => {
 };
 
 // compile template
-module.exports.compileFile = (filePath) => {
-  return Cache.getCompiled(filePath);
+module.exports.compileFile = async (filePath) => {
+  return await Cache.getCompiled(filePath);
 };
 
 // get template source
-module.exports.getSource = (filePath) => {
-  return Cache.getSource(filePath);
+module.exports.getSource = async (filePath) => {
+  return await Cache.getSource(filePath);
 };
 
 // render template
-module.exports.render = (src, data, stream=null) => {
-  return new Renderer().render(src, data, stream);
+module.exports.render = async (src, data, stream=null) => {
+  return await new Renderer().render(src, data, stream);
 };
 
 // render template file
-module.exports.renderFile = (filePath, data, stream=null) => {
-  return new Renderer().renderFile(filePath, data, stream);
+module.exports.renderFile = async (filePath, data, stream=null) => {
+  return await new Renderer().renderFile(filePath, data, stream);
 };
 
 // expressjs engine
-module.exports.engine = (filePath, options, callback) => {
+module.exports.engine = async (filePath, options, callback) => {
   try {
-    const rendered = module.exports.renderFile(filePath, options);
+    const rendered = await module.exports.renderFile(filePath, options);
     return callback(null, rendered);
   } catch (err) {
     return callback(err);

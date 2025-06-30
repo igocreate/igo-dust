@@ -1,4 +1,3 @@
-
 /* global describe, it */
 
 
@@ -27,67 +26,67 @@ const HELPERS = {
 
 describe('Render Helpers', () => {
 
-  it('should render with eq helper', () => {
+  it('should render with eq helper', async () => {
     const template  = 'Hello {@eq key=w value="World"}{w}{/eq}';
-    const r         = new Renderer().render(template, { w: 'World' });
+    const r         = await new Renderer().render(template, { w: 'World' });
     assert.equal(r, 'Hello World');
   });
 
-  it('should render with false eq helper', () => {
+  it('should render with false eq helper', async () => {
     const template  = 'Hello {@eq key=w value="world"}{w}{/eq}';
-    const r         = new Renderer().render(template, { w: 'World' });
+    const r         = await new Renderer().render(template, { w: 'World' });
     assert.equal(r, 'Hello ');
   });
 
-  it('should allow quotes in params', () => {
+  it('should allow quotes in params', async () => {
     const template  = 'Hello {@eq key=w value="world\'s one"}{w}{/eq}';
-    const r         = new Renderer().render(template, { w: 'World\'s one' });
+    const r         = await new Renderer().render(template, { w: 'World\'s one' });
     assert.equal(r, 'Hello ');
   });
 
-  it('should render with ne helper', () => {
+  it('should render with ne helper', async () => {
     const template  = 'Hello {@ne key=w value="world"}{w}{/ne}';
-    const r         = new Renderer().render(template, { w: 'World' });
+    const r         = await new Renderer().render(template, { w: 'World' });
     assert.equal(r, 'Hello World');
   });
 
-  it('should render with false ne helper', () => {
+  it('should render with false ne helper', async () => {
     const template  = 'Hello {@ne key=w value="World"}{w}{/ne}';
-    const r         = new Renderer().render(template, { w: 'World' });
+    const r         = await new Renderer().render(template, { w: 'World' });
     assert.equal(r, 'Hello ');
   });
 
-  it('should not crash with missing params', () => {
+  it('should not crash with missing params', async () => {
     const template  = 'Hello {@eq key=w}{w}{/eq}';
-    const r         = new Renderer().render(template, { w: 'World' });
+    const r         = await new Renderer().render(template, { w: 'World' });
     assert.equal(r, 'Hello ');
   });
 
-  it('should not crash with wrong ref params', () => {
+  it('should not crash with wrong ref params', async () => {
     const template  = 'Hello {@eq key=e value="World"}{w}{/eq}';
-    const r         = new Renderer().render(template, { w: 'World' });
+    const r         = await new Renderer().render(template, { w: 'World' });
     assert.equal(r, 'Hello ');
   });
 
-  it('should render with gt helper', () => {
+  it('should render with gt helper', async () => {
     const template  = 'Hello {@gt key=w value="2"}World{/gt}';
-    let r           = new Renderer().render(template, { w: 3 });
+    let r           = await new Renderer().render(template, { w: 3 });
     assert.equal(r, 'Hello World');
-    r               = new Renderer().render(template, { w: 1 });
+    r               = await new Renderer().render(template, { w: 1 });
     assert.equal(r, 'Hello ');
   });
 
-  it('should render with number value', () => {
+  it('should render with number value', async () => {
     const template  = 'Hello {@gt key=w value=2}World{/gt}';
-    let r           = new Renderer().render(template, { w: 3 });
+    let r           = await new Renderer().render(template, { w: 3 });
     assert.equal(r, 'Hello World');
-    r               = new Renderer().render(template, { w: 1 });
+    r               = await new Renderer().render(template, { w: 1 });
     assert.equal(r, 'Hello ');
   });
 
-  it('should render else', () => {
+  it('should render else', async () => {
     const template  = 'Hello {@eq key=w value="world"}{w}{:else}world !{/eq}';
-    const r         = new Renderer().render(template, { w: 'World' });
+    const r         = await new Renderer().render(template, { w: 'World' });
     assert.equal(r, 'Hello world !');
   });
 
@@ -97,21 +96,21 @@ describe('Render Helpers', () => {
     assert.equal(r, 'Hello Puppies');
   });
 
-  it('should render custom helper', () => {
+  it('should render custom helper', async () => {
     
     Helpers.nl2br   = HELPERS.nl2br;
     Helpers.boolean = HELPERS.boolean;
 
     // boolean false
     let template = 'Hello ? {@boolean value=b /}';
-    let r = new Renderer(HELPERS).render(template, {b: false});
+    let r = await new Renderer(HELPERS).render(template, {b: false});
     assert.equal(r, 'Hello ? <div class="bullet bullet-sm bullet-danger"></div>');
     // boolean true
-    r = new Renderer(HELPERS).render(template, {b: true});
+    r = await new Renderer(HELPERS).render(template, {b: true});
     assert.equal(r, 'Hello ? <div class="bullet bullet-sm bullet-success"></div>');
     // nl2br
     template = '{@nl2br value=text /}';
-    r = new Renderer(HELPERS).render(template, {text: 'Hello\nWorld'});
+    r = await new Renderer(HELPERS).render(template, {text: 'Hello\nWorld'});
     assert.equal(r, 'Hello<br/>World');
   });
 
@@ -119,47 +118,47 @@ describe('Render Helpers', () => {
     return params.key;
   };
 
-  it('should render custom helper with string param', () => {
+  it('should render custom helper with string param', async () => {
     const template  = 'Hello {@t key="World" /} !';
-    const r         = new Renderer().render(template);
+    const r         = await new Renderer().render(template);
     assert.equal(r, 'Hello World !');
   });
 
-  it('should render custom helper with empty string param', () => {
+  it('should render custom helper with empty string param', async () => {
     const template  = 'Hello {@t key="" /} !';
-    const r         = new Renderer().render(template);
+    const r         = await new Renderer().render(template);
     assert.equal(r, 'Hello  !');
   });
 
-  it('should render custom helper with ref param', () => {
+  it('should render custom helper with ref param', async () => {
     const template  = 'Hello {@t key=txt.w /} !';
-    const r         = new Renderer().render(template, { txt: { w: 'World' }});
+    const r         = await new Renderer().render(template, { txt: { w: 'World' }});
     assert.equal(r, 'Hello World !');
   });
   
-  it('should render custom helper with string + ref param', () => {
+  it('should render custom helper with string + ref param', async () => {
     const template  = 'Hello {#obj}{@t key="txt.{.attr}" /}{/obj} !';
-    const r         = new Renderer().render(template, { obj: {attr: 'w' } , txt: { w: 'World' }});
+    const r         = await new Renderer().render(template, { obj: {attr: 'w' } , txt: { w: 'World' }});
     assert.equal(r, 'Hello txt.w !');
   });
 
-  it('should render custom helper with string + missingref param', () => {
+  it('should render custom helper with string + missingref param', async () => {
     const template  = 'Hello {#obj}{@t key="txt.{.attr}" /}{/obj} !';
-    const r         = new Renderer().render(template, { obj: 1 });
+    const r         = await new Renderer().render(template, { obj: 1 });
     assert.equal(r, 'Hello txt. !');
   });
 
-  it('should send null param and not emptystring', () => {
+  it('should send null param and not emptystring', async () => {
     Helpers.isNull  = HELPERS.isNull;
     const template  = 'Hello {@isNull value=obj /} !';
-    const r         = new Renderer().render(template, { obj: null});
+    const r         = await new Renderer().render(template, { obj: null});
     assert.equal(r, 'Hello true !');
   });
 
-  it('should throw error if helper does not exist', () => {
+  it('should throw error if helper does not exist', async () => {
     const template  = 'Hello {@foo value=obj /} !';
     try {
-      new Renderer().render(template);
+      await new Renderer().render(template);
       assert.fail();
     } catch(err) {
       assert.equal(err.message, 'Error: helper @foo not found!');

@@ -1,4 +1,3 @@
-
 /* global describe, it */
 
 const assert    = require('assert');
@@ -22,24 +21,24 @@ class Stream {
 //
 describe('Stream response', () => {
 
-  it('should stream simple response', () => {
+  it('should stream simple response', async () => {
     const template  = 'Hello World';
     const stream    = new Stream();
-    new Renderer().render(template, {}, stream);
+    await new Renderer().render(template, {}, stream);
     assert.equal(stream.buffer, template);
   });  
 
-  it('should stream response with include', () => {
+  it('should stream response with include', async () => {
     const template  = '{> "./test/templates/layout" /} {<content}{test.w}{/content}';
     const stream    = new Stream();
-    new Renderer().render(template, {test: {w: 'World'}}, stream);
+    await new Renderer().render(template, {test: {w: 'World'}}, stream);
     assert.equal(stream.buffer, 'Hello World! ');
   });
 
-  it('should execute function if tag is a function', () => {
+  it('should execute function if tag is a function', async () => {
     const template  = 'Hello {#t key="World" /}';
     const stream    = new Stream();
-    const r         = new Renderer().render(template, { t: (params) => params.key }, stream);
+    await new Renderer().render(template, { t: (params) => params.key }, stream);
     assert.equal(stream.buffer, 'Hello World');
   });
 

@@ -1,3 +1,4 @@
+
 const FileUtils = require('./fs/FileUtils');
 const Parser    = require('./parse/Parser');
 const Compiler  = require('./compile/Compiler');
@@ -9,7 +10,7 @@ class Cache {
     this._CACHE = {};
   }
 
-  _getOrSet(filePath, type, generator) {
+  async _getOrSet(filePath, type, generator) {
     filePath = FileUtils.getFilePath(filePath);
     const cacheKey = `${type}:${filePath}`;
     
@@ -17,30 +18,30 @@ class Cache {
       return this._CACHE[cacheKey];
     }
 
-    const result = generator();
+    const result = await generator();
     if (config.cache) {
       this._CACHE[cacheKey] = result;
     }
     return result;
   }
 
-  _getParsed(filePath) {
-    return this._getOrSet(filePath, 'parsed', () => {
-      const src = FileUtils.loadFile(filePath);
+  async _getParsed(filePath) {
+    return this._getOrSet(filePath, 'parsed', async () => {
+      const src = await FileUtils.loadFile(filePath);
       return new Parser().parse(src);
     });
   }
 
-  getCompiled(filePath) {
-    return this._getOrSet(filePath, 'compiled', () => {
-      const buffer = this._getParsed(filePath);
+  async getCompiled(filePath) {
+    return this._getOrSet(filePath, 'compiled', async () => {
+      const buffer = await this._getParsed(filePath);
       return new Compiler().compile(buffer);
     });
   }
 
-  getSource(filePath) {
-    return this._getOrSet(filePath, 'source', () => {
-      const buffer = this._getParsed(filePath);
+  async getSource(filePath) {
+    return this._getOrSet(filePath, 'source', async () => {
+      const buffer = await this._getParsed(filePath);
       return new Compiler().toSource(buffer);
     });
   }

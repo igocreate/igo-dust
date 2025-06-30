@@ -125,11 +125,11 @@ const h = (t, p, l) => {
 h.helpers = Helpers;
 
 // include file
-const i = (file) => {
+const i = async (file) => {
   if (!file.endsWith('.dust')) {
     file = file + '.dust';
   }
-  return Cache.getCompiled(file);
+  return await Cache.getCompiled(file);
 };
 
 module.exports = { a, b, v, d, h, f, i };
