@@ -33,9 +33,9 @@ module.exports.renderFile = async (filePath, data, stream=null) => {
 };
 
 // expressjs engine
-module.exports.engine = async (filePath, options, callback) => {
+module.exports.engine = async (filePath, data, callback) => {
   try {
-    const rendered = await module.exports.renderFile(filePath, options);
+    const rendered = await module.exports.renderFile(filePath, data);
     return callback(null, rendered);
   } catch (err) {
     return callback(err);
