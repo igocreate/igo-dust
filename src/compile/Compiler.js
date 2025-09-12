@@ -202,7 +202,8 @@ class Compiler {
       const ref = new RegExp('\\{([^\\}]*)\\}', 'msg');
       while ((match = ref.exec(param)) !== null) {
         // left part
-        ret.push(`'${param.substring(index, match.index)}'`);
+        s = param.substring(index, match.index).replace(/'/g, '\\\'');
+        ret.push(`'${s}'`);
         index = match.index + match[0].length;
         ret.push(this._getValue(match[1], 'u.d'));
       }

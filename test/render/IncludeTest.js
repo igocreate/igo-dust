@@ -19,6 +19,12 @@ describe('Render Includes & Layouts', () => {
     assert.equal(r, 'Hello World!');
   });
 
+  it('should render include with param containing a single quote and a param', async () => {
+    const template  = 'Hello {> "./test/templates/_world_ref" world="Nice\'n {w}" /}';
+    const r         = await new Renderer().render(template, {w: 'World'});
+    assert.equal(r, 'Hello Nice&#39;n World!');
+  });
+
   it('should render include with nested reference param', async () => {
     const template  = 'Hello {> "./test/templates/_world_ref" world=test.w /}';
     const r         = await new Renderer().render(template, {test: {w: 'World'}});
