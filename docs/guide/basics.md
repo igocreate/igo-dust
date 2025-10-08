@@ -142,7 +142,7 @@ Access arrays by index in references in the template.
 Hello, {users[1]}!
 
 // Data
-{ 
+{
   users: [ 'john', 'World' ]
 }
 
@@ -150,5 +150,51 @@ Hello, {users[1]}!
 Hello, World!
 ```
 
+## Nested object access
+
+Access deeply nested properties using dot notation.
+
+```js
+// Template
+{user.profile.address.city}, {user.profile.address.country}
+
+// Data
+{
+  user: {
+    profile: {
+      address: {
+        city: 'Paris',
+        country: 'France'
+      }
+    }
+  }
+}
+
+// Output
+Paris, France
+```
+
+## Dynamic property access
+
+Combine multiple dynamic references.
+
+```js
+// Template
+{products[category][selectedId].name}
+
+// Data
+{
+  category: 'electronics',
+  selectedId: 'laptop123',
+  products: {
+    electronics: {
+      laptop123: { name: 'MacBook Pro' }
+    }
+  }
+}
+
+// Output
+MacBook Pro
+```
 
 ---

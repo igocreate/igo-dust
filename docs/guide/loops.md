@@ -19,7 +19,7 @@ Hello {#COL1}{.}{/COL1}
 }
 
 // Output
-Hello aaa
+Hello 123
 ```
 
 ## Context inside loops
@@ -371,7 +371,7 @@ Hello {#users it="user"}#{user.id}: {#user.friends it="friend"}{friend.name}{@se
 
 // Data
 {
-  user: [{
+  users: [{
     id:   1,
     name: 'Gardner Alvarez',
     friends: [{'name': 'Gates Lewis'},{'name': 'Britt Stokes'}]
@@ -386,8 +386,143 @@ Hello {#users it="user"}#{user.id}: {#user.friends it="friend"}{friend.name}{@se
 Hello #1: Gates Lewis, Britt Stokes #1<br/>#2: Gardner Alvarez #2
 ```
 
+## Real-world examples
 
+### Building a product list with pricing
 
+```js
+// Template
+<ul class="products">
+{#products}
+  <li>
+    <strong>{.name}</strong> - ${.price}
+    {?.onSale}
+      <span class="badge">SALE!</span>
+    {/.onSale}
+  </li>
+  {@sep}<hr/>{/sep}
+{/products}
+</ul>
+
+// Data
+{
+  products: [
+    { name: 'Laptop', price: 999, onSale: true },
+    { name: 'Mouse', price: 29, onSale: false },
+    { name: 'Keyboard', price: 79, onSale: true }
+  ]
+}
+
+// Output
+<ul class="products">
+  <li>
+    <strong>Laptop</strong> - $999
+    <span class="badge">SALE!</span>
+  </li>
+  <hr/>
+  <li>
+    <strong>Mouse</strong> - $29
+  </li>
+  <hr/>
+  <li>
+    <strong>Keyboard</strong> - $79
+    <span class="badge">SALE!</span>
+  </li>
+</ul>
+```
+
+### Displaying a table with row numbers
+
+```js
+// Template
+<table>
+  <thead>
+    <tr><th>#</th><th>Name</th><th>Email</th></tr>
+  </thead>
+  <tbody>
+  {#users it="user"}
+    <tr>
+      <td>{$idx}</td>
+      <td>{user.name}</td>
+      <td>{user.email}</td>
+    </tr>
+  {/users}
+  </tbody>
+</table>
+
+// Data
+{
+  users: [
+    { name: 'Alice', email: 'alice@example.com' },
+    { name: 'Bob', email: 'bob@example.com' },
+    { name: 'Charlie', email: 'charlie@example.com' }
+  ]
+}
+
+// Output
+<table>
+  <thead>
+    <tr><th>#</th><th>Name</th><th>Email</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>Alice</td>
+      <td>alice@example.com</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Bob</td>
+      <td>bob@example.com</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Charlie</td>
+      <td>charlie@example.com</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+### Navigation menu with active state
+
+```js
+// Template
+<nav>
+  <ul>
+  {#menu it="item"}
+    <li class="{@eq key=item.id value=currentPage}active{/eq}">
+      <a href="{item.url}">{item.label}</a>
+    </li>
+  {/menu}
+  </ul>
+</nav>
+
+// Data
+{
+  currentPage: 'about',
+  menu: [
+    { id: 'home', label: 'Home', url: '/' },
+    { id: 'about', label: 'About', url: '/about' },
+    { id: 'contact', label: 'Contact', url: '/contact' }
+  ]
+}
+
+// Output
+<nav>
+  <ul>
+    <li class="">
+      <a href="/">Home</a>
+    </li>
+    <li class="active">
+      <a href="/about">About</a>
+    </li>
+    <li class="">
+      <a href="/contact">Contact</a>
+    </li>
+  </ul>
+</nav>
+```
 
 
 ---

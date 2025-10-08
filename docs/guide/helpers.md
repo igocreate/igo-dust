@@ -137,4 +137,86 @@ Hello ? <div class="bullet bullet-sm bullet-success"></div>
 Hello<br/>World
 ```
 
+## Real-world examples
+
+### Displaying product prices with comparison
+
+```js
+// Template
+<div class="product">
+  <h3>{product.name}</h3>
+  <p class="price">${product.price}</p>
+  {@gt key=product.price value=100}
+    <span class="badge">Premium</span>
+  {:else}
+    <span class="badge">Affordable</span>
+  {/gt}
+</div>
+
+// Data
+{
+  product: {
+    name: 'Laptop',
+    price: 1299
+  }
+}
+
+// Output
+<div class="product">
+  <h3>Laptop</h3>
+  <p class="price">$1299</p>
+  <span class="badge">Premium</span>
+</div>
+```
+
+### User status indicator
+
+```js
+// Template
+<div class="user-status">
+  {@eq key=user.status value="online"}
+    <span class="dot green"></span> Online
+  {/eq}
+  {@eq key=user.status value="away"}
+    <span class="dot yellow"></span> Away
+  {/eq}
+  {@eq key=user.status value="offline"}
+    <span class="dot gray"></span> Offline
+  {/eq}
+</div>
+
+// Data
+{
+  user: {
+    status: 'away'
+  }
+}
+
+// Output
+<div class="user-status">
+  <span class="dot yellow"></span> Away
+</div>
+```
+
+### Age-based content filtering
+
+```js
+// Template
+{@gte key=user.age value=18}
+  <a href="/adult-content">View all content</a>
+{:else}
+  <p>Content restricted. You must be 18 or older.</p>
+{/gte}
+
+// Data
+{
+  user: {
+    age: 16
+  }
+}
+
+// Output
+<p>Content restricted. You must be 18 or older.</p>
+```
+
 ---

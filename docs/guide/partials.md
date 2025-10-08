@@ -173,7 +173,7 @@ John, Jane, Bernard
 The {+/} is inserted here
 
 // Output
-The BODY is insterted here !
+The BODY is inserted here !
 ```
 
 ---
