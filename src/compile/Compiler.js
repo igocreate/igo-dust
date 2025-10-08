@@ -2,22 +2,25 @@
 
 const ParseUtils  = require('../parse/ParseUtils');
 
+const ASYNC_FUNCTION = Object.getPrototypeOf(async function(){}).constructor;
+
 class Compiler {
 
   constructor() {
-    this.i  =   0;
-    this.r  = `var r='',l=l||{},c=c||{ctx:[]};`;
-    this.r += 'var a=s?function(x){s.write(String(x))}:function(x){r+=x};';
+    this.i      = 0;
+    this.parts  = [];
+    this.parts.push(`var r='',l=l||{},c=c||{ctx:[]};`);
+    this.parts.push('var a=s?function(x){s.write(String(x))}:function(x){r+=x};');
   }
 
   compileBuffer(buffer) {
     // precompile, for content functions
     buffer.forEach(block => {
       if (block.type === '<') {
-        this.r += `c._${block.tag}=async function(){var r='';`;
-        this.r += 'var a=s?function(x){s.write(String(x))}:function(x){r+=x};';
+        this.parts.push(`c._${block.tag}=async function(){var r='';`);
+        this.parts.push('var a=s?function(x){s.write(String(x))}:function(x){r+=x};');
         this.compileBuffer(block.buffer);
-        this.r += 'return r;};';
+        this.parts.push('return r;};');
       }
     });
 
@@ -25,25 +28,25 @@ class Compiler {
     buffer.forEach(block => {
       if (block.type === 'r') {
         // reference
-        this.r += `a(${this._getReference(block)});`;
+        this.parts.push(`a(${this._getReference(block)});`);
       } else if (block.type === '+' && !block.tag) {
         // insert body (invoke content function)
-        this.r += `if(c._$body){a(await c._$body());c._$body=null;}`;
+        this.parts.push(`if(c._$body){a(await c._$body());c._$body=null;}`);
       } else if (block.type === '+') {
         // insert content (invoke content function)
-        this.r += `if(c._${block.tag}){a(await c._${block.tag}())}`;
+        this.parts.push(`if(c._${block.tag}){a(await c._${block.tag}())}`);
         if (block.buffer) {
-          this.r += 'else{';
+          this.parts.push('else{');
           this.compileBuffer(block.buffer);
-          this.r += '}';
+          this.parts.push('}');
         }
       } else if (block.type === '?' || block.type === '^' ) {
         // conditional block
         const not = block.type === '^' ? '!' : '';
         this._pushContext(block.params);
-        this.r += `if(${not}u.b(${this._getValue(block.tag)})){`;
+        this.parts.push(`if(${not}u.b(${this._getValue(block.tag)})){`);
         this.compileBuffer(block.buffer);
-        this.r += '}';
+        this.parts.push('}');
         this._else(block);
         this._popContext(block.params);
       } else if (block.type === '#') {
@@ -51,56 +54,56 @@ class Compiler {
         this.i = this.i + 1;
         const { i } = this;
         this._pushContext(block.params, true);
-        this.r += `var a${i}=u.a(${this._getValue(block.tag)});`;
-        this.r += `if(a${i}){`;
+        this.parts.push(`var a${i}=u.a(${this._getValue(block.tag)});`);
+        this.parts.push(`if(a${i}){`);
         if (!block.buffer) {
-          this.r += `a(a${i})`;
+          this.parts.push(`a(a${i})`);
         } else {
           const it = block.params.it && ParseUtils.stripDoubleQuotes(block.params.it);
-          this.r += `l.$length=a${i}.length;`; // current array length
-          this.r += `for(var i${i}=0;i${i}<a${i}.length;i${i}++){`;
+          this.parts.push(`l.$length=a${i}.length;`); // current array length
+          this.parts.push(`for(var i${i}=0;i${i}<a${i}.length;i${i}++){`);
           if (it) {
-            this.r += `l.${it}=a${i}[i${i}];`;
+            this.parts.push(`l.${it}=a${i}[i${i}];`);
           }
-          this.r += `l._it=a${i}[i${i}];`;
-          this.r += `l.$idx=i${i};`; // current id
+          this.parts.push(`l._it=a${i}[i${i}];`);
+          this.parts.push(`l.$idx=i${i};`); // current id
           this.compileBuffer(block.buffer, true);
-          this.r += '}';
+          this.parts.push('}');
         }
-        this.r += '}';
+        this.parts.push('}');
         this._else(block);
         this._popContext(block.params, true);
       } else if (block.type === '@') {
         // helper
         this.i = this.i + 1;
         const { i } = this;
-        this.r += `var h${i}=u.h('${block.tag}',${this._getParams(block.params)},l);`;
-        this.r += `if(h${i}){`;
+        this.parts.push(`var h${i}=u.h('${block.tag}',${this._getParams(block.params)},l);`);
+        this.parts.push(`if(h${i}){`);
         if (block.buffer) {
           this.compileBuffer(block.buffer);
         } else {
-          this.r += `a(h${i});`;
+          this.parts.push(`a(h${i});`);
         }
-        this.r += '}';
+        this.parts.push('}');
         this._else(block);
       } else if (block.type === '>') {
         // include
 
         // precompile if buffer
         if (block.buffer) {
-          this.r += `c._$body=async function(){var r='';`;
-          this.r += 'var a=s?function(x){s.write(String(x))}:function(x){r+=x};';
+          this.parts.push(`c._$body=async function(){var r='';`);
+          this.parts.push('var a=s?function(x){s.write(String(x))}:function(x){r+=x};');
           this.compileBuffer(block.buffer);
-          this.r += 'return r;};';
+          this.parts.push('return r;};');
         }
 
         this._pushContext(block.params);
         const file = this._getParam(block.file);
-        this.r += `a(await (await u.i(${file}))(l,u,c,s));`;
+        this.parts.push(`a(await (await u.i(${file}))(l,u,c,s));`);
         this._popContext(block.params);
       } else if (!block.type){
         // default: raw text
-        this.r += `a('${block}');`;
+        this.parts.push(`a('${block}');`);
       }
     });
   }
@@ -108,57 +111,57 @@ class Compiler {
   // Generates the template function source code
   toSource(buffer) {
     this.compileBuffer(buffer);
-    this.r += 'return r;';
-    return this.r;
+    this.parts.push('return r;');
+    return this.parts.join('');
   }
 
   // Compiles the template into an executable function
   compile(buffer) {
     const sourceCode = this.toSource(buffer);
     // console.log(sourceCode);
-    return new (Object.getPrototypeOf(async function(){}).constructor)('l', 'u', 'c', 's', sourceCode);
+    return new ASYNC_FUNCTION('l', 'u', 'c', 's', sourceCode);
   }
 
   _else(block) {
     if (block.bodies && block.bodies.else) {
-      this.r += 'else{';
+      this.parts.push('else{');
       this.compileBuffer(block.bodies.else);
-      this.r += '}';
+      this.parts.push('}');
     }
   }
 
   _pushContext(params, isArray) {
     const { i } = this;
-    this.r += `var ctx${i}={};`; 
+    this.parts.push(`var ctx${i}={};`);
     Object.keys(params).forEach(key => {
       if (key === '$') {
         return;
       }
-      this.r += `ctx${i}.${key}=l.${key};`;
-      this.r += `l.${key}=${this._getParam(params[key])};`;
+      this.parts.push(`ctx${i}.${key}=l.${key};`);
+      this.parts.push(`l.${key}=${this._getParam(params[key])};`);
     });
     if (isArray) {
-      this.r += `ctx${i}._it=l._it;`;
-      this.r += `ctx${i}.idx=l.$idx;`;
-      this.r += `ctx${i}.length=l.$length;`;
+      this.parts.push(`ctx${i}._it=l._it;`);
+      this.parts.push(`ctx${i}.idx=l.$idx;`);
+      this.parts.push(`ctx${i}.length=l.$length;`);
     }
 
-    this.r += `c.ctx.push(ctx${i});`;
+    this.parts.push(`c.ctx.push(ctx${i});`);
   }
 
   _popContext(params, isArray) {
     const { i } = this;
-    this.r += `var p_ctx${i}=c.ctx.pop();`;
+    this.parts.push(`var p_ctx${i}=c.ctx.pop();`);
     Object.keys(params).forEach(key => {
       if (key === '$') {
         return;
       }
-      this.r += `l.${key}=p_ctx${i}.${key};`;
+      this.parts.push(`l.${key}=p_ctx${i}.${key};`);
     });
     if (isArray) {
-      this.r += `l._it=p_ctx${i}._it;`;
-      this.r += `l.$idx=p_ctx${i}.idx;`;
-      this.r += `l.$length=p_ctx${i}.length;`;
+      this.parts.push(`l._it=p_ctx${i}._it;`);
+      this.parts.push(`l.$idx=p_ctx${i}.idx;`);
+      this.parts.push(`l.$length=p_ctx${i}.length;`);
     }
   }
 
@@ -170,8 +173,8 @@ class Compiler {
       if (key === '$') {
         return;
       }
-      this.r += `c.p_${key}${i}=l.${key};`;
-      this.r += `l.${key}=${this._getParam(params[key])};`;
+      this.parts.push(`c.p_${key}${i}=l.${key};`);
+      this.parts.push(`l.${key}=${this._getParam(params[key])};`);
     });
   }
 
@@ -182,8 +185,8 @@ class Compiler {
       if (key === '$') {
         return;
       }
-      this.r += `l.${key}=c.p_${key}${i};`;
-      this.r += `delete c.p_${key}${i};`;
+      this.parts.push(`l.${key}=c.p_${key}${i};`);
+      this.parts.push(`delete c.p_${key}${i};`);
     });
   }
 

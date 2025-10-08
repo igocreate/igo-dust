@@ -7,6 +7,9 @@ const config      = require('../Config');
 
 class Parser {
 
+  static OPEN_REGEXP   = new RegExp('(.*?)\\{', 'msg');
+  static CLOSE_REGEXP  = new RegExp('(.*?)\\}', 'msg');
+
   constructor() {
     this.global     = [];           // global buffer, to be returned by parse function
     this.buffer     = this.global;  // current buffer, where content is added
@@ -84,9 +87,11 @@ class Parser {
 
     // remove comments
     str = ParseUtils.removeComments(str);
-    
-    const openRegexp   = new RegExp('(.*?)\\{', 'msg');
-    const closeRegexp  = new RegExp('(.*?)\\}', 'msg');
+
+    const openRegexp   = Parser.OPEN_REGEXP;
+    const closeRegexp  = Parser.CLOSE_REGEXP;
+    openRegexp.lastIndex = 0;
+    closeRegexp.lastIndex = 0;
 
     let index = 0;
 
