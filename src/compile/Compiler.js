@@ -77,15 +77,33 @@ class Compiler {
         // helper
         this.i = this.i + 1;
         const { i } = this;
-        this.parts.push(`var h${i}=u.h('${block.tag}',${this._getParams(block.params)},l);`);
-        this.parts.push(`if(h${i}){`);
+
+        // precompile buffer as function if it exists
         if (block.buffer) {
+          this.parts.push(`c._h_body${i}=async function(l_override){`);
+          this.parts.push(`var l_saved=l;`);
+          this.parts.push(`if(l_override){l={...l,...l_override};}`);
+          this.parts.push(`var r='';`);
+          this.parts.push('var a=s?function(x){s.write(String(x))}:function(x){r+=x};');
           this.compileBuffer(block.buffer);
-        } else {
-          this.parts.push(`a(h${i});`);
+          this.parts.push('l=l_saved;');
+          this.parts.push('return r;};');
         }
-        this.parts.push('}');
-        this._else(block);
+
+        const bodyParam = block.buffer ? `c._h_body${i}` : 'null';
+        this.parts.push(`var h${i}=await u.h('${block.tag}',${this._getParams(block.params)},l,${bodyParam});`);
+
+        if (block.buffer) {
+          this.parts.push(`var h${i}_t=typeof h${i};`);
+          this.parts.push(`if(h${i}_t==='string'||h${i}_t==='number'){a(h${i});}`);
+          this.parts.push(`else if(h${i}){a(await c._h_body${i}());}`);
+          this._else(block);
+        } else {
+          this.parts.push(`if(h${i}!==null&&h${i}!==undefined){`);
+          this.parts.push(`a(h${i});`);
+          this.parts.push('}');
+          this._else(block);
+        }
       } else if (block.type === '>') {
         // include
 

@@ -137,6 +137,63 @@ Hello ? <div class="bullet bullet-sm bullet-success"></div>
 Hello<br/>World
 ```
 
+## Advanced: Helpers with Body Function
+
+Helpers can receive a third parameter `body`, which is an async function that renders the content inside the helper block. This allows you to create powerful helpers that can repeat or manipulate their content.
+
+```js
+// Define a repeat helper
+const igodust = require('igo-dust');
+
+igodust.helpers.repeat = async (params, locals, body) => {
+  if (!body) {
+    return '';
+  }
+  const times = Number(params.times) || 0;
+  let result = '';
+
+  for (let i = 0; i < times; i++) {
+    // Call body with custom locals (like $idx)
+    result += await body({ $idx: i });
+  }
+
+  return result;
+};
+```
+
+Usage:
+
+```js
+// Template
+{@repeat times=3}Hello{/repeat}
+
+// Output
+HelloHelloHello
+```
+
+You can access loop variables like `$idx` inside the helper body:
+
+```js
+// Template
+{@repeat times=5}({$idx}){/repeat}
+
+// Output
+(0)(1)(2)(3)(4)
+```
+
+The body function can be called with custom locals that will be merged with the current context:
+
+```js
+// Template
+{@repeat times=3}{name}-{$idx} {/repeat}
+
+// Data
+{ name: 'item' }
+
+// Output
+item-0 item-1 item-2
+```
+
 ## Real-world examples
 
 ### Displaying product prices with comparison

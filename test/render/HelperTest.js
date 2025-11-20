@@ -20,6 +20,21 @@ const HELPERS = {
 
   isNull: (params) => {
     return params.value === null;
+  },
+
+  // Example of a helper that uses the body function to repeat content
+  repeat: async (params, locals, body) => {
+    if (!body) {
+      return '';
+    }
+    const times = Number(params.times) || 0;
+    let result = '';
+
+    for (let i = 0; i < times; i++) {
+      result += await body({ $idx: i });
+    }
+
+    return result;
   }
 };
 
@@ -163,6 +178,45 @@ describe('Render Helpers', () => {
     } catch(err) {
       assert.equal(err.message, 'Error: helper @foo not found!');
     }
+  });
+
+  // Tests showing how to use the body function in custom helpers
+  // The repeat helper demonstrates how helpers can receive and call the body function
+  it('should render repeat helper with simple content', async () => {
+    Helpers.repeat  = HELPERS.repeat;
+    const template  = '{@repeat times=3}Hello{/repeat}';
+    const r         = await new Renderer().render(template);
+    assert.equal(r, 'HelloHelloHello');
+  });
+
+  it('should render repeat helper with complex content', async () => {
+    const template  = '{@repeat times=3}<div>Item</div>{/repeat}';
+    const r         = await new Renderer().render(template);
+    assert.equal(r, '<div>Item</div><div>Item</div><div>Item</div>');
+  });
+
+  it('should render repeat helper with index', async () => {
+    const template  = '{@repeat times=5}({$idx}){/repeat}';
+    const r         = await new Renderer().render(template);
+    assert.equal(r, '(0)(1)(2)(3)(4)');
+  });
+
+  it('should render repeat helper with dynamic times', async () => {
+    const template  = '{@repeat times=count}x{/repeat}';
+    const r         = await new Renderer().render(template, { count: 4 });
+    assert.equal(r, 'xxxx');
+  });
+
+  it('should render repeat helper with zero times', async () => {
+    const template  = 'Start {@repeat times=0}Never{/repeat} End';
+    const r         = await new Renderer().render(template);
+    assert.equal(r, 'Start  End');
+  });
+
+  it('should render repeat helper with context variables', async () => {
+    const template  = '{@repeat times=3}{name}-{$idx} {/repeat}';
+    const r         = await new Renderer().render(template, { name: 'test' });
+    assert.equal(r, 'test-0 test-1 test-2 ');
   });
 
 });

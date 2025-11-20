@@ -116,11 +116,11 @@ const a = (v) => {
 };
 
 // helpers
-const h = (t, p, l) => {
+const h = async (t, p, l, body) => {
   if (!h.helpers || !h.helpers[t]) {
     throw new Error(`Error: helper @${t} not found!`);
   }
-  return h.helpers[t](p, l);
+  return await h.helpers[t](p, l, body);
 };
 h.helpers = Helpers;
 
