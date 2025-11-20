@@ -39,7 +39,7 @@ describe('Parser', () => {
     const TEMPLATE = '<style> body {\r\n    background-color: #f6f6f6;\r\n  }</style>';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 1);
-    assert.equal(buffer[0], '<style> body {background-color: #f6f6f6;}</style>');
+    assert.equal(buffer[0], '<style> body { background-color: #f6f6f6; }</style>');
   });
 
   it('should ignore js code ', () => {
@@ -289,7 +289,7 @@ describe('Parser', () => {
   it('should parse layout tag', () => {
     const TEMPLATE = ' {> "./templates/layout" /} {<content}World{/content} ';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 4);
+    assert.equal(buffer.length, 3);
     // const content = buffer[1];
     assert.equal(buffer[0].type, '>');
     assert.equal(buffer[2].type, '<');
@@ -311,13 +311,59 @@ describe('Parser', () => {
     const TEMPLATE = '  <ul>\n\t<li>  Hello</li>  \n\n\t <li>World  </li>    \n    ';
     const buffer = new Parser().parse(TEMPLATE);
     assert.equal(buffer.length, 1);
-    assert.equal(buffer[0], '<ul><li>  Hello</li>  <li>World  </li>    ');
+    assert.equal(buffer[0], '<ul><li>  Hello</li><li>World  </li>');
+  });
+
+  it('should preserve spaces in multi-line HTML attributes', () => {
+    const TEMPLATE = '<a \n  href="{href}" \n  class="btn">Link</a>';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 3);
+    // Check that spaces are normalized to single space
+    assert.equal(buffer[0], '<a href="');  // Spaces normalized
+    assert.equal(buffer[1].tag, 'href');    // Reference tag
+    assert.equal(buffer[2], '" class="btn">Link</a>');  // Spaces normalized
+  });
+
+  // Whitespace handling rules
+  it('should preserve multiple spaces in middle of line', () => {
+    const TEMPLATE = 'Hello  World';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], 'Hello  World');  // 2 spaces preserved
+  });
+
+  it('should normalize end of line + start of line to single space', () => {
+    const TEMPLATE = 'Hello   \n    World';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], 'Hello World');  // Normalized to 1 space
+  });
+
+  it('should remove whitespace between HTML tags', () => {
+    const TEMPLATE = '<div>   \n    <span>Text</span>   \n    </div>';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], '<div><span>Text</span></div>');  // All whitespace between tags removed
+  });
+
+  it('should trim leading and trailing whitespace from template', () => {
+    const TEMPLATE = '  \n  Template content  \n  ';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], 'Template content');  // Trimmed
+  });
+
+  it('should preserve simple spaces between inline tags', () => {
+    const TEMPLATE = '<span>Hello</span> <span>World</span>';
+    const buffer = new Parser().parse(TEMPLATE);
+    assert.equal(buffer.length, 1);
+    assert.equal(buffer[0], '<span>Hello</span> <span>World</span>');  // Space preserved
   });
 
   it('should parse params with curly braces', () => {
     const TEMPLATE = ' {> "./includes/{file}" text="ok-{test}" /} ';
     const buffer = new Parser().parse(TEMPLATE);
-    assert.equal(buffer.length, 2);
+    assert.equal(buffer.length, 1);
     assert.equal(buffer[0].type, '>');
     assert.equal(buffer[0].file, '"./includes/{file}"');
     assert.equal(buffer[0].params.text, '"ok-{test}"');

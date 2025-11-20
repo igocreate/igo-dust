@@ -61,7 +61,7 @@ describe('Render Includes & Layouts', () => {
     assert.equal(r, 'Hello World! ');
   });
 
-  it('should render layout with default content', async () => {
+  it('should render layout with default content and title', async () => {
     const template  = '{> "./test/templates/layout_title" /} {<title}Hi{/title} {<content}World{/content}';
     const r         = await new Renderer().render(template, {company: { name: 'World' }});
     assert.equal(r, 'Hi World!  ');

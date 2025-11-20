@@ -20,12 +20,20 @@ class Parser {
   // add string
   pushString(str) {
     if (config.htmltrim) {
-      // remove line returns and following spaces
-      str = str.replace(/[\r\n]+\s*/g , '');
+      // Whitespace handling rules when htmltrim is enabled:
+      // 1. Preserve multiple spaces on same line: "Hello  World" stays "Hello  World"
+      // 2. Normalize end-of-line + start-of-line: "Hello\n  World" → "Hello World"
+      // 3. Remove whitespace between HTML tags: "<div>\n  <span>" → "<div><span>"
+      // 4. Trim is done in parse() before parsing
+
+      // remove newlines between HTML tags (preserves simple spaces and tabs)
+      str = str.replace(/>\s*[\r\n]+\s*</g, '><');
+      // normalize newlines and adjacent spaces to single space (preserves multiple spaces on same line)
+      str = str.replace(/\s*[\r\n]+\s*/g, ' ');
       // escape backslashes
       str = str.replace(/\\/g, '\\\\');
     }
-    
+
     // escape single quotes
     str = str.replace(/'/g, '\\\'');
     
@@ -78,15 +86,17 @@ class Parser {
   }
 
   parse(str) {
-    // remove spaces at the beginning of lines and line breaks
-    if (config.htmltrim) {
-      str = str.replace(/^\s+/g, '');
-    } else {
+    if (!config.htmltrim) {
       str = str.replace(/\r/g , '\\r').replace(/\n/g , '\\n');
     }
 
     // remove comments
     str = ParseUtils.removeComments(str);
+
+    // trim leading and trailing whitespace
+    if (config.htmltrim) {
+      str = str.trim();
+    }
 
     const openRegexp   = Parser.OPEN_REGEXP;
     const closeRegexp  = Parser.CLOSE_REGEXP;
