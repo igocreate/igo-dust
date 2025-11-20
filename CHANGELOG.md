@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.0] - 2025-11-20
+
+- Helpers can now receive body function as third parameter (enables helpers like `@repeat`)
+- Improved whitespace handling: preserves multiple spaces on same line, normalizes newlines, removes whitespace between HTML tags
+
 ## [0.5.0] - 2025-10-08
 
 - Performance: Optimized template compilation by using array joins instead of string concatenation
